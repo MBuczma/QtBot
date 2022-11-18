@@ -15,11 +15,13 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    QString getPrzycisk1();
 
 private slots:
     void on_Start1_clicked();
     void on_Reset1_clicked();
     void Timer1_valueChanged(int arg1);
+
 
 private :
     Ui::MainWindow *ui;

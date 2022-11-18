@@ -4,6 +4,8 @@
 #include <QTime>
 #include <cstddef>
 #include <utilapiset.h>
+#include <QTimer>
+#include <windows.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -18,24 +20,51 @@ MainWindow::~MainWindow()
 }
 
 
+
 void sleepSec()
 {
-    QTime dieTime= QTime::currentTime().addSecs(1);
-    while (QTime::currentTime() < dieTime)
-        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+    QEventLoop loop;
+    QTimer t;
+    t.connect(&t, &QTimer::timeout, &loop, &QEventLoop::quit);
+    t.start(1000);
+    loop.exec();
 }
 
 
 void MainWindow::on_Start1_clicked()
 {
     int nastawionyCzas = ui->ZadanyCzas1->value();
-    if(ui->Timer1->value()==0)
+    if(ui->Timer1->value()==0 && nastawionyCzas!=0)
     {
         MainWindow::reset1 = false;
         ui->Timer1->setValue(nastawionyCzas);
         Timer1_valueChanged(nastawionyCzas);
     }
 
+}
+
+QString MainWindow::getPrzycisk1()
+{
+    return ui->Przycisk1->selectedText();
+}
+
+void pressKey(unsigned short virtual_key_code)
+{
+    // This structure will be used to create the keyboard
+    // input event.
+    INPUT ip;
+    // Set up a generic keyboard event.
+
+    ip.type = INPUT_KEYBOARD;
+    // Press the "A" key
+    //auto virtual_key_code = 0x7B;
+    ip.ki.wVk = 0x79; // virtual-key code for the "f10" key
+    ip.ki.dwFlags = 0; // 0 for key press
+    SendInput(1, &ip, sizeof(INPUT));
+
+    // Release the "A" key
+    ip.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
+    SendInput(1, &ip, sizeof(INPUT));
 }
 
 
@@ -48,7 +77,7 @@ void MainWindow::on_Reset1_clicked()
 
 void MainWindow::Timer1_valueChanged(int arg1)
 {
-    static int czasDoAkcji = arg1;
+    int czasDoAkcji = arg1;
     do
     {
         if (MainWindow::reset1 == false)
@@ -62,7 +91,12 @@ void MainWindow::Timer1_valueChanged(int arg1)
             else
             {
                 Beep(523,200); // 523 hertz (C5) for 500 milliseconds
-                czasDoAkcji = arg1;
+                QString przycisk1 = ui->Przycisk1->text();
+                pressKey(0x90);
+                if(arg1!=0)
+                    czasDoAkcji = arg1;
+                else
+                    break;
             }
          }
             else {
