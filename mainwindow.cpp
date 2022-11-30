@@ -58,7 +58,7 @@ void pressKey(unsigned short virtual_key_code)
     ip.type = INPUT_KEYBOARD;
     // Press the "A" key
     //auto virtual_key_code = 0x7B;
-    ip.ki.wVk = 0x79; // virtual-key code for the "f10" key
+    ip.ki.wVk = virtual_key_code; // virtual-key code for the "f10" key
     ip.ki.dwFlags = 0; // 0 for key press
     SendInput(1, &ip, sizeof(INPUT));
 
@@ -92,7 +92,16 @@ void MainWindow::Timer1_valueChanged(int arg1)
             {
                 Beep(523,200); // 523 hertz (C5) for 500 milliseconds
                 QString przycisk1 = ui->Przycisk1->text();
-                pressKey(0x90);
+                Sleep(1000);
+                pressKey(VK_F11); //0x7A 	F11 key
+                Sleep(1000);
+                pressKey(VK_DOWN); //0x28 	DOWN ARROW key
+                Sleep(1000);
+                pressKey(VK_UP); //0x26 	UP ARROW key
+                Sleep(1000);
+                pressKey(VK_F10); //0x79 	F10 key
+                Sleep(1000);
+                pressKey(VK_F10); //0x79 	F10 key
                 if(arg1!=0)
                     czasDoAkcji = arg1;
                 else
