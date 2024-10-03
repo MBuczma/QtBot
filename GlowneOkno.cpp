@@ -7,9 +7,18 @@ GlowneOkno::GlowneOkno(QWidget *parent)
     , ui(new Ui::GlowneOkno)
 {
     ui->setupUi(this);
+    connect(ui->PrzyciskWyjscie, &QPushButton::clicked, this, &GlowneOkno::wyjscieZProgramu);
 }
 
 GlowneOkno::~GlowneOkno()
 {
     delete ui;
 }
+
+void GlowneOkno::wyjscieZProgramu()
+{
+    qDebug() << "Przycisk wyjscie został naciśnięty.";
+    QApplication::quit();
+}
+
+
