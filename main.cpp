@@ -1,11 +1,12 @@
+/* main.cpp */
 #include "GlowneOkno.h"
 
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    GlowneOkno w;
-    w.show();
-    return a.exec();
+    QApplication application(argc, argv);
+    GlowneOkno window;
+    window.show();
+    return application.exec();
 }

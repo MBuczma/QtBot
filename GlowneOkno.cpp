@@ -1,3 +1,4 @@
+/* GlowneOkno.cpp */
 #include "GlowneOkno.h"
 #include "ui_GlowneOkno.h"
 

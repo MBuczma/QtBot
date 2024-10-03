@@ -1,3 +1,4 @@
+/* GlowneOkno.h */
 #ifndef GLOWNEOKNO_H
 #define GLOWNEOKNO_H
 
