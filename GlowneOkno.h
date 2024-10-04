@@ -3,6 +3,7 @@
 #define GLOWNEOKNO_H
 
 #include <QMainWindow>
+#include "OknoBot.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -19,9 +20,12 @@ public:
     ~GlowneOkno();
 
 private slots:
+    void start();
+    void informacje();
     void wyjscieZProgramu();
 
 private:
     Ui::GlowneOkno *ui;
+    OknoBot *oknoBot;
 };
 #endif // GLOWNEOKNO_H
