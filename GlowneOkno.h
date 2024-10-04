@@ -18,8 +18,10 @@ public:
     GlowneOkno(QWidget *parent = nullptr);
     ~GlowneOkno();
 
+private slots:
+    void wyjscieZProgramu();
+
 private:
     Ui::GlowneOkno *ui;
-    void wyjscieZProgramu();
 };
 #endif // GLOWNEOKNO_H

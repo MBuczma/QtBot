@@ -1,6 +1,5 @@
 /* main.cpp */
 #include "GlowneOkno.h"
-
 #include <QApplication>
 
 int main(int argc, char *argv[])

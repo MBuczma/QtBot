@@ -20,5 +20,3 @@ void GlowneOkno::wyjscieZProgramu()
     qDebug() << "Przycisk wyjscie został naciśnięty.";
     QApplication::quit();
 }
-
-
