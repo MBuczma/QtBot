@@ -5,7 +5,7 @@
 int main(int argc, char *argv[])
 {
     QApplication application(argc, argv);
-    GlowneOkno window;
-    window.show();
+    GlowneOkno glowneOkno;
+    glowneOkno.show();
     return application.exec();
 }

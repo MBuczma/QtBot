@@ -16,6 +16,7 @@ GlowneOkno::GlowneOkno(QWidget *parent)
 
 GlowneOkno::~GlowneOkno()
 {
+    delete oknoBot;
     delete ui;
 }
 

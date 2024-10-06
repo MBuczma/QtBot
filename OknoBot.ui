@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>942</width>
-    <height>359</height>
+    <width>866</width>
+    <height>480</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -19,106 +19,157 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="2">
-    <widget class="QLineEdit" name="lineEdit_8">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="groupBoxOpis">
+     <property name="title">
+      <string>GroupBox Opis</string>
      </property>
-     <property name="text">
-      <string>Program</string>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>64</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>64</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="opisNazwaProgramu">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Program</string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="opisKlawisz">
+        <property name="text">
+         <string>Klawisz</string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="opisHotKey">
+        <property name="text">
+         <string>Hot key</string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="opisSekund">
+        <property name="text">
+         <string>Sekund</string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="opisMilisekund">
+        <property name="text">
+         <string>Milisekund</string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="opisWysleZa">
+        <property name="text">
+         <string>Wyśle za </string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
-   <item row="0" column="6">
-    <widget class="QLineEdit" name="lineEdit_5">
-     <property name="text">
-      <string>Sekund</string>
+   <item>
+    <widget class="QGroupBox" name="groupBoxPrzyciski">
+     <property name="title">
+      <string>GroupBox Przyciski</string>
      </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="pushButton_Start">
+        <property name="text">
+         <string>Start</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_PobierzID">
+        <property name="text">
+         <string>Pobierz ID</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_NazwaProgramu"/>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_Klawisz"/>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_HotKey"/>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="spinBox_Sekund"/>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="spinBox_Milisekund"/>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="spinBox_WysleZa">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
-   <item row="2" column="4">
-    <widget class="QLineEdit" name="lineEdit"/>
-   </item>
-   <item row="2" column="1">
-    <widget class="QPushButton" name="pushButton_2">
+   <item>
+    <widget class="QPushButton" name="pushButton_DodajNowyRzad">
      <property name="text">
-      <string>Pobierz ID</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="6">
-    <widget class="QSpinBox" name="spinBox_3"/>
-   </item>
-   <item row="2" column="7">
-    <widget class="QSpinBox" name="spinBox"/>
-   </item>
-   <item row="0" column="4">
-    <widget class="QLineEdit" name="lineEdit_3">
-     <property name="text">
-      <string>Hot key</string>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="2">
-    <widget class="QLineEdit" name="lineEdit_9"/>
-   </item>
-   <item row="0" column="3">
-    <widget class="QLineEdit" name="lineEdit_4">
-     <property name="text">
-      <string>Klawisz</string>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="3">
-    <widget class="QLineEdit" name="lineEdit_2"/>
-   </item>
-   <item row="0" column="8">
-    <widget class="QLineEdit" name="lineEdit_6">
-     <property name="text">
-      <string>Wyśle za </string>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QPushButton" name="pushButton">
-     <property name="text">
-      <string>Start</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="8">
-    <widget class="QSpinBox" name="spinBox_2">
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="7">
-    <widget class="QLineEdit" name="lineEdit_7">
-     <property name="text">
-      <string>Milisekund</string>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
+      <string>Dodaj nowy rząd przycisków</string>
      </property>
     </widget>
    </item>
