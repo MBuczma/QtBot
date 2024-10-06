@@ -21,6 +21,7 @@ private slots:
     void start();
     void dodajRzadPrzyciskow();
     void ZlapIdOkna();
+    void zaktualizujNazwe();
 
 protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
@@ -30,6 +31,8 @@ private:
     AutoKeyPresser *autoKeyPresser;
     HWND handle;
     HWND parentHandle;
+    QString windowText;
+    QString parentHandleWindowText;
     bool isButtonPressed;
 };
 #endif // OKNOBOT_H

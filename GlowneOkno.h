@@ -22,7 +22,7 @@ public:
 private slots:
     void start();
     void informacje();
-    void wyjscieZProgramu();
+    void wyjscie();
 
 private:
     Ui::GlowneOkno *ui;

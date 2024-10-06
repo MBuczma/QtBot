@@ -11,7 +11,7 @@ GlowneOkno::GlowneOkno(QWidget *parent)
     ui->stackedWidget->addWidget(oknoBot);
     connect(ui->PrzyciskStart, &QPushButton::clicked, this, &GlowneOkno::start);
     connect(ui->PrzyciskInfo, &QPushButton::clicked, this, &GlowneOkno::informacje);
-    connect(ui->PrzyciskWyjscie, &QPushButton::clicked, this, &GlowneOkno::wyjscieZProgramu);
+    connect(ui->PrzyciskWyjscie, &QPushButton::clicked, this, &GlowneOkno::wyjscie);
 }
 
 GlowneOkno::~GlowneOkno()
@@ -31,7 +31,7 @@ void GlowneOkno::informacje()
     qDebug() << "Przycisk informacje został naciśnięty.";
 }
 
-void GlowneOkno::wyjscieZProgramu()
+void GlowneOkno::wyjscie()
 {
     qDebug() << "Przycisk wyjscie został naciśnięty.";
     QApplication::quit();

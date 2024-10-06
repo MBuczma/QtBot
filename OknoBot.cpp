@@ -7,8 +7,10 @@ OknoBot::OknoBot(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::OknoBot)
     , autoKeyPresser(new AutoKeyPresser(this))
-    , handle()
-    , parentHandle()
+    , handle(0)
+    , parentHandle(0)
+    , windowText("windowText")
+    , parentHandleWindowText("parentHandleWindowText")
     , isButtonPressed(false)
 {
     ui->setupUi(this);
@@ -39,20 +41,26 @@ void OknoBot::ZlapIdOkna()
     isButtonPressed = true;
     grabMouse();
     setCursor(Qt::CrossCursor);
+    //ui->pushButton_PobierzID->
 }
 
 void OknoBot::mouseReleaseEvent(QMouseEvent *event)
 {
-    qDebug() << "OknoBot::mouseReleaseEvent.";
     if (event->button() == Qt::LeftButton && isButtonPressed == true){
+        qDebug() << "OknoBot::mouseReleaseEvent.";
         isButtonPressed = false;
         autoKeyPresser->ZlapIdOkna(handle, parentHandle);
         releaseMouse();
         unsetCursor();
-        QString windowText = autoKeyPresser->GetWindowTextFromHandle(handle);
-        ui->lineEdit_NazwaProgramu->setText(windowText);
-        QString parentHandleText = autoKeyPresser->GetWindowTextFromHandle(parentHandle);
-        ui->groupBoxPrzyciski->setTitle(parentHandleText);
-
+        zaktualizujNazwe();
+        ui->pushButton_PobierzID->setDown(false);
     }
+}
+
+void OknoBot::zaktualizujNazwe()
+{
+    windowText = autoKeyPresser->GetWindowTextFromHandle(handle);
+    ui->lineEdit_NazwaProgramu->setText(windowText);
+    parentHandleWindowText = autoKeyPresser->GetWindowTextFromHandle(parentHandle);
+    ui->groupBoxPrzyciski->setTitle(parentHandleWindowText);
 }

@@ -18,6 +18,6 @@ signals:
 private slots:
 
 private:
-    HWND handle;
+
 };
 #endif // AUTOKEYPRESSER_H
