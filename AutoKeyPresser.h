@@ -10,8 +10,9 @@ class AutoKeyPresser : public QWidget
 public:
     explicit AutoKeyPresser(QWidget *parent = nullptr);
     ~AutoKeyPresser();
-    void ZlapIdOkna(HWND &handle, HWND &parentHandle);
+    void WindowHandleFromPoint(HWND &handle, HWND &parentHandle);
     QString GetWindowTextFromHandle(HWND hwnd);
+    void SentKey(HWND &handle, QString key);
 
 signals:
 

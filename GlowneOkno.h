@@ -3,6 +3,7 @@
 #define GLOWNEOKNO_H
 
 #include <QMainWindow>
+#include "NagrywanieOkno.h"
 #include "OknoBot.h"
 
 QT_BEGIN_NAMESPACE
@@ -21,11 +22,13 @@ public:
 
 private slots:
     void start();
+    void mouseTracker();
     void informacje();
     void wyjscie();
 
 private:
     Ui::GlowneOkno *ui;
     OknoBot *oknoBot;
+    NagrywanieOkno *nagrywanieOkno;
 };
 #endif // GLOWNEOKNO_H

@@ -40,6 +40,32 @@
       </property>
       <widget class="QWidget" name="page">
        <layout class="QGridLayout" name="gridLayout">
+        <item row="3" column="0">
+         <widget class="QPushButton" name="PrzyciskWyjscie">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Wyjscie</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QPushButton" name="PrzyciskInfo">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Informacje o Programie</string>
+          </property>
+         </widget>
+        </item>
         <item row="0" column="0">
          <widget class="QPushButton" name="PrzyciskStart">
           <property name="maximumSize">
@@ -54,34 +80,16 @@
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QPushButton" name="PrzyciskInfo">
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>30</height>
-           </size>
-          </property>
+         <widget class="QPushButton" name="PrzyciskMouseTracker">
           <property name="text">
-           <string>Informacje o Programie</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QPushButton" name="PrzyciskWyjscie">
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>30</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Wyjscie</string>
+           <string>MouseTracker</string>
           </property>
          </widget>
         </item>
        </layout>
       </widget>
       <widget class="QWidget" name="page_2"/>
+      <widget class="QWidget" name="page_3"/>
      </widget>
     </item>
    </layout>

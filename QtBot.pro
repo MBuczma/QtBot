@@ -10,6 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     AutoKeyPresser.cpp \
+    NagrywanieOkno.cpp \
     OknoBot.cpp \
     main.cpp \
     GlowneOkno.cpp
@@ -17,10 +18,12 @@ SOURCES += \
 HEADERS += \
     AutoKeyPresser.h \
     GlowneOkno.h \
+    NagrywanieOkno.h \
     OknoBot.h
 
 FORMS += \
     GlowneOkno.ui \
+    NagrywanieOkno.ui \
     OknoBot.ui
 
 # Default rules for deployment.

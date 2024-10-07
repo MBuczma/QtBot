@@ -28,6 +28,13 @@ OknoBot::~OknoBot()
 void OknoBot::start()
 {
     qDebug() << "Przycisk start z oknobot został naciśnięty.";
+    qDebug() << "lineEdit_NazwaProgramu" << ui->lineEdit_NazwaProgramu->displayText();
+    qDebug() << "lineEdit_HotKey" <<  ui->lineEdit_HotKey->displayText();
+    qDebug() << "comboBox_Klawisz" << ui->comboBox_Klawisz->currentText();
+    qDebug() << "spinBox_Sekund" << ui->spinBox_Sekund->text();
+    qDebug() << "spinBox_Milisekund" << ui->spinBox_Milisekund->text();
+    qDebug() << "spinBox_WysleZa" << ui->spinBox_WysleZa->text();
+    autoKeyPresser->SentKey(handle, ui->lineEdit_HotKey->displayText());
 }
 
 void OknoBot::dodajRzadPrzyciskow()
@@ -41,7 +48,6 @@ void OknoBot::ZlapIdOkna()
     isButtonPressed = true;
     grabMouse();
     setCursor(Qt::CrossCursor);
-    //ui->pushButton_PobierzID->
 }
 
 void OknoBot::mouseReleaseEvent(QMouseEvent *event)
@@ -49,7 +55,7 @@ void OknoBot::mouseReleaseEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton && isButtonPressed == true){
         qDebug() << "OknoBot::mouseReleaseEvent.";
         isButtonPressed = false;
-        autoKeyPresser->ZlapIdOkna(handle, parentHandle);
+        autoKeyPresser->WindowHandleFromPoint(handle, parentHandle);
         releaseMouse();
         unsetCursor();
         zaktualizujNazwe();
