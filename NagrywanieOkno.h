@@ -1,3 +1,4 @@
+/* NagrywanieOkno.h */
 #ifndef NAGRYWANIEOKNO_H
 #define NAGRYWANIEOKNO_H
 

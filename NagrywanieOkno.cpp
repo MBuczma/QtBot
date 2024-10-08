@@ -1,3 +1,4 @@
+/* NagrywanieOkno.cpp */
 #include "NagrywanieOkno.h"
 #include "ui_NagrywanieOkno.h"
 #include <QMouseEvent>

@@ -23,6 +23,7 @@ private slots:
     void ZlapIdOkna();
     void zaktualizujNazwe();
 
+
 protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
 
@@ -33,6 +34,11 @@ private:
     HWND parentHandle;
     QString windowText;
     QString parentHandleWindowText;
+    QTimer *keyTimer;  // Timer do wysyłania klawisza
     bool isButtonPressed;
+    void wyslijKlawisz();
+    QTimer *countdownTimer;  // Timer do odliczania czasu do wysyłki
+    int remainingTime;  // Zmienna przechowująca pozostały czas do wysłania
+    void aktualizujCountdown();  // Funkcja do aktualizowania odliczania
 };
 #endif // OKNOBOT_H

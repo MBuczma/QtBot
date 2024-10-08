@@ -45,6 +45,8 @@ void AutoKeyPresser::WindowHandleFromPoint(HWND &handle, HWND &parentHandle)
 void AutoKeyPresser::SentKey(HWND &handle, QString key)
 {
     std::map<QString, WPARAM> keyMap = {
+        {"1", '1'},
+        {"2", '2'},
         {"A", 'A'},
         {"B", 'B'},
         {"SPACE", VK_SPACE},
