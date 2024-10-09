@@ -16,11 +16,8 @@ OknoBot::OknoBot(QWidget *parent)
     , remainingTime(0)
 {
     ui->setupUi(this);
-    connect(ui->pushButton_Start, &QPushButton::clicked, this, &OknoBot::start);
-    connect(ui->pushButton_DodajNowyRzad,
-            &QPushButton::clicked,
-            this,
-            &OknoBot::dodajRzadPrzyciskow);
+    connect(ui->pushButton_Start, &QPushButton::clicked, this, &OknoBot::startStop);
+    connect(ui->pushButton_DodajRzad, &QPushButton::clicked, this, &OknoBot::dodajRzad);
     connect(ui->pushButton_PobierzID, &QPushButton::pressed, this, &OknoBot::ZlapIdOkna);
     connect(keyTimer.get(), &QTimer::timeout, this, &OknoBot::wyslijKlawisz);
     connect(countdownTimer.get(), &QTimer::timeout, this, &OknoBot::aktualizujCountdown);
@@ -28,7 +25,7 @@ OknoBot::OknoBot(QWidget *parent)
 
 OknoBot::~OknoBot() = default;
 
-void OknoBot::start()
+void OknoBot::startStop()
 {
     qDebug() << "Przycisk start z OknoBot został naciśnięty.";
 
@@ -36,22 +33,24 @@ void OknoBot::start()
     int czasMilisekund = ui->spinBox_Milisekund->value();
     QString wybranyKlawisz = ui->comboBox_Klawisz->currentText();
 
-    if ((czasSekund != 0 || czasMilisekund != 0) && !wybranyKlawisz.isEmpty()) {
-        isSendingKeys = !isSendingKeys;
-        aktualizujStanPrzyciskuStart(isSendingKeys);
+    if (isSendingKeys == false) {
+        if ((czasSekund != 0 || czasMilisekund != 0) && !wybranyKlawisz.isEmpty()) {
+            isSendingKeys = true;
+            aktualizujStanPrzyciskuStart(isSendingKeys);
 
-        if (isSendingKeys) {
             int interval = czasSekund * 1000 + czasMilisekund;
             remainingTime = interval;
 
             keyTimer->start(interval);
             countdownTimer->start(100);
         } else {
-            keyTimer->stop();
-            countdownTimer->stop();
+            qDebug() << "Czas musi być większy od 0 i klawisz musi być wybrany.";
         }
     } else {
-        qDebug() << "Czas musi być większy od 0 i klawisz musi być wybrany.";
+        isSendingKeys = false;
+        aktualizujStanPrzyciskuStart(isSendingKeys);
+        keyTimer->stop();
+        countdownTimer->stop();
     }
 }
 
@@ -66,7 +65,7 @@ void OknoBot::aktualizujStanPrzyciskuStart(bool isSending)
     }
 }
 
-void OknoBot::dodajRzadPrzyciskow()
+void OknoBot::dodajRzad()
 {
     qDebug() << "Przycisk dodajRzadPrzyciskow został naciśnięty.";
 }
@@ -110,7 +109,7 @@ void OknoBot::wyslijKlawisz()
     QString klawisz = ui->comboBox_Klawisz->currentText();
     qDebug() << "Wysyłam klawisz:" << klawisz;
     autoKeyPresser->SentKey(handle, klawisz);
-    remainingTime = ui->spinBox_Sekund->value() * 1000;
+    remainingTime = ui->spinBox_Sekund->value() * 1000 + ui->spinBox_Milisekund->value();
 }
 
 void OknoBot::aktualizujCountdown()

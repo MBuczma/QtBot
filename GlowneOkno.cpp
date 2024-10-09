@@ -38,6 +38,9 @@ void GlowneOkno::mouseTracker()
     qDebug() << "Przycisk mouseTracker został naciśnięty.";
     ui->stackedWidget->setCurrentWidget(nagrywanieOkno.get());
     this->adjustSize();
+    this->setMinimumSize(650, 250);
+    this->setMaximumSize(650, 1000);
+    this->setFocus();
 }
 
 void GlowneOkno::informacje()

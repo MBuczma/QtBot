@@ -20,8 +20,8 @@ public:
     ~OknoBot();
 
 private slots:
-    void start();
-    void dodajRzadPrzyciskow();
+    void startStop();
+    void dodajRzad();
     void ZlapIdOkna();
     void zaktualizujNazwe();
 

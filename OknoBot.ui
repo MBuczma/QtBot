@@ -492,6 +492,15 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="showGroupSeparator" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="suffix">
+         <string>s</string>
+        </property>
+        <property name="maximum">
+         <number>9999</number>
+        </property>
        </widget>
       </item>
       <item>
@@ -513,6 +522,12 @@
           <width>80</width>
           <height>16777215</height>
          </size>
+        </property>
+        <property name="suffix">
+         <string>ms</string>
+        </property>
+        <property name="maximum">
+         <number>999</number>
         </property>
        </widget>
       </item>
@@ -542,6 +557,12 @@
         <property name="buttonSymbols">
          <enum>QAbstractSpinBox::NoButtons</enum>
         </property>
+        <property name="showGroupSeparator" stdset="0">
+         <bool>true</bool>
+        </property>
+        <property name="suffix">
+         <string> ms</string>
+        </property>
         <property name="maximum">
          <number>999999</number>
         </property>
@@ -554,7 +575,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="pushButton_DodajNowyRzad">
+    <widget class="QPushButton" name="pushButton_DodajRzad">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
        <horstretch>0</horstretch>
