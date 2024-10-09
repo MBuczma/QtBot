@@ -28,12 +28,15 @@ void GlowneOkno::start()
 {
     qDebug() << "Przycisk start został naciśnięty.";
     ui->stackedWidget->setCurrentWidget(oknoBot);
+    this->adjustSize();
+    this->setMinimumSize(700, 250);
 }
 
 void GlowneOkno::mouseTracker()
 {
     qDebug() << "Przycisk mouseTracker został naciśnięty.";
     ui->stackedWidget->setCurrentWidget(nagrywanieOkno);
+    this->adjustSize();
 }
 
 void GlowneOkno::informacje()
