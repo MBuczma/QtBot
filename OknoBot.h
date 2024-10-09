@@ -40,5 +40,6 @@ private:
     QTimer *countdownTimer;  // Timer do odliczania czasu do wysyłki
     int remainingTime;  // Zmienna przechowująca pozostały czas do wysłania
     void aktualizujCountdown();  // Funkcja do aktualizowania odliczania
+    bool isSendingKeys;  // Zmienna określająca, czy klawisze są wysyłane
 };
 #endif // OKNOBOT_H

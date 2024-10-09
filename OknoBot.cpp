@@ -16,6 +16,7 @@ OknoBot::OknoBot(QWidget *parent)
     , isButtonPressed(false) // Inicjalizacja timera
     , countdownTimer(new QTimer(this))  // Timer do odliczania
     , remainingTime(0)
+    , isSendingKeys(false)  // Początkowy stan: klawisze nie są wysyłane
 {
     ui->setupUi(this);
     connect(ui->pushButton_Start, &QPushButton::clicked, this, &OknoBot::start);
@@ -27,6 +28,8 @@ OknoBot::OknoBot(QWidget *parent)
 
 OknoBot::~OknoBot()
 {
+    delete keyTimer;
+    delete countdownTimer;
     delete autoKeyPresser;
     delete ui;
 }
@@ -41,9 +44,32 @@ void OknoBot::start()
     qDebug() << "spinBox_Milisekund" << ui->spinBox_Milisekund->text();
     qDebug() << "spinBox_WysleZa" << ui->spinBox_WysleZa->text();
     //autoKeyPresser->SentKey(handle, ui->lineEdit_HotKey->displayText());
-    int interval = ui->spinBox_Sekund->value() * 1000; // Przelicz na milisekundy
-    keyTimer->start(interval);
-    countdownTimer->start(100);
+    if (!isSendingKeys) {
+        // Jeśli nie wysyłamy klawiszy, uruchamiamy timer i zmieniamy tekst na "Stop"
+        isSendingKeys = true;
+        ui->pushButton_Start->setText("Stop");
+
+        int interval = ui->spinBox_Sekund->value() * 1000;  // Przelicz na milisekundy
+        remainingTime = interval;
+
+        qDebug() << "Ustawienie interwału timera na:" << interval << "ms";
+
+        // Start timera wysyłającego klawisz
+        keyTimer->start(interval);
+
+        // Ustaw countdownTimer na odświeżanie co 100 ms
+        countdownTimer->start(100);
+    } else {
+        // Jeśli klawisze są wysyłane, zatrzymujemy timery i zmieniamy tekst na "Start"
+        isSendingKeys = false;
+        ui->pushButton_Start->setText("Start");
+
+        // Zatrzymaj timery
+        keyTimer->stop();
+        countdownTimer->stop();
+
+        qDebug() << "Wysyłanie klawiszy zostało zatrzymane.";
+    }
 }
 
 void OknoBot::dodajRzadPrzyciskow()
