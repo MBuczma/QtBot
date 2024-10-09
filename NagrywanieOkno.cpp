@@ -8,7 +8,7 @@
 NagrywanieOkno::NagrywanieOkno(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::NagrywanieOkno)
-    , autoKeyPresser(new AutoKeyPresser(this))
+    , autoKeyPresser(new AutoKeyPresser())
     , handle(0)
     , parentHandle(0)
     , windowText("windowText")

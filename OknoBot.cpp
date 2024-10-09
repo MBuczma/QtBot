@@ -8,7 +8,7 @@
 OknoBot::OknoBot(QWidget *parent)
     : QWidget(parent)
     , ui(std::make_unique<Ui::OknoBot>())
-    , autoKeyPresser(std::make_unique<AutoKeyPresser>(this))
+    , autoKeyPresser(std::make_unique<AutoKeyPresser>())
     , keyTimer(std::make_unique<QTimer>(this))
     , countdownTimer(std::make_unique<QTimer>(this))
     , isButtonPressed(false)

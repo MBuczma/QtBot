@@ -1,24 +1,23 @@
 /* AutoKeyPresser.h */
-#ifndef AUTOKEYPRESSER_H
-#define AUTOKEYPRESSER_H
+#pragma once
 
-#include <QWidget>
+#include <QString>
+#include <Windows.h>
 
-class AutoKeyPresser : public QWidget
+class AutoKeyPresser
 {
-    Q_OBJECT
 public:
-    explicit AutoKeyPresser(QWidget *parent = nullptr);
+    explicit AutoKeyPresser();
     ~AutoKeyPresser();
+
+    // Pobiera uchwyt okna na podstawie pozycji kursora
     void WindowHandleFromPoint(HWND &handle, HWND &parentHandle);
-    QString GetWindowTextFromHandle(HWND hwnd);
-    void SentKey(HWND &handle, QString key);
 
-signals:
+    // Pobiera nazwę okna z uchwytu
+    QString GetWindowTextFromHandle(const HWND hwnd) const;
 
-private slots:
+    // Wysyła klawisz do podanego okna
+    void SentKey(const HWND handle, const QString &key);
 
 private:
-
 };
-#endif // AUTOKEYPRESSER_H
