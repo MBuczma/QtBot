@@ -2,9 +2,10 @@
 #ifndef GLOWNEOKNO_H
 #define GLOWNEOKNO_H
 
-#include <QMainWindow>
-#include "NagrywanieOkno.h"
 #include "OknoBot.h"
+#include "NagrywanieOkno.h"
+#include <QMainWindow>
+#include <memory> // std::unique_ptr
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -27,8 +28,9 @@ private slots:
     void wyjscie();
 
 private:
-    Ui::GlowneOkno *ui;
-    OknoBot *oknoBot;
-    NagrywanieOkno *nagrywanieOkno;
+    std::unique_ptr<Ui::GlowneOkno> ui; // Zarządzanie wskaźnikiem Ui
+    std::unique_ptr<OknoBot> oknoBot;   // Zarządzanie wskaźnikiem OknoBot
+    std::unique_ptr<NagrywanieOkno> nagrywanieOkno; // Zarządzanie wskaźnikiem NagrywanieOkno
 };
+
 #endif // GLOWNEOKNO_H
