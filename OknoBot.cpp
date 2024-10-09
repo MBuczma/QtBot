@@ -37,38 +37,38 @@ OknoBot::~OknoBot()
 void OknoBot::start()
 {
     qDebug() << "Przycisk start z oknobot został naciśnięty.";
-    qDebug() << "lineEdit_NazwaProgramu" << ui->lineEdit_NazwaProgramu->displayText();
     qDebug() << "lineEdit_HotKey" <<  ui->lineEdit_HotKey->displayText();
     qDebug() << "comboBox_Klawisz" << ui->comboBox_Klawisz->currentText();
     qDebug() << "spinBox_Sekund" << ui->spinBox_Sekund->text();
     qDebug() << "spinBox_Milisekund" << ui->spinBox_Milisekund->text();
     qDebug() << "spinBox_WysleZa" << ui->spinBox_WysleZa->text();
     //autoKeyPresser->SentKey(handle, ui->lineEdit_HotKey->displayText());
-    if (!isSendingKeys) {
-        // Jeśli nie wysyłamy klawiszy, uruchamiamy timer i zmieniamy tekst na "Stop"
-        isSendingKeys = true;
-        ui->pushButton_Start->setText("Stop");
+    int czasSekund = ui->spinBox_Sekund->value();
+    int czasMilisekund = ui->spinBox_Milisekund->value();
+    QString wybranyKlawisz = ui->comboBox_Klawisz->currentText();
 
-        int interval = ui->spinBox_Sekund->value() * 1000;  // Przelicz na milisekundy
-        remainingTime = interval;
+    // Sprawdzenie, czy czas jest różny od 0 i klawisz został wybrany
+    if ((czasSekund != 0 || czasMilisekund != 0) && !wybranyKlawisz.isEmpty()) {
+        if (!isSendingKeys) {
+            // Przycisk w stanie "Start"
+            isSendingKeys = true;
+            ui->pushButton_Start->setText("Stop");
+            ui->pushButton_Start->setStyleSheet("background-color: red; color: white;");
 
-        qDebug() << "Ustawienie interwału timera na:" << interval << "ms";
+            int interval = czasSekund * 1000 + czasMilisekund;  // Przelicz na milisekundy
+            remainingTime = interval;
 
-        // Start timera wysyłającego klawisz
-        keyTimer->start(interval);
+            keyTimer->start(interval);  // Uruchom timer
+        } else {
+            // Przycisk w stanie "Stop"
+            isSendingKeys = false;
+            ui->pushButton_Start->setText("Start");
+            ui->pushButton_Start->setStyleSheet("background-color: green; color: white;");
 
-        // Ustaw countdownTimer na odświeżanie co 100 ms
-        countdownTimer->start(100);
+            keyTimer->stop();  // Zatrzymaj timer
+        }
     } else {
-        // Jeśli klawisze są wysyłane, zatrzymujemy timery i zmieniamy tekst na "Start"
-        isSendingKeys = false;
-        ui->pushButton_Start->setText("Start");
-
-        // Zatrzymaj timery
-        keyTimer->stop();
-        countdownTimer->stop();
-
-        qDebug() << "Wysyłanie klawiszy zostało zatrzymane.";
+        qDebug() << "Czas musi być większy od 0 i klawisz musi być wybrany.";
     }
 }
 
@@ -101,9 +101,14 @@ void OknoBot::mouseReleaseEvent(QMouseEvent *event)
 void OknoBot::zaktualizujNazwe()
 {
     windowText = autoKeyPresser->GetWindowTextFromHandle(handle);
-    ui->lineEdit_NazwaProgramu->setText(windowText);
     parentHandleWindowText = autoKeyPresser->GetWindowTextFromHandle(parentHandle);
-    ui->groupBoxPrzyciski->setTitle(parentHandleWindowText);
+    if(windowText == parentHandleWindowText)
+    {
+        ui->groupBoxPrzyciski->setTitle(parentHandleWindowText);
+    }else
+    {
+        ui->groupBoxPrzyciski->setTitle(parentHandleWindowText + " " + windowText);
+    }
 }
 
 void OknoBot::wyslijKlawisz()
