@@ -18,6 +18,7 @@ GlowneOkno::GlowneOkno(QWidget *parent)
     connect(ui->PrzyciskMouseTracker, &QPushButton::clicked, this, &GlowneOkno::mouseTracker);
     connect(ui->PrzyciskInfo, &QPushButton::clicked, this, &GlowneOkno::informacje);
     connect(ui->PrzyciskWyjscie, &QPushButton::clicked, this, &GlowneOkno::wyjscie);
+    connect(ui->actionWyjdz, &QAction::triggered, QApplication::instance(), &QApplication::quit);
 }
 
 GlowneOkno::~GlowneOkno() = default; // Destruktor domyślny
@@ -29,6 +30,7 @@ void GlowneOkno::start()
     this->adjustSize();
     this->setMinimumSize(650, 250);
     this->setMaximumSize(650, 1000);
+    this->setFocus();
 }
 
 void GlowneOkno::mouseTracker()

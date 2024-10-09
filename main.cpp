@@ -1,14 +1,26 @@
 /* main.cpp */
-#include "GlowneOkno.h"
 #include <QApplication>
+#include <QPalette>
 #include <QStyleFactory>
-#include <memory>  // std::unique_ptr
+#include "GlowneOkno.h"
+#include <memory> // std::unique_ptr
+
+void ustawStyl(QApplication &application)
+{
+    QApplication::setStyle(QStyleFactory::create("Fusion"));
+    QPalette palette = application.palette();
+    application.setStyleSheet("QPushButton:hover { background-color: #808080; }"
+                              "QComboBox:hover { background-color: #808080; }");
+    application.setPalette(palette);
+}
 
 int main(int argc, char *argv[])
 {
     QApplication application(argc, argv);
-    QApplication::setStyle(QStyleFactory::create("Fusion"));
+    ustawStyl(application);
+
     std::unique_ptr<GlowneOkno> glowneOkno = std::make_unique<GlowneOkno>();
     glowneOkno->show();
+
     return application.exec();
 }
