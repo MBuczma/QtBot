@@ -29,10 +29,10 @@
    </size>
   </property>
   <property name="focusPolicy">
-   <enum>Qt::WheelFocus</enum>
+   <enum>Qt::StrongFocus</enum>
   </property>
   <property name="windowTitle">
-   <string>GlowneOkno</string>
+   <string>QtBot</string>
   </property>
   <property name="tabShape">
    <enum>QTabWidget::Triangular</enum>
@@ -131,6 +131,9 @@
            <string notr="true">QPushButton {
     background-color: #8B0000; /* ciemny czerwony */
     color: white; /* kontrastujący kolor tekstu */
+}
+QPushButton:hover {
+    background-color: #FF0000;
 }
 </string>
           </property>
