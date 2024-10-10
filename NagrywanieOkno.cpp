@@ -57,20 +57,40 @@ void NagrywanieOkno::rozpocznijWysylanie()
     int robaki = ui->lineEdit_Robaki->text().toInt();
     qDebug() << "Robaki to:" << robaki;
 
-    for (int i = 0; i < robaki; ++i) {
-        qDebug() << i;
-        // Wysyłanie klawisza "Z"
-        PostMessage(handle, WM_KEYDOWN, 'Z', 0);
-        PostMessage(handle, WM_KEYUP, 'Z', 0);
-        Sleep(500);
-        // Symulacja kliknięcia myszki
-        PostMessage(handle, WM_LBUTTONDOWN, MK_LBUTTON, MAKELPARAM(0, 0));
-        PostMessage(handle, WM_LBUTTONUP, 0, MAKELPARAM(0, 0));
-        Sleep(500);
-        // Wysyłanie klawisza "Spacja"
-        PostMessage(handle, WM_KEYDOWN, VK_SPACE, 0);
-        PostMessage(handle, WM_KEYUP, VK_SPACE, 0);
+    // Użyj QTimer do wysyłania klawiszy, aby GUI pozostało responsywne
+    int interval = 700; // Przykładowy interwał (700 ms) między wysyłaniem klawiszy
+    QTimer *keyTimer = new QTimer(this);
 
-        Sleep(200);
-    };
+    // Użycie std::shared_ptr do zarządzania licznikiem klawiszy
+    auto currentIndex = std::make_shared<int>(0);
+
+    connect(keyTimer, &QTimer::timeout, this, [=]() mutable {
+        if (*currentIndex >= robaki) {
+            keyTimer->stop();
+            keyTimer->deleteLater(); // Zwalnia pamięć związaną z keyTimer
+            qDebug() << "Wysłano wszystkie klawisze.";
+            return;
+        }
+
+        if (handle) {
+            qDebug() << *currentIndex;
+            // Wysyłanie klawisza "Z"
+            PostMessage(handle, WM_KEYDOWN, 'Z', 0);
+            PostMessage(handle, WM_KEYUP, 'Z', 0);
+
+            // Symulacja kliknięcia myszki
+            PostMessage(handle, WM_LBUTTONDOWN, MK_LBUTTON, MAKELPARAM(0, 0));
+            PostMessage(handle, WM_LBUTTONUP, 0, MAKELPARAM(0, 0));
+
+            // Wysyłanie klawisza "Spacja"
+            PostMessage(handle, WM_KEYDOWN, VK_SPACE, 0);
+            PostMessage(handle, WM_KEYUP, VK_SPACE, 0);
+        } else {
+            qDebug() << "Handle nie ma wartości.";
+        }
+
+        (*currentIndex)++;
+    });
+
+    keyTimer->start(interval);
 }
