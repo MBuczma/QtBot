@@ -19,11 +19,28 @@ OknoBot::OknoBot(QWidget *parent)
     connect(ui->pushButton_Start, &QPushButton::clicked, this, &OknoBot::startStop);
     connect(ui->pushButton_DodajRzad, &QPushButton::clicked, this, &OknoBot::dodajRzad);
     connect(ui->pushButton_PobierzID, &QPushButton::pressed, this, &OknoBot::ZlapIdOkna);
+    connect(ui->comboBox_Klawisz,
+            &QComboBox::currentTextChanged,
+            this,
+            &OknoBot::aktualizujStanPrzyciskuStartNaPodstawieComboBox);
     connect(keyTimer.get(), &QTimer::timeout, this, &OknoBot::wyslijKlawisz);
     connect(countdownTimer.get(), &QTimer::timeout, this, &OknoBot::aktualizujCountdown);
 }
 
 OknoBot::~OknoBot() = default;
+
+void OknoBot::aktualizujStanPrzyciskuStartNaPodstawieComboBox(const QString &text)
+{
+    if (text.isEmpty()) {
+        // Ustaw kolor na szary i wyłącz przycisk, gdy nie wybrano żadnego klawisza
+        ui->pushButton_Start->setStyleSheet("background-color: #808080; color: white;");
+        ui->pushButton_Start->setEnabled(false);
+    } else {
+        // Przywróć pierwotny kolor i aktywuj przycisk
+        ui->pushButton_Start->setStyleSheet("background-color: green; color: white;");
+        ui->pushButton_Start->setEnabled(true);
+    }
+}
 
 void OknoBot::startStop()
 {

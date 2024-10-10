@@ -5,7 +5,6 @@
 #include <QWidget>
 #include "AutoKeyPresser.h"
 #include <memory>
-#include <optional>
 
 namespace Ui {
 class NagrywanieOkno;
@@ -22,6 +21,7 @@ public:
 private slots:
     void ZlapIdOkna();          // Metoda odpowiedzialna za złapanie uchwytu okna
     void rozpocznijWysylanie(); // Rozpocznij wysyłanie klawiszy
+    void zaktualizujNazwe();
 
 protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
@@ -30,8 +30,8 @@ private:
     std::unique_ptr<Ui::NagrywanieOkno> ui;
     std::unique_ptr<AutoKeyPresser> autoKeyPresser;
 
-    std::optional<HWND> handle;       // Uchwyty okien systemu Windows
-    std::optional<HWND> parentHandle; // Uchwyty okien rodzica
+    HWND handle;
+    HWND parentHandle;
 
     QString windowText;
     QString parentHandleWindowText;

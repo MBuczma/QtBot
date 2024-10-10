@@ -24,6 +24,7 @@ private slots:
     void dodajRzad();
     void ZlapIdOkna();
     void zaktualizujNazwe();
+    void aktualizujStanPrzyciskuStartNaPodstawieComboBox(const QString &text);
 
 protected:
     void mouseReleaseEvent(QMouseEvent *event) override;

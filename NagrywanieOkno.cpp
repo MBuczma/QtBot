@@ -1,4 +1,3 @@
-/* NagrywanieOkno.cpp */
 #include "NagrywanieOkno.h"
 #include <QMouseEvent>
 #include <QTimer>
@@ -31,16 +30,26 @@ void NagrywanieOkno::ZlapIdOkna()
 void NagrywanieOkno::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton && isButtonPressed) {
-        qDebug() << "NagrywanieOkno::mouseReleaseEvent.";
+        qDebug() << "OknoBot::mouseReleaseEvent.";
         isButtonPressed = false;
-        autoKeyPresser->WindowHandleFromPoint(handle.value(), parentHandle.value());
+        autoKeyPresser->WindowHandleFromPoint(handle, parentHandle);
         releaseMouse();
         unsetCursor();
+        zaktualizujNazwe();
         ui->pushButton_PobierzID->setDown(false);
-        windowText = autoKeyPresser->GetWindowTextFromHandle(handle.value());
-        ui->lineEdit_NazwaProgramu->setText(windowText);
     }
-    QWidget::mouseReleaseEvent(event);
+    QWidget::mouseReleaseEvent(event); // Dodano wywołanie funkcji bazowej
+}
+
+void NagrywanieOkno::zaktualizujNazwe()
+{
+    windowText = autoKeyPresser->GetWindowTextFromHandle(handle);
+    parentHandleWindowText = autoKeyPresser->GetWindowTextFromHandle(parentHandle);
+    if (windowText == parentHandleWindowText) {
+        ui->groupBoxMouseTracker->setTitle(parentHandleWindowText);
+    } else {
+        ui->groupBoxMouseTracker->setTitle(parentHandleWindowText + " " + windowText);
+    }
 }
 
 void NagrywanieOkno::rozpocznijWysylanie()
@@ -48,38 +57,20 @@ void NagrywanieOkno::rozpocznijWysylanie()
     int robaki = ui->lineEdit_Robaki->text().toInt();
     qDebug() << "Robaki to:" << robaki;
 
-    // Użyj QTimer do wysyłania klawiszy, aby GUI pozostało responsywne
-    int interval = 700; // Przykładowy interwał (700 ms) między wysyłaniem klawiszy
-    QTimer *keyTimer = new QTimer(this);
-
-    // Użycie std::shared_ptr do zarządzania licznikiem klawiszy
-    auto currentIndex = std::make_shared<int>(0);
-
-    connect(keyTimer, &QTimer::timeout, this, [=]() mutable {
-        if (*currentIndex >= robaki) {
-            keyTimer->stop();
-            keyTimer->deleteLater(); // Zwalnia pamięć związaną z keyTimer
-            qDebug() << "Wysłano wszystkie klawisze.";
-            return;
-        }
-
+    for (int i = 0; i < robaki; ++i) {
+        qDebug() << i;
         // Wysyłanie klawisza "Z"
-        PostMessage(handle.value(), WM_KEYDOWN, 'Z', 0);
-        PostMessage(handle.value(), WM_KEYUP, 'Z', 0);
-        qDebug() << "Wysłano klawisz Z";
-
+        PostMessage(handle, WM_KEYDOWN, 'Z', 0);
+        PostMessage(handle, WM_KEYUP, 'Z', 0);
+        Sleep(500);
         // Symulacja kliknięcia myszki
-        PostMessage(handle.value(), WM_LBUTTONDOWN, MK_LBUTTON, MAKELPARAM(0, 0));
-        PostMessage(handle.value(), WM_LBUTTONUP, 0, MAKELPARAM(0, 0));
-        qDebug() << "Wysłano kliknięcie myszki";
-
+        PostMessage(handle, WM_LBUTTONDOWN, MK_LBUTTON, MAKELPARAM(0, 0));
+        PostMessage(handle, WM_LBUTTONUP, 0, MAKELPARAM(0, 0));
+        Sleep(500);
         // Wysyłanie klawisza "Spacja"
-        PostMessage(handle.value(), WM_KEYDOWN, VK_SPACE, 0);
-        PostMessage(handle.value(), WM_KEYUP, VK_SPACE, 0);
-        qDebug() << "Wysłano klawisz Spacja";
+        PostMessage(handle, WM_KEYDOWN, VK_SPACE, 0);
+        PostMessage(handle, WM_KEYUP, VK_SPACE, 0);
 
-        (*currentIndex)++;
-    });
-
-    keyTimer->start(interval);
+        Sleep(200);
+    };
 }
