@@ -1,7 +1,8 @@
 /* GlowneOkno.cpp */
 #include "GlowneOkno.h"
+#include "NagrywanieOkno.h" // Dodajemy tutaj, aby zastąpić deklarację wstępną
+#include "OknoBot.h"        // Dodajemy tutaj, aby zastąpić deklarację wstępną
 #include "ui_GlowneOkno.h"
-#include "NagrywanieOkno.h"
 
 GlowneOkno::GlowneOkno(QWidget *parent)
     : QMainWindow(parent)

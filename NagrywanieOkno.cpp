@@ -77,11 +77,11 @@ void NagrywanieOkno::rozpocznijWysylanie()
             // Wysyłanie klawisza "Z"
             PostMessage(handle, WM_KEYDOWN, 'Z', 0);
             PostMessage(handle, WM_KEYUP, 'Z', 0);
-
+            Sleep(200);
             // Symulacja kliknięcia myszki
             PostMessage(handle, WM_LBUTTONDOWN, MK_LBUTTON, MAKELPARAM(0, 0));
             PostMessage(handle, WM_LBUTTONUP, 0, MAKELPARAM(0, 0));
-
+            Sleep(200);
             // Wysyłanie klawisza "Spacja"
             PostMessage(handle, WM_KEYDOWN, VK_SPACE, 0);
             PostMessage(handle, WM_KEYUP, VK_SPACE, 0);

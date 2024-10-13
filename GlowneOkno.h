@@ -2,8 +2,9 @@
 #ifndef GLOWNEOKNO_H
 #define GLOWNEOKNO_H
 
-#include "OknoBot.h"
-#include "NagrywanieOkno.h"
+class OknoBot;        // Deklaracja wstępna klasy OknoBot
+class NagrywanieOkno; // Deklaracja wstępna klasy NagrywanieOkno
+
 #include <QMainWindow>
 #include <memory> // std::unique_ptr
 

@@ -32,12 +32,9 @@ OknoBot::~OknoBot() = default;
 void OknoBot::aktualizujStanPrzyciskuStartNaPodstawieComboBox(const QString &text)
 {
     if (text.isEmpty()) {
-        // Ustaw kolor na szary i wyłącz przycisk, gdy nie wybrano żadnego klawisza
-        ui->pushButton_Start->setStyleSheet("background-color: #808080; color: white;");
         ui->pushButton_Start->setEnabled(false);
     } else {
-        // Przywróć pierwotny kolor i aktywuj przycisk
-        ui->pushButton_Start->setStyleSheet("background-color: green; color: white;");
+        // Ustaw zielony kolor i aktywuj przycisk
         ui->pushButton_Start->setEnabled(true);
     }
 }
@@ -74,17 +71,41 @@ void OknoBot::startStop()
 void OknoBot::aktualizujStanPrzyciskuStart(bool isSending)
 {
     if (isSending) {
+        ui->pushButton_PobierzID->setEnabled(false);
+        ui->comboBox_Klawisz->setEnabled(false);
+        ui->spinBox_Sekund->setEnabled(false);
+        ui->spinBox_Milisekund->setEnabled(false);
         ui->pushButton_Start->setText("Stop");
-        ui->pushButton_Start->setStyleSheet("background-color: red; color: white;");
+        ui->pushButton_Start->setStyleSheet(
+            "QPushButton:enabled { background-color: red; color: white; }");
     } else {
+        ui->pushButton_PobierzID->setEnabled(true);
+        ui->comboBox_Klawisz->setEnabled(true);
+        ui->spinBox_Sekund->setEnabled(true);
+        ui->spinBox_Milisekund->setEnabled(true);
         ui->pushButton_Start->setText("Start");
-        ui->pushButton_Start->setStyleSheet("background-color: green; color: white;");
+        ui->pushButton_Start->setStyleSheet(
+            "QPushButton:enabled { background-color: green; color: white; }");
     }
 }
 
 void OknoBot::dodajRzad()
 {
     qDebug() << "Przycisk dodajRzadPrzyciskow został naciśnięty.";
+
+    // Tworzymy nowy QGroupBox
+    QGroupBox *nowyGroupBox = new QGroupBox("Nowy GroupBox", this);
+
+    // Tworzymy nowy layout dla nowego GroupBox (np. QHBoxLayout lub QVBoxLayout)
+    QHBoxLayout *layout = new QHBoxLayout;
+    nowyGroupBox->setLayout(layout);
+
+    // Dodajemy jakiś przycisk do nowego GroupBoxa (opcjonalnie)
+    QPushButton *przycisk = new QPushButton("Nowy Przycisk", nowyGroupBox);
+    layout->addWidget(przycisk);
+
+    // Wstawiamy nowy GroupBox pomiędzy istniejące widgety, ale powyżej przycisku DodajRzad
+    ui->verticalLayout->insertWidget(ui->verticalLayout->count() - 1, nowyGroupBox);
 }
 
 void OknoBot::ZlapIdOkna()
