@@ -10,6 +10,7 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 
 SOURCES += \
     AutoKeyPresser.cpp \
+    GroupBoxControl.cpp \
     NagrywanieOkno.cpp \
     OknoBot.cpp \
     main.cpp \
@@ -18,6 +19,7 @@ SOURCES += \
 HEADERS += \
     AutoKeyPresser.h \
     GlowneOkno.h \
+    GroupBoxControl.h \
     NagrywanieOkno.h \
     OknoBot.h
 
