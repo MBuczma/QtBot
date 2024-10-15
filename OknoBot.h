@@ -2,10 +2,10 @@
 #ifndef OKNOBOT_H
 #define OKNOBOT_H
 
-#include <QTimer>
 #include <QWidget>
-#include "AutoKeyPresser.h"
-#include <memory>
+
+class AutoKeyPresser;
+class GroupBoxControl;
 
 namespace Ui {
 class OknoBot;
@@ -20,7 +20,7 @@ public:
     ~OknoBot();
 
 signals:
-    void rozszerzOkno(int height);
+    void rozszerzOkno(short height);
 
 private slots:
     void startStop();

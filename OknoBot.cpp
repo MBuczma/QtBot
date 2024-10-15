@@ -1,10 +1,12 @@
 /* OknoBot.cpp */
 #include "OknoBot.h"
+#include "ui_OknoBot.h"
+
+#include "AutoKeyPresser.h"
+#include "GroupBoxControl.h"
+
 #include <QMouseEvent>
 #include <QTimer>
-#include "GlowneOkno.h"
-#include "GroupBoxControl.h"
-#include "ui_OknoBot.h"
 #include <memory>
 
 OknoBot::OknoBot(QWidget *parent)
@@ -98,16 +100,6 @@ void OknoBot::dodajRzad()
 
     GroupBoxControl *newGroupBox = new GroupBoxControl(this);
     ui->verticalLayout->insertWidget(ui->verticalLayout->count() - 1, newGroupBox);
-
-    // Uzyskanie wskaźnika na GlowneOkno za pomocą parentWidget()
-    QWidget *widget = this;
-    while (widget != nullptr) {
-        //qDebug() << "Aktualny rodzic:" << widget;
-        if (qobject_cast<GlowneOkno *>(widget)) {
-            break; // Znaleziono GlowneOkno
-        }
-        widget = widget->parentWidget();
-    }
 }
 
 void OknoBot::ZlapIdOkna()
@@ -122,7 +114,7 @@ void OknoBot::ZlapIdOkna()
 void OknoBot::mouseReleaseEvent(QMouseEvent *event)
 {
     qDebug() << "OknoBot::mouseReleaseEvent. bez ifa" << isButtonPressed;
-    if (event->button() == Qt::LeftButton) { //&& isButtonPressed) {
+    if (event->button() == Qt::LeftButton && isButtonPressed) {
         qDebug() << "OknoBot::mouseReleaseEvent.";
         isButtonPressed = false;
         autoKeyPresser->WindowHandleFromPoint(handle, parentHandle);
@@ -138,6 +130,7 @@ void OknoBot::zaktualizujNazwe()
 {
     windowText = autoKeyPresser->GetWindowTextFromHandle(handle);
     parentHandleWindowText = autoKeyPresser->GetWindowTextFromHandle(parentHandle);
+
     if (windowText == parentHandleWindowText) {
         ui->groupBoxPrzyciski->setTitle(parentHandleWindowText);
     } else {
