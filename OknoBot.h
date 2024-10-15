@@ -19,6 +19,9 @@ public:
     explicit OknoBot(QWidget *parent = nullptr);
     ~OknoBot();
 
+signals:
+    void rozszerzOkno(int height);
+
 private slots:
     void startStop();
     void dodajRzad();

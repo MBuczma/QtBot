@@ -22,6 +22,9 @@ public:
     GlowneOkno(QWidget *parent = nullptr);
     ~GlowneOkno();
 
+    static short width;
+    static short height;
+
 private slots:
     void start();
     void mouseTracker();

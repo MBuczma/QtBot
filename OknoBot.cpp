@@ -93,6 +93,7 @@ void OknoBot::aktualizujStanPrzyciskuStart(bool isSending)
 
 void OknoBot::dodajRzad()
 {
+    emit rozszerzOkno(80);
     qDebug() << "Przycisk dodajRzadPrzyciskow został naciśnięty.";
 
     GroupBoxControl *newGroupBox = new GroupBoxControl(this);
@@ -101,19 +102,11 @@ void OknoBot::dodajRzad()
     // Uzyskanie wskaźnika na GlowneOkno za pomocą parentWidget()
     QWidget *widget = this;
     while (widget != nullptr) {
-        qDebug() << "Aktualny rodzic:" << widget;
+        //qDebug() << "Aktualny rodzic:" << widget;
         if (qobject_cast<GlowneOkno *>(widget)) {
             break; // Znaleziono GlowneOkno
         }
         widget = widget->parentWidget();
-    }
-    GlowneOkno *glowneOkno = qobject_cast<GlowneOkno *>(widget);
-
-    if (glowneOkno) {
-        glowneOkno->adjustSize();
-        qDebug() << "Zaktualizowano rozmiar GlowneOkno.";
-    } else {
-        qDebug() << "GlowneOkno nie zostało znalezione.";
     }
 }
 
@@ -128,7 +121,8 @@ void OknoBot::ZlapIdOkna()
 
 void OknoBot::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton && isButtonPressed) {
+    qDebug() << "OknoBot::mouseReleaseEvent. bez ifa" << isButtonPressed;
+    if (event->button() == Qt::LeftButton) { //&& isButtonPressed) {
         qDebug() << "OknoBot::mouseReleaseEvent.";
         isButtonPressed = false;
         autoKeyPresser->WindowHandleFromPoint(handle, parentHandle);
