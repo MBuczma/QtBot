@@ -2,6 +2,8 @@
 #include "OknoBot.h"
 #include <QMouseEvent>
 #include <QTimer>
+#include "GlowneOkno.h"
+#include "GroupBoxControl.h"
 #include "ui_OknoBot.h"
 #include <memory>
 
@@ -93,19 +95,26 @@ void OknoBot::dodajRzad()
 {
     qDebug() << "Przycisk dodajRzadPrzyciskow został naciśnięty.";
 
-    // Tworzymy nowy QGroupBox
-    QGroupBox *nowyGroupBox = new QGroupBox("Nowy GroupBox", this);
+    GroupBoxControl *newGroupBox = new GroupBoxControl(this);
+    ui->verticalLayout->insertWidget(ui->verticalLayout->count() - 1, newGroupBox);
 
-    // Tworzymy nowy layout dla nowego GroupBox (np. QHBoxLayout lub QVBoxLayout)
-    QHBoxLayout *layout = new QHBoxLayout;
-    nowyGroupBox->setLayout(layout);
+    // Uzyskanie wskaźnika na GlowneOkno za pomocą parentWidget()
+    QWidget *widget = this;
+    while (widget != nullptr) {
+        qDebug() << "Aktualny rodzic:" << widget;
+        if (qobject_cast<GlowneOkno *>(widget)) {
+            break; // Znaleziono GlowneOkno
+        }
+        widget = widget->parentWidget();
+    }
+    GlowneOkno *glowneOkno = qobject_cast<GlowneOkno *>(widget);
 
-    // Dodajemy jakiś przycisk do nowego GroupBoxa (opcjonalnie)
-    QPushButton *przycisk = new QPushButton("Nowy Przycisk", nowyGroupBox);
-    layout->addWidget(przycisk);
-
-    // Wstawiamy nowy GroupBox pomiędzy istniejące widgety, ale powyżej przycisku DodajRzad
-    ui->verticalLayout->insertWidget(ui->verticalLayout->count() - 1, nowyGroupBox);
+    if (glowneOkno) {
+        glowneOkno->adjustSize();
+        qDebug() << "Zaktualizowano rozmiar GlowneOkno.";
+    } else {
+        qDebug() << "GlowneOkno nie zostało znalezione.";
+    }
 }
 
 void OknoBot::ZlapIdOkna()
