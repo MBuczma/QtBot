@@ -1,8 +1,10 @@
 /* GlowneOkno.cpp */
 #include "GlowneOkno.h"
+#include "ui_GlowneOkno.h"
+
 #include "NagrywanieOkno.h"
 #include "OknoBot.h"
-#include "ui_GlowneOkno.h"
+#include <memory> // std::unique_ptr
 
 short GlowneOkno::width = 650;
 short GlowneOkno::height = 250;
@@ -35,22 +37,17 @@ GlowneOkno::~GlowneOkno() = default; // Destruktor domyślny
 void GlowneOkno::start()
 {
     qDebug() << "Przycisk start został naciśnięty.";
-    qDebug() << "width" << width << "height" << height;
     ui->stackedWidget->setCurrentWidget(oknoBot.get());
-    this->adjustSize();
     this->setMinimumSize(width, height);
     this->setMaximumSize(width, height);
-    this->setFocus();
 }
 
 void GlowneOkno::mouseTracker()
 {
     qDebug() << "Przycisk mouseTracker został naciśnięty.";
     ui->stackedWidget->setCurrentWidget(nagrywanieOkno.get());
-    this->adjustSize();
     this->setMinimumSize(width, height);
     this->setMaximumSize(width, height);
-    this->setFocus();
 }
 
 void GlowneOkno::informacje()

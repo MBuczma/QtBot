@@ -1,8 +1,9 @@
 /* main.cpp */
+#include "GlowneOkno.h"
+
 #include <QApplication>
 #include <QPalette>
 #include <QStyleFactory>
-#include "GlowneOkno.h"
 #include <memory> // std::unique_ptr
 
 void ustawStyl(QApplication &application);
