@@ -1,13 +1,15 @@
+/* GroupBoxControl.h */
 #ifndef GROUPBOXCONTROL_H
 #define GROUPBOXCONTROL_H
 
 #include <QComboBox>
 #include <QGroupBox>
+#include <QHBoxLayout>
 #include <QPushButton>
 #include <QSpinBox>
-#include <QTimer>
 #include <QWidget>
-#include "AutoKeyPresser.h"
+
+class AutoKeyPresser;
 
 class GroupBoxControl : public QWidget
 {
@@ -18,29 +20,46 @@ public:
     ~GroupBoxControl();
 
 private slots:
-    void ZlapIdOkna();
     void handleStartStop();
-    void sendKey();
-    void getWindowHandle();
+    void ZlapIdOkna();
+    void zaktualizujNazwe();
+    void aktualizujStanPrzyciskuStartNaPodstawieComboBox(const QString &text);
+
+protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
 
 private:
     void setupGroupBox();
+    void startSending();
+    void stopSending();
+    void sendKey();
+    void getHandle();
 
-    QGroupBox *groupBox;
+    std::unique_ptr<QTimer> keyTimer;
+    std::unique_ptr<QTimer> countdownTimer;
+    std::unique_ptr<AutoKeyPresser> autoKeyPresser;
+
+    HWND handle = NULL;
+    HWND parentHandle = NULL;
+    QString windowText = "";
+    QString parentHandleWindowText = "";
+    bool isSending = false;
+    bool isButtonPressed = false;
+    int remainingTime = 0;
+
     QPushButton *buttonStartStop;
     QPushButton *buttonPobierzID;
     QComboBox *comboBox_Klawisz;
-    QComboBox *comboBox_HotKey;
+    QComboBox *comboBox_Hotkey;
     QSpinBox *spinBox_Sekund;
     QSpinBox *spinBox_Milisekund;
+    QSpinBox *spinBox_WysleZa;
+    QGroupBox *groupBox = nullptr;
+    QHBoxLayout *layout;
 
-    QTimer *keyTimer;
-    bool isSending;
-    bool isButtonPressed;
-    HWND windowHandle; // Uchwyt do okna
-    HWND handle;       // Uchwyt do okna
-    HWND parentHandle; // Uchwyt do okna
+    void wyslijKlawisz();
+    void aktualizujCountdown();
+    void aktualizujStanPrzyciskuStart(bool isSending);
 };
 
 #endif // GROUPBOXCONTROL_H
