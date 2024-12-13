@@ -34,7 +34,7 @@ void GroupBoxControl::setupGroupBox()
 
     buttonStartStop = new QPushButton("Start", this);
     buttonStartStop->setMinimumWidth(80);
-    //buttonStartStop->setEnabled(false);
+    buttonStartStop->setEnabled(false);
     layout->addWidget(buttonStartStop);
     connect(buttonStartStop, &QPushButton::clicked, this, &GroupBoxControl::handleStartStop);
 
@@ -44,7 +44,8 @@ void GroupBoxControl::setupGroupBox()
     connect(buttonPobierzID, &QPushButton::pressed, this, &GroupBoxControl::ZlapIdOkna);
 
     comboBox_Klawisz = new QComboBox(this);
-    comboBox_Klawisz->addItems({"Space",
+    comboBox_Klawisz->addItems({"",
+                                "Space",
                                 "1",
                                 "2",
                                 "F1",
@@ -61,10 +62,15 @@ void GroupBoxControl::setupGroupBox()
                                 "F12",
                                 "Enter"});
     comboBox_Klawisz->setMinimumWidth(80);
+    connect(comboBox_Klawisz,
+            &QComboBox::currentTextChanged,
+            this,
+            &GroupBoxControl::aktualizujStanPrzyciskuStartNaPodstawieComboBox);
     layout->addWidget(comboBox_Klawisz);
 
     comboBox_Hotkey = new QComboBox(this);
-    comboBox_Hotkey->addItems({"Space",
+    comboBox_Hotkey->addItems({"",
+                               "Space",
                                "1",
                                "2",
                                "F1",
@@ -237,6 +243,6 @@ void GroupBoxControl::aktualizujCountdown()
     spinBox_WysleZa->setValue(remainingTime);
 
     if (remainingTime == 0) {
-        remainingTime = spinBox_Sekund->value() * 1000;
+        remainingTime = spinBox_Sekund->value() * 1000 + spinBox_Milisekund->value();
     }
 }

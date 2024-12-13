@@ -157,6 +157,6 @@ void OknoBot::aktualizujCountdown()
     ui->spinBox_WysleZa->setValue(remainingTime);
 
     if (remainingTime == 0) {
-        remainingTime = ui->spinBox_Sekund->value() * 1000;
+        remainingTime = ui->spinBox_Sekund->value() * 1000 + ui->spinBox_Milisekund->value();
     }
 }
