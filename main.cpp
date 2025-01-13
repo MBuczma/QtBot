@@ -1,4 +1,9 @@
 /* main.cpp */
+/*
+ * Główny plik w którym jest tworzony obiekt QApplication o nazwie application.
+ * W funkcji ustawStyl jest ustawiany wygląd GUI poprzez setStyle i setPalette.
+ */
+
 #include "GlowneOkno.h"
 
 #include <QApplication>

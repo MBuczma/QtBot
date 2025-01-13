@@ -1,4 +1,7 @@
 /* OknoBot.cpp */
+/*
+ * Okno które przechowuje rzędy boxów z przyciskami do wysłania.
+ */
 #include "OknoBot.h"
 #include "ui_OknoBot.h"
 

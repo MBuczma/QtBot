@@ -1,4 +1,12 @@
 /* GlowneOkno.h */
+/*
+ * Obiekt odpowiedzialny za wyświetlanie głównego okna z menu.
+ * Przyciski:
+ * - Start
+ * - Mouse Tracker
+ * - Informacje
+ * - Wyjście
+ */
 #ifndef GLOWNEOKNO_H
 #define GLOWNEOKNO_H
 

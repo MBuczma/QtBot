@@ -1,4 +1,13 @@
 /* GlowneOkno.cpp */
+/*
+ * Obiekt odpowiedzialny za wyświetlanie głównego okna z menu.
+ * Przyciski:
+ * - Start
+ * - Mouse Tracker
+ * - Informacje
+ * - Wyjście
+ */
+
 #include "GlowneOkno.h"
 #include "ui_GlowneOkno.h"
 
@@ -42,7 +51,7 @@ void GlowneOkno::start()
     this->setMaximumSize(width, height);
 }
 
-void GlowneOkno::mouseTracker()
+void GlowneOkno::mouseTracker() //TO DO
 {
     qDebug() << "Przycisk mouseTracker został naciśnięty.";
     ui->stackedWidget->setCurrentWidget(nagrywanieOkno.get());

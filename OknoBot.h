@@ -1,4 +1,7 @@
 /* OknoBot.h */
+/*
+ * Okno które przechowuje rzędy boxów z przyciskami do wysłania.
+ */
 #ifndef OKNOBOT_H
 #define OKNOBOT_H
 

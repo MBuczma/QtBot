@@ -1,4 +1,8 @@
 /* GroupBoxControl.cpp */
+/*
+ * Groupbox który zawiera pola do wprowadzania danych, wyświetla informacje oraz
+ * odpowiada za start i stop poszczególnych przycisków. 
+ */
 #include "GroupBoxControl.h"
 #include "AutoKeyPresser.h"
 
@@ -10,7 +14,7 @@
 #include <memory>
 #include <windows.h>
 
-GroupBoxControl::GroupBoxControl(QWidget *parent)
+GroupBoxControl::GroupBoxControl(QWidget *parent) //konstrukor
     : QWidget(parent)
     , keyTimer(std::make_unique<QTimer>(this))
     , countdownTimer(std::make_unique<QTimer>(this))
@@ -24,7 +28,7 @@ GroupBoxControl::GroupBoxControl(QWidget *parent)
     connect(countdownTimer.get(), &QTimer::timeout, this, &GroupBoxControl::aktualizujCountdown);
 }
 
-GroupBoxControl::~GroupBoxControl() = default;
+GroupBoxControl::~GroupBoxControl() = default; //destruktor
 
 void GroupBoxControl::setupGroupBox()
 {
@@ -120,9 +124,9 @@ void GroupBoxControl::ZlapIdOkna()
 
 void GroupBoxControl::mouseReleaseEvent(QMouseEvent *event)
 {
-    qDebug() << "GroupBoxControl::mouseReleaseEvent. bez ifa" << isButtonPressed;
-    if (event->button() == Qt::LeftButton && isButtonPressed) {
-        qDebug() << "GroupBoxControl::mouseReleaseEvent.";
+    qDebug() << "GroupBoxControl::mouseReleaseEvent. Przed IFem" << isButtonPressed;
+    if (event->button() == Qt::LeftButton && isButtonPressed == true) {
+        qDebug() << "GroupBoxControl::mouseReleaseEvent. W IFie";
         isButtonPressed = false;
         autoKeyPresser->WindowHandleFromPoint(handle, parentHandle);
         releaseMouse();
@@ -138,7 +142,7 @@ void GroupBoxControl::zaktualizujNazwe()
     windowText = autoKeyPresser->GetWindowTextFromHandle(handle);
     parentHandleWindowText = autoKeyPresser->GetWindowTextFromHandle(parentHandle);
 
-    if (groupBox) {
+    if (groupBox != nullptr) {
         if (windowText == parentHandleWindowText) {
             groupBox->setTitle(parentHandleWindowText);
         } else {
@@ -152,10 +156,12 @@ void GroupBoxControl::zaktualizujNazwe()
 
 void GroupBoxControl::aktualizujStanPrzyciskuStartNaPodstawieComboBox(const QString &text)
 {
-    if (text.isEmpty()) {
+    if (text.isEmpty() || !handle) {
         buttonStartStop->setEnabled(false);
+        qDebug() << "text.isEmpty() || !handle = " << text << " " << handle;
     } else {
         // Ustaw zielony kolor i aktywuj przycisk
+        qDebug() << "Ustaw zielony kolor i aktywuj przycisk = " << text << " " << handle;
         buttonStartStop->setEnabled(true);
     }
 }

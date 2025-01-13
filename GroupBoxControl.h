@@ -1,4 +1,8 @@
 /* GroupBoxControl.h */
+/*
+ * Groupbox który zawiera pola do wprowadzania danych, wyświetla informacje oraz
+ * odpowiada za start i stop poszczególnych przycisków. 
+ */
 #ifndef GROUPBOXCONTROL_H
 #define GROUPBOXCONTROL_H
 
