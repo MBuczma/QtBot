@@ -27,7 +27,7 @@ private slots:
     void handleStartStop();
     void ZlapIdOkna();
     void zaktualizujNazwe();
-    void aktualizujStanPrzyciskuStartNaPodstawieComboBox(const QString &text);
+    void aktualizujStanPrzyciskuStart();
 
 protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
@@ -63,7 +63,6 @@ private:
 
     void wyslijKlawisz();
     void aktualizujCountdown();
-    void aktualizujStanPrzyciskuStart(bool isSending);
 };
 
 #endif // GROUPBOXCONTROL_H

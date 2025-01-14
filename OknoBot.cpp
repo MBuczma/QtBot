@@ -107,8 +107,8 @@ void OknoBot::dodajRzad()
 
 void OknoBot::ZlapIdOkna()
 {
-    qDebug() << "\n"
-             << "Metoda OknoBot::ZlapIdOkna() została wywołana.";
+    //qDebug() << "\n"
+    //<< "Metoda OknoBot::ZlapIdOkna() została wywołana.";
     isButtonPressed = true;
     grabMouse();
     setCursor(Qt::CrossCursor);
@@ -116,7 +116,7 @@ void OknoBot::ZlapIdOkna()
 
 void OknoBot::mouseReleaseEvent(QMouseEvent *event)
 {
-    qDebug() << "OknoBot::mouseReleaseEvent. bez ifa" << isButtonPressed;
+    //qDebug() << "OknoBot::mouseReleaseEvent. bez ifa" << isButtonPressed;
     if (event->button() == Qt::LeftButton && isButtonPressed) {
         qDebug() << "OknoBot::mouseReleaseEvent.";
         isButtonPressed = false;

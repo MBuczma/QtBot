@@ -46,6 +46,10 @@ void GroupBoxControl::setupGroupBox()
     buttonPobierzID->setMinimumWidth(80);
     layout->addWidget(buttonPobierzID);
     connect(buttonPobierzID, &QPushButton::pressed, this, &GroupBoxControl::ZlapIdOkna);
+    connect(buttonPobierzID,
+            &QPushButton::click,
+            this,
+            &GroupBoxControl::aktualizujStanPrzyciskuStart);
 
     comboBox_Klawisz = new QComboBox(this);
     comboBox_Klawisz->addItems({"",
@@ -69,7 +73,7 @@ void GroupBoxControl::setupGroupBox()
     connect(comboBox_Klawisz,
             &QComboBox::currentTextChanged,
             this,
-            &GroupBoxControl::aktualizujStanPrzyciskuStartNaPodstawieComboBox);
+            &GroupBoxControl::aktualizujStanPrzyciskuStart);
     layout->addWidget(comboBox_Klawisz);
 
     comboBox_Hotkey = new QComboBox(this);
@@ -98,12 +102,20 @@ void GroupBoxControl::setupGroupBox()
     spinBox_Sekund->setMaximum(9999);
     spinBox_Sekund->setMinimumWidth(70);
     layout->addWidget(spinBox_Sekund);
+    connect(spinBox_Sekund,
+            &QSpinBox::textChanged,
+            this,
+            &GroupBoxControl::aktualizujStanPrzyciskuStart);
 
     spinBox_Milisekund = new QSpinBox(this);
     spinBox_Milisekund->setSuffix("ms");
     spinBox_Milisekund->setMaximum(999);
     spinBox_Milisekund->setMinimumWidth(70);
     layout->addWidget(spinBox_Milisekund);
+    connect(spinBox_Milisekund,
+            &QSpinBox::textChanged,
+            this,
+            &GroupBoxControl::aktualizujStanPrzyciskuStart);
 
     spinBox_WysleZa = new QSpinBox(this);
     spinBox_WysleZa->setSuffix("ms");
@@ -133,6 +145,7 @@ void GroupBoxControl::mouseReleaseEvent(QMouseEvent *event)
         unsetCursor();
         zaktualizujNazwe();
         buttonPobierzID->setDown(false);
+        aktualizujStanPrzyciskuStart();
     }
     QWidget::mouseReleaseEvent(event); // Dodano wywołanie funkcji bazowej
 }
@@ -154,15 +167,31 @@ void GroupBoxControl::zaktualizujNazwe()
     }
 }
 
-void GroupBoxControl::aktualizujStanPrzyciskuStartNaPodstawieComboBox(const QString &text)
+void GroupBoxControl::aktualizujStanPrzyciskuStart()
 {
-    if (text.isEmpty() || !handle) {
+    const QString klawisz = comboBox_Klawisz->currentText();
+    if (klawisz.isEmpty() || handle == nullptr
+        || (spinBox_Sekund->value() == 0 && spinBox_Milisekund->value() == 0)) {
         buttonStartStop->setEnabled(false);
-        qDebug() << "text.isEmpty() || !handle = " << text << " " << handle;
+        qDebug() << "klawisz.isEmpty() || !handle = " << klawisz << " " << handle;
+        /*buttonPobierzID->setEnabled(false);
+        comboBox_Klawisz->setEnabled(false);
+        spinBox_Sekund->setEnabled(false);
+        spinBox_Milisekund->setEnabled(false);
+        buttonStartStop->setText("Stop");
+        buttonStartStop->setStyleSheet(
+            "QPushButton:enabled { background-color: red; color: white; }");*/
     } else {
         // Ustaw zielony kolor i aktywuj przycisk
-        qDebug() << "Ustaw zielony kolor i aktywuj przycisk = " << text << " " << handle;
+        qDebug() << "Ustaw zielony kolor i aktywuj przycisk = " << klawisz << " " << handle;
         buttonStartStop->setEnabled(true);
+        /*buttonPobierzID->setEnabled(true);
+        comboBox_Klawisz->setEnabled(true);
+        spinBox_Sekund->setEnabled(true);
+        spinBox_Milisekund->setEnabled(true);
+        buttonStartStop->setText("Start");*/
+        buttonStartStop->setStyleSheet(
+            "QPushButton:enabled { background-color: green; color: white; }");
     }
 }
 
@@ -175,9 +204,9 @@ void GroupBoxControl::handleStartStop()
     QString wybranyKlawisz = comboBox_Klawisz->currentText();
 
     if (isSending == false) {
-        if ((czasSekund != 0 || czasMilisekund != 0) && !wybranyKlawisz.isEmpty()) {
+        if ((czasSekund != 0 || czasMilisekund != 0) && wybranyKlawisz.isEmpty() == false) {
             isSending = true;
-            aktualizujStanPrzyciskuStart(isSending);
+            aktualizujStanPrzyciskuStart();
 
             int interval = czasSekund * 1000 + czasMilisekund;
             remainingTime = interval;
@@ -189,30 +218,9 @@ void GroupBoxControl::handleStartStop()
         }
     } else {
         isSending = false;
-        aktualizujStanPrzyciskuStart(isSending);
+        aktualizujStanPrzyciskuStart();
         keyTimer->stop();
         countdownTimer->stop();
-    }
-}
-
-void GroupBoxControl::aktualizujStanPrzyciskuStart(bool isSending)
-{
-    if (isSending) {
-        buttonPobierzID->setEnabled(false);
-        comboBox_Klawisz->setEnabled(false);
-        spinBox_Sekund->setEnabled(false);
-        spinBox_Milisekund->setEnabled(false);
-        buttonStartStop->setText("Stop");
-        buttonStartStop->setStyleSheet(
-            "QPushButton:enabled { background-color: red; color: white; }");
-    } else {
-        buttonPobierzID->setEnabled(true);
-        comboBox_Klawisz->setEnabled(true);
-        spinBox_Sekund->setEnabled(true);
-        spinBox_Milisekund->setEnabled(true);
-        buttonStartStop->setText("Start");
-        buttonStartStop->setStyleSheet(
-            "QPushButton:enabled { background-color: green; color: white; }");
     }
 }
 
@@ -228,9 +236,9 @@ void GroupBoxControl::sendKey()
 
 void GroupBoxControl::getHandle()
 {
-    POINT p;
-    GetCursorPos(&p);
-    handle = WindowFromPoint(p);
+    POINT point;
+    GetCursorPos(&point);
+    handle = WindowFromPoint(point);
     if (handle) {
         qDebug() << "Pobrano uchwyt okna: " << handle;
     } else {
