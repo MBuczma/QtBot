@@ -37,13 +37,13 @@ void GroupBoxControl::setupGroupBox()
     layout = new QHBoxLayout(groupBox);
 
     buttonStartStop = new QPushButton("Start", this);
-    buttonStartStop->setMinimumWidth(80);
+    buttonStartStop->setMinimumWidth(60);
     buttonStartStop->setEnabled(false);
     layout->addWidget(buttonStartStop);
     connect(buttonStartStop, &QPushButton::clicked, this, &GroupBoxControl::handleStartStop);
 
     buttonPobierzID = new QPushButton("Pobierz ID", this);
-    buttonPobierzID->setMinimumWidth(80);
+    buttonPobierzID->setMinimumWidth(60);
     layout->addWidget(buttonPobierzID);
     connect(buttonPobierzID, &QPushButton::pressed, this, &GroupBoxControl::ZlapIdOkna);
     connect(buttonPobierzID,
@@ -69,7 +69,7 @@ void GroupBoxControl::setupGroupBox()
                                 "F11",
                                 "F12",
                                 "Enter"});
-    comboBox_Klawisz->setMinimumWidth(80);
+    comboBox_Klawisz->setMinimumWidth(60);
     connect(comboBox_Klawisz,
             &QComboBox::currentTextChanged,
             this,
@@ -94,13 +94,13 @@ void GroupBoxControl::setupGroupBox()
                                "F11",
                                "F12",
                                "Enter"});
-    comboBox_Hotkey->setMinimumWidth(80);
+    comboBox_Hotkey->setMinimumWidth(60);
     layout->addWidget(comboBox_Hotkey);
 
     spinBox_Sekund = new QSpinBox(this);
     spinBox_Sekund->setSuffix("s");
-    spinBox_Sekund->setMaximum(9999);
-    spinBox_Sekund->setMinimumWidth(70);
+    spinBox_Sekund->setMaximum(999);
+    spinBox_Sekund->setMinimumWidth(60);
     layout->addWidget(spinBox_Sekund);
     connect(spinBox_Sekund,
             &QSpinBox::textChanged,
@@ -110,7 +110,7 @@ void GroupBoxControl::setupGroupBox()
     spinBox_Milisekund = new QSpinBox(this);
     spinBox_Milisekund->setSuffix("ms");
     spinBox_Milisekund->setMaximum(999);
-    spinBox_Milisekund->setMinimumWidth(70);
+    spinBox_Milisekund->setMinimumWidth(60);
     layout->addWidget(spinBox_Milisekund);
     connect(spinBox_Milisekund,
             &QSpinBox::textChanged,
@@ -120,7 +120,7 @@ void GroupBoxControl::setupGroupBox()
     spinBox_WysleZa = new QSpinBox(this);
     spinBox_WysleZa->setSuffix("ms");
     spinBox_WysleZa->setMaximum(999999);
-    spinBox_WysleZa->setMinimumWidth(80);
+    spinBox_WysleZa->setMinimumWidth(60);
     spinBox_WysleZa->setButtonSymbols(QAbstractSpinBox::NoButtons);
     layout->addWidget(spinBox_WysleZa);
 }

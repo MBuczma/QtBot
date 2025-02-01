@@ -15,8 +15,8 @@
 #include "OknoBot.h"
 #include <memory> // std::unique_ptr
 
-short GlowneOkno::width = 650;
-short GlowneOkno::height = 250;
+short GlowneOkno::width = 570;
+short GlowneOkno::height = 180;
 
 GlowneOkno::GlowneOkno(QWidget *parent)
     : QMainWindow(parent)
