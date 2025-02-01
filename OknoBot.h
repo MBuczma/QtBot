@@ -21,6 +21,7 @@ class OknoBot : public QWidget
 public:
     explicit OknoBot(QWidget *parent = nullptr);
     ~OknoBot();
+    void startWszystkie(); // Funkcję do uruchamiania wszystkich
 
 signals:
     void rozszerzOkno(short height);
@@ -28,9 +29,12 @@ signals:
 private slots:
     void dodajRzad();
 
-protected:
+    //void stopWszystkie();  // Funkcję do zatrzymywania wszystkich
+
 private:
     std::unique_ptr<Ui::OknoBot> ui;
+    std::vector<GroupBoxControl *>
+        groupBoxes; // Wektor przechowujący wskaźniki do dynamicznych GroupBoxControl
 };
 
 #endif // OKNOBOT_H

@@ -3,7 +3,6 @@
  * Obiekt odpowiedzialny za wyświetlanie głównego okna z menu.
  * Przyciski:
  * - Start
- * - Mouse Tracker
  * - Informacje
  * - Wyjście
  */
@@ -31,14 +30,12 @@ public:
 
 private slots:
     void start();
-    void mouseTracker();
     void informacje();
     void wyjscie();
 
 private:
     std::unique_ptr<Ui::GlowneOkno> ui; // Zarządzanie wskaźnikiem Ui
     std::unique_ptr<OknoBot> oknoBot;   // Zarządzanie wskaźnikiem OknoBot
-    std::unique_ptr<NagrywanieOkno> nagrywanieOkno; // Zarządzanie wskaźnikiem NagrywanieOkno
     static short width;
     static short height;
 };
