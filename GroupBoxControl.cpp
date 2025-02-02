@@ -45,10 +45,6 @@ void GroupBoxControl::setupGroupBox()
     buttonPobierzID->setMinimumWidth(60);
     layout->addWidget(buttonPobierzID);
     connect(buttonPobierzID, &QPushButton::pressed, this, &GroupBoxControl::ZlapIdOkna);
-    //connect(buttonPobierzID,
-    //&QPushButton::click,
-    //this,
-    //&GroupBoxControl::aktualizujStanPrzyciskuStart);
 
     comboBox_Klawisz = new QComboBox(this);
     comboBox_Klawisz->addItems({"",
@@ -94,6 +90,10 @@ void GroupBoxControl::setupGroupBox()
                                "F12",
                                "Enter"});
     comboBox_Hotkey->setMinimumWidth(60);
+    connect(comboBox_Hotkey,
+            &QComboBox::currentTextChanged,
+            this,
+            &GroupBoxControl::aktualizujStanPrzyciskuStart);
     layout->addWidget(comboBox_Hotkey);
 
     spinBox_Sekund = new QSpinBox(this);
@@ -168,28 +168,36 @@ void GroupBoxControl::zaktualizujNazwe()
 void GroupBoxControl::aktualizujStanPrzyciskuStart()
 {
     const QString klawisz = comboBox_Klawisz->currentText();
-    if (klawisz.isEmpty() || handle == nullptr
-        || (spinBox_Sekund->value() == 0 && spinBox_Milisekund->value() == 0)) {
-        buttonStartStop->setEnabled(false);
-        qDebug() << "klawisz.isEmpty() || !handle = " << klawisz << " " << handle;
-        /*buttonPobierzID->setEnabled(false);
+
+    if (isSending == true) {
+        buttonPobierzID->setEnabled(false);
         comboBox_Klawisz->setEnabled(false);
+        comboBox_Hotkey->setEnabled(false);
         spinBox_Sekund->setEnabled(false);
         spinBox_Milisekund->setEnabled(false);
         buttonStartStop->setText("Stop");
         buttonStartStop->setStyleSheet(
-            "QPushButton:enabled { background-color: red; color: white; }");*/
+            "QPushButton:enabled { background-color: red; color: white; }");
+    } else {
+        buttonPobierzID->setEnabled(true);
+        comboBox_Klawisz->setEnabled(true);
+        comboBox_Hotkey->setEnabled(false);
+        spinBox_Sekund->setEnabled(true);
+        spinBox_Milisekund->setEnabled(true);
+        buttonStartStop->setText("Start");
+        buttonStartStop->setStyleSheet(
+            "QPushButton:enabled { background-color: green; color: white; }");
+    }
+
+    if (klawisz.isEmpty() || handle == nullptr
+        || (spinBox_Sekund->value() == 0 && spinBox_Milisekund->value() == 0)) {
+        buttonStartStop->setEnabled(false);
+        qDebug() << "klawisz.isEmpty() || !handle = " << klawisz << " " << handle;
+
     } else {
         // Ustaw zielony kolor i aktywuj przycisk
         qDebug() << "Ustaw zielony kolor i aktywuj przycisk = " << klawisz << " " << handle;
         buttonStartStop->setEnabled(true);
-        /*buttonPobierzID->setEnabled(true);
-        comboBox_Klawisz->setEnabled(true);
-        spinBox_Sekund->setEnabled(true);
-        spinBox_Milisekund->setEnabled(true);
-        buttonStartStop->setText("Start");*/
-        buttonStartStop->setStyleSheet(
-            "QPushButton:enabled { background-color: green; color: white; }");
     }
 }
 
