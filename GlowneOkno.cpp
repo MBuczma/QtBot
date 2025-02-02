@@ -24,14 +24,17 @@ GlowneOkno::GlowneOkno(QWidget *parent)
     ui->setupUi(this);
     ui->stackedWidget->addWidget(oknoBot.get());
 
-    // Łączenie sygnałów z przyciskami
+    // Łączenie sygnałów z przyciskami na ekranie
     connect(ui->PrzyciskStart, &QPushButton::clicked, this, &GlowneOkno::start);
     connect(ui->PrzyciskInfo, &QPushButton::clicked, this, &GlowneOkno::informacje);
     connect(ui->PrzyciskWyjscie, &QPushButton::clicked, this, &GlowneOkno::wyjscie);
 
-    connect(ui->actionZapisz, &QAction::triggered, oknoBot.get(), &OknoBot::startWszystkie);
-
+    // Łączenie sygnałów z przyciskami w rozwijanym menu
+    //connect(ui->actionZapisz, &QAction::triggered, oknoBot.get(), &OknoBot::startWszystkie);
+    //connect(ui->actionWczytaj, &QAction::triggered, oknoBot.get(), &OknoBot::startWszystkie);
     connect(ui->actionWyjdz, &QAction::triggered, QApplication::instance(), &QApplication::quit);
+
+    // Połączenie przycisku z lambda (funkcja anonimowa)
     connect(oknoBot.get(), &OknoBot::rozszerzOkno, this, [this](short incrementHeight) {
         GlowneOkno::height += incrementHeight;
         this->setMinimumSize(width, height);

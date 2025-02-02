@@ -24,7 +24,7 @@ GroupBoxControl::GroupBoxControl(QWidget *parent) //konstrukor
     , remainingTime(0)
 {
     setupGroupBox();
-    connect(keyTimer.get(), &QTimer::timeout, this, &GroupBoxControl::sendKey);
+    connect(keyTimer.get(), &QTimer::timeout, this, &GroupBoxControl::wyslijKlawisz);
     connect(countdownTimer.get(), &QTimer::timeout, this, &GroupBoxControl::aktualizujCountdown);
 }
 
@@ -33,7 +33,6 @@ GroupBoxControl::~GroupBoxControl() = default; //destruktor
 void GroupBoxControl::setupGroupBox()
 {
     groupBox = new QGroupBox("Nowy GroupBox", this);
-    //groupBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     layout = new QHBoxLayout(groupBox);
 
     buttonStartStop = new QPushButton("Start", this);
@@ -46,10 +45,10 @@ void GroupBoxControl::setupGroupBox()
     buttonPobierzID->setMinimumWidth(60);
     layout->addWidget(buttonPobierzID);
     connect(buttonPobierzID, &QPushButton::pressed, this, &GroupBoxControl::ZlapIdOkna);
-    connect(buttonPobierzID,
-            &QPushButton::click,
-            this,
-            &GroupBoxControl::aktualizujStanPrzyciskuStart);
+    //connect(buttonPobierzID,
+    //&QPushButton::click,
+    //this,
+    //&GroupBoxControl::aktualizujStanPrzyciskuStart);
 
     comboBox_Klawisz = new QComboBox(this);
     comboBox_Klawisz->addItems({"",
@@ -136,7 +135,6 @@ void GroupBoxControl::ZlapIdOkna()
 
 void GroupBoxControl::mouseReleaseEvent(QMouseEvent *event)
 {
-    qDebug() << "GroupBoxControl::mouseReleaseEvent. Przed IFem" << isButtonPressed;
     if (event->button() == Qt::LeftButton && isButtonPressed == true) {
         qDebug() << "GroupBoxControl::mouseReleaseEvent. W IFie";
         isButtonPressed = false;
@@ -153,13 +151,13 @@ void GroupBoxControl::mouseReleaseEvent(QMouseEvent *event)
 void GroupBoxControl::zaktualizujNazwe()
 {
     windowText = autoKeyPresser->GetWindowTextFromHandle(handle);
-    parentHandleWindowText = autoKeyPresser->GetWindowTextFromHandle(parentHandle);
+    parentWindowText = autoKeyPresser->GetWindowTextFromHandle(parentHandle);
 
     if (groupBox != nullptr) {
-        if (windowText == parentHandleWindowText) {
-            groupBox->setTitle(parentHandleWindowText);
+        if (windowText == parentWindowText) {
+            groupBox->setTitle(parentWindowText);
         } else {
-            groupBox->setTitle(parentHandleWindowText + " " + windowText);
+            groupBox->setTitle(parentWindowText + " " + windowText);
         }
         //qDebug() << "Tytuł groupBox został zaktualizowany.";
     } else {
@@ -224,25 +222,11 @@ void GroupBoxControl::handleStartStop()
     }
 }
 
-void GroupBoxControl::sendKey()
+void GroupBoxControl::wyslijKlawisz()
 {
     QString key = comboBox_Klawisz->currentText();
-    if (!key.isEmpty() && handle != nullptr) {
-        // Tu dodaj funkcję do wysyłania klawisza do handle
-        qDebug() << "Wysyłanie klawisza: " << key << " do okna: " << handle;
+    if (key.isEmpty() == false && handle != nullptr) {
         autoKeyPresser->SentKey(handle, key);
-    }
-}
-
-void GroupBoxControl::getHandle()
-{
-    POINT point;
-    GetCursorPos(&point);
-    handle = WindowFromPoint(point);
-    if (handle) {
-        qDebug() << "Pobrano uchwyt okna: " << handle;
-    } else {
-        qDebug() << "Nie udało się pobrać uchwytu okna.";
     }
 }
 
@@ -251,12 +235,7 @@ void GroupBoxControl::aktualizujCountdown()
     remainingTime -= 100;
 
     if (remainingTime <= 0) {
-        remainingTime = 0;
-    }
-
-    spinBox_WysleZa->setValue(remainingTime);
-
-    if (remainingTime == 0) {
         remainingTime = spinBox_Sekund->value() * 1000 + spinBox_Milisekund->value();
     }
+    spinBox_WysleZa->setValue(remainingTime);
 }

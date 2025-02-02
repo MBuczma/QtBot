@@ -36,8 +36,7 @@ private:
     void setupGroupBox();
     void startSending();
     void stopSending();
-    void sendKey();
-    void getHandle();
+    void wyslijKlawisz();
 
     std::unique_ptr<QTimer> keyTimer;
     std::unique_ptr<QTimer> countdownTimer;
@@ -46,7 +45,7 @@ private:
     HWND handle = NULL;
     HWND parentHandle = NULL;
     QString windowText = "";
-    QString parentHandleWindowText = "";
+    QString parentWindowText = "";
     bool isSending = false;
     bool isButtonPressed = false;
     int remainingTime = 0;
@@ -61,7 +60,6 @@ private:
     QGroupBox *groupBox = nullptr;
     QHBoxLayout *layout;
 
-    void wyslijKlawisz();
     void aktualizujCountdown();
 };
 

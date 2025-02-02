@@ -25,15 +25,19 @@ QString AutoKeyPresser::GetWindowTextFromHandle(const HWND hwnd) const
 void AutoKeyPresser::WindowHandleFromPoint(HWND &handle, HWND &parentHandle)
 {
     qDebug() << "AutoKeyPresser::WindowHandleFromPoint() został wywołany.";
-    POINT P;
-    GetCursorPos(&P); // Pobranie współrzędnych kursora w odniesieniu do ekranu
-    handle = WindowFromPoint(P);
+    POINT point;
+    GetCursorPos(&point); // Pobranie współrzędnych kursora w odniesieniu do ekranu
+    handle = WindowFromPoint(point);
     parentHandle = GetAncestor(handle, GA_ROOT);
 
-    qDebug() << "X:" << P.x << "Y:" << P.y;
-    qDebug() << "Handle:" << handle << "- Tekst:" << GetWindowTextFromHandle(handle);
-    qDebug() << "ParentHandle:" << parentHandle
-             << "- Tekst:" << GetWindowTextFromHandle(parentHandle) << "\n";
+    if (handle != nullptr) {
+        qDebug() << "X:" << point.x << "Y:" << point.y;
+        qDebug() << "Handle:" << handle << "- Tekst:" << GetWindowTextFromHandle(handle);
+        qDebug() << "ParentHandle:" << parentHandle
+                 << "- Tekst:" << GetWindowTextFromHandle(parentHandle) << "\n";
+    } else {
+        qDebug() << "Nie udało się pobrać uchwytu okna.";
+    }
 }
 
 void AutoKeyPresser::SentKey(const HWND handle, const QString &key)
