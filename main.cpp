@@ -12,12 +12,14 @@
 #include <QApplication>
 #include <QPalette>
 #include <QStyleFactory>
+#include "Logger.h"
 #include <memory> // std::unique_ptr
 
 void ustawStyl(QApplication &application);
 
 int main(int argc, char *argv[])
 {
+    initLogger("moj_log.txt");
     QApplication application(argc, argv);
     ustawStyl(application);
 
