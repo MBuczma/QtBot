@@ -22,6 +22,7 @@ class GroupBoxControl : public QWidget
 public:
     explicit GroupBoxControl(QWidget *parent = nullptr);
     ~GroupBoxControl();
+    QString getTitle() const;
 
 private slots:
     void handleStartStop();

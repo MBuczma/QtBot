@@ -26,12 +26,12 @@ void OknoBot::dodajRzad()
     ui->verticalLayout->insertWidget(ui->verticalLayout->count() - 1, newGroupBox);
 
     groupBoxes.push_back(newGroupBox); // Dodajemy nowy rząd do wektora
-    //startWszystkie();
+    stopWszystkie();
 }
 
-void OknoBot::startWszystkie()
+void OknoBot::stopWszystkie()
 {
     for (auto &box : groupBoxes) {
-        //qDebug() << box->groupBox->title();
+        qDebug() << box->getTitle();
     }
 }

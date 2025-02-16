@@ -181,7 +181,7 @@ void GroupBoxControl::aktualizujStanPrzyciskuStart()
     } else {
         buttonPobierzID->setEnabled(true);
         comboBox_Klawisz->setEnabled(true);
-        comboBox_Hotkey->setEnabled(false);
+        comboBox_Hotkey->setEnabled(true);
         spinBox_Sekund->setEnabled(true);
         spinBox_Milisekund->setEnabled(true);
         buttonStartStop->setText("Start");
@@ -246,4 +246,12 @@ void GroupBoxControl::aktualizujCountdown()
         remainingTime = spinBox_Sekund->value() * 1000 + spinBox_Milisekund->value();
     }
     spinBox_WysleZa->setValue(remainingTime);
+}
+
+QString GroupBoxControl::getTitle() const
+{
+    if (groupBox != NULL) {
+        return groupBox->title();
+    }
+    return QString(); // zwraca pusty QString, jeśli groupBox == nullptr
 }

@@ -29,7 +29,7 @@ signals:
 private slots:
     void dodajRzad();
 
-    //void stopWszystkie();  // Funkcję do zatrzymywania wszystkich
+    void stopWszystkie(); // Funkcję do zatrzymywania wszystkich
 
 private:
     std::unique_ptr<Ui::OknoBot> ui;

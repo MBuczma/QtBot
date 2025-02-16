@@ -10,6 +10,7 @@
 #include "GlowneOkno.h"
 #include "ui_GlowneOkno.h"
 
+#include <QMessageBox>
 #include "OknoBot.h"
 #include <memory> // std::unique_ptr
 
@@ -61,4 +62,22 @@ void GlowneOkno::wyjscie()
 {
     qDebug() << "Przycisk wyjscie został naciśnięty.";
     QApplication::quit();
+}
+
+void GlowneOkno::closeEvent(QCloseEvent *event)
+{
+    // Wyświetlamy QMessageBox z pytaniem
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this,
+                                  "Zamykanie",
+                                  "Na pewno chcesz wyjść z programu?",
+                                  QMessageBox::Yes | QMessageBox::No);
+
+    if (reply == QMessageBox::Yes) {
+        // Użytkownik zatwierdził – pozwalamy zamknąć okno
+        event->accept();
+    } else {
+        // Użytkownik wybrał "No" – ignorujemy zamknięcie
+        event->ignore();
+    }
 }

@@ -9,6 +9,7 @@
 #ifndef GLOWNEOKNO_H
 #define GLOWNEOKNO_H
 
+#include <QCloseEvent>
 #include <QMainWindow>
 
 class OknoBot;        // Deklaracja wstępna klasy OknoBot
@@ -27,6 +28,9 @@ class GlowneOkno : public QMainWindow
 public:
     GlowneOkno(QWidget *parent = nullptr);
     ~GlowneOkno();
+
+protected:
+    void closeEvent(QCloseEvent *event) override;
 
 private slots:
     void start();

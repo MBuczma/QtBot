@@ -1,26 +1,12 @@
 /* AutoKeyPresser.cpp */
 #include "AutoKeyPresser.h"
+
 #include <QDebug>
 #include <unordered_map>
 #include <windows.h>
 
 AutoKeyPresser::AutoKeyPresser() {}
 AutoKeyPresser::~AutoKeyPresser() {}
-
-QString AutoKeyPresser::GetWindowTextFromHandle(const HWND hwnd) const
-{
-    // Bufor na przechowanie tekstu okna
-    wchar_t windowText[256]; // Maksymalna długość tekstu to 256 znaków
-    int length = GetWindowTextW(hwnd, windowText, sizeof(windowText) / sizeof(wchar_t));
-
-    if (length > 0) {
-        // Zamieniamy tekst z wide-char (wchar_t) na QString
-        return QString::fromWCharArray(windowText, length);
-    } else {
-        qDebug() << "Nie udało się pobrać tekstu dla uchwytu:" << hwnd;
-        return QString(); // Zwraca pusty QString
-    }
-}
 
 void AutoKeyPresser::WindowHandleFromPoint(HWND &handle, HWND &parentHandle)
 {
@@ -39,6 +25,22 @@ void AutoKeyPresser::WindowHandleFromPoint(HWND &handle, HWND &parentHandle)
         qDebug() << "Nie udało się pobrać uchwytu okna.";
     }
 }
+
+QString AutoKeyPresser::GetWindowTextFromHandle(const HWND hwnd) const
+{
+    // Bufor na przechowanie tekstu okna
+    wchar_t windowText[256]; // Maksymalna długość tekstu to 256 znaków
+    int length = GetWindowTextW(hwnd, windowText, sizeof(windowText) / sizeof(wchar_t));
+
+    if (length > 0) {
+        // Zamieniamy tekst z wide-char (wchar_t) na QString
+        return QString::fromWCharArray(windowText, length);
+    } else {
+        qDebug() << "Nie udało się pobrać tekstu dla uchwytu:" << hwnd;
+        return QString(); // Zwraca pusty QString
+    }
+}
+
 
 void AutoKeyPresser::SentKey(const HWND handle, const QString &key)
 {
