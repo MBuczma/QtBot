@@ -205,12 +205,35 @@ void GroupBoxControl::handleStartStop()
 {
     qDebug() << "Przycisk start z OknoBot został naciśnięty.";
 
+    if (isSending == false) {
+        wysylanieStart();
+    } else {
+        wysylanieStop();
+    }
+}
+
+bool GroupBoxControl::wysylanieStop()
+{
+    if (isSending == true) {
+        isSending = false;
+        aktualizujStanPrzyciskuStart();
+        keyTimer->stop();
+        countdownTimer->stop();
+        return true;
+    } else {
+        qDebug() << "Zatrzymanie się nie powiodło";
+        return false;
+    }
+}
+
+bool GroupBoxControl::wysylanieStart()
+{
     int czasSekund = spinBox_Sekund->value();
     int czasMilisekund = spinBox_Milisekund->value();
     QString wybranyKlawisz = comboBox_Klawisz->currentText();
-
     if (isSending == false) {
-        if ((czasSekund != 0 || czasMilisekund != 0) && wybranyKlawisz.isEmpty() == false) {
+        if ((czasSekund != 0 || czasMilisekund != 0) && wybranyKlawisz.isEmpty() == false
+            && handle != nullptr) {
             isSending = true;
             aktualizujStanPrzyciskuStart();
 
@@ -219,15 +242,14 @@ void GroupBoxControl::handleStartStop()
 
             keyTimer->start(interval);
             countdownTimer->start(100);
+            return true;
         } else {
             qDebug() << "Czas musi być większy od 0 i klawisz musi być wybrany.";
         }
     } else {
-        isSending = false;
-        aktualizujStanPrzyciskuStart();
-        keyTimer->stop();
-        countdownTimer->stop();
+        qDebug() << "Juz wysyła";
     }
+    return false;
 }
 
 void GroupBoxControl::wyslijKlawisz()

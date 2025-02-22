@@ -21,14 +21,13 @@ class OknoBot : public QWidget
 public:
     explicit OknoBot(QWidget *parent = nullptr);
     ~OknoBot();
-    void startWszystkie(); // Funkcję do uruchamiania wszystkich
 
 signals:
     void rozszerzOkno(short height);
 
 private slots:
     void dodajRzad();
-
+    void startWszystkie(); // Funkcję do zatrzymywania wszystkich
     void stopWszystkie(); // Funkcję do zatrzymywania wszystkich
 
 private:

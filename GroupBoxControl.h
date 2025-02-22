@@ -23,6 +23,8 @@ public:
     explicit GroupBoxControl(QWidget *parent = nullptr);
     ~GroupBoxControl();
     QString getTitle() const;
+    bool wysylanieStart();
+    bool wysylanieStop();
 
 private slots:
     void handleStartStop();

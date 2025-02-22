@@ -13,6 +13,8 @@ OknoBot::OknoBot(QWidget *parent)
 {
     ui->setupUi(this);
     connect(ui->pushButton_DodajRzad, &QPushButton::clicked, this, &OknoBot::dodajRzad);
+    connect(ui->pushButton_StartWszystkie, &QPushButton::clicked, this, &OknoBot::startWszystkie);
+    connect(ui->pushButton_StopWszystkie, &QPushButton::clicked, this, &OknoBot::stopWszystkie);
 }
 
 OknoBot::~OknoBot() = default;
@@ -29,9 +31,16 @@ void OknoBot::dodajRzad()
     stopWszystkie();
 }
 
+void OknoBot::startWszystkie()
+{
+    for (auto &box : groupBoxes) {
+        qDebug() << box->wysylanieStart();
+    }
+}
+
 void OknoBot::stopWszystkie()
 {
     for (auto &box : groupBoxes) {
-        qDebug() << box->getTitle();
+        qDebug() << box->wysylanieStop();
     }
 }
