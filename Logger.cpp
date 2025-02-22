@@ -1,49 +1,90 @@
+/* Logger.c */
+/*
+ * Plik Loggera zapisującego logi do pliku
+ */
 #include "Logger.h"
+
 #include <QDateTime>
 #include <QDebug>
 #include <QFile>
 #include <QTextStream>
+#include <memory>
 
-// Zmienna globalna (statyczna) przechowująca wskaźnik do starego handlera
-static QtMessageHandler g_originalHandler = nullptr;
+//Przechowujemy oryginalny handler, aby wywoływać go po naszym logowaniu.
+static QtMessageHandler oldHandler = nullptr;
+static std::unique_ptr<QFile> logFile;
+static std::unique_ptr<QTextStream> logStream;
+static bool loggerInitialized = false;
 
-// Plik i strumień do logu
-static QFile logFile;
-static QTextStream logStream;
+void initLogger(const QString &fileName)
+{
+    if (loggerInitialized) {
+        // Sprawdzamy czy logger był już zainicjalizowany
+        qWarning() << "Logger jest już zainicjalizowany!";
+        return;
+    }
+
+    // Zapamiętujemy oryginalny handler, aby móc wywoływać go dalej
+    oldHandler = qInstallMessageHandler(nullptr);
+
+    // Tworzymy dynamicznie obiekt QFile
+    logFile = std::make_unique<QFile>(fileName);
+    if (!logFile->open(QIODevice::Append | QIODevice::Text)) {
+        // Nie udało się otworzyć
+        qWarning() << "Nie można otworzyć pliku logu:" << fileName;
+
+        // Cofamy się do poprzedniego handlera
+        qInstallMessageHandler(oldHandler);
+        oldHandler = nullptr;
+
+        logFile.reset();
+        logStream.reset();
+        return;
+    }
+
+    // Tworzymy strumień do zapisu w pliku
+    logStream = std::make_unique<QTextStream>(logFile.get());
+
+    // Instalujemy nasz handler
+    qInstallMessageHandler(customMessageHandler);
+    loggerInitialized = true;
+}
 
 void customMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
-    // --- Zapis do pliku ---
-    QString logMessage = QString("[%1] ").arg(
-        QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz"));
-    switch (type) {
-    case QtDebugMsg:
-        logMessage += "[Debug] ";
-        break;
-    case QtInfoMsg:
-        logMessage += "[Info] ";
-        break;
-    case QtWarningMsg:
-        logMessage += "[Warning] ";
-        break;
-    case QtCriticalMsg:
-        logMessage += "[Critical] ";
-        break;
-    case QtFatalMsg:
-        logMessage += "[Fatal] ";
-        break;
+    // Zapis do pliku (o ile został poprawnie otwarty w initLogger)
+    if (logStream) {
+        QString logMessage = QString("[%1] ").arg(
+            QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz"));
+
+        switch (type) {
+        case QtDebugMsg:
+            logMessage += "[Debug] ";
+            break;
+        case QtInfoMsg:
+            logMessage += "[Info] ";
+            break;
+        case QtWarningMsg:
+            logMessage += "[Warning] ";
+            break;
+        case QtCriticalMsg:
+            logMessage += "[Critical] ";
+            break;
+        case QtFatalMsg:
+            logMessage += "[Fatal] ";
+            break;
+        }
+
+        logMessage += msg;
+
+        (*logStream) << logMessage << Qt::endl;
+        logStream->flush();
     }
-    logMessage += msg;
 
-    logStream << logMessage << Qt::endl;
-    logStream.flush();
-
-    // --- Wywołanie oryginalnego handlera (Qt) ---
-    if (g_originalHandler) {
-        // Warto przekazać oryginalny msg, a nie nasz logMessage,
-        // bo oryginalny handler sam sobie sformatuje informacje
-        // (np. z pliku, linii, itp.).
-        g_originalHandler(type, context, msg);
+    // Dodatkowo wywołujemy stary (oryginalny) handler,
+    // aby komunikat pojawił się też w terminalu tak jak zwykle.
+    if (oldHandler) {
+        oldHandler(type, context, msg);
     }
 
     if (type == QtFatalMsg) {
@@ -51,19 +92,28 @@ void customMessageHandler(QtMsgType type, const QMessageLogContext &context, con
     }
 }
 
-void initLogger(const QString &fileName)
+void closeLogger()
 {
-    // Zapamiętujemy stary handler, żeby móc go wywoływać
-    g_originalHandler = qInstallMessageHandler(nullptr);
-
-    logFile.setFileName(fileName);
-    if (!logFile.open(QIODevice::Append | QIODevice::Text)) {
-        // Tutaj jeszcze g_originalHandler może być wywołany
-        qWarning() << "Nie można otworzyć pliku logu:" << fileName;
-    } else {
-        logStream.setDevice(&logFile);
+    qDebug() << "Zamykam plik";
+    // Jeśli logger nie był w ogóle zainicjalizowany, nic nie robimy
+    if (!loggerInitialized) {
+        return;
     }
 
-    // Teraz instalujemy nasz handler
-    qInstallMessageHandler(customMessageHandler);
+    // Przywracamy stary handler (żeby dalej mieć standardowe zachowanie, jeśli chcemy)
+    qInstallMessageHandler(oldHandler);
+    oldHandler = nullptr;
+    loggerInitialized = false;
+
+    // Zamykanie i reset wskaźników
+    if (logStream) {
+        logStream->flush(); // Dla pewności
+        logStream.reset();  // Usuwa QTextStream
+    }
+    if (logFile) {
+        if (logFile->isOpen()) {
+            logFile->close();
+        }
+        logFile.reset(); // Usuwa QFile
+    }
 }

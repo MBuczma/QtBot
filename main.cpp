@@ -8,11 +8,11 @@
 //Zbieranie logów. Zapisywanie i wczytywanie profili.
 
 #include "GlowneOkno.h"
+#include "Logger.h"
 
 #include <QApplication>
 #include <QPalette>
 #include <QStyleFactory>
-#include "Logger.h"
 #include <memory> // std::unique_ptr
 
 void ustawStyl(QApplication &application);

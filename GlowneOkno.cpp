@@ -11,6 +11,7 @@
 #include "ui_GlowneOkno.h"
 
 #include <QMessageBox>
+#include "Logger.h"
 #include "OknoBot.h"
 #include <memory> // std::unique_ptr
 
@@ -32,7 +33,7 @@ GlowneOkno::GlowneOkno(QWidget *parent)
 
     // Łączenie sygnałów z przyciskami w rozwijanym menu
     //connect(ui->actionZapisz, &QAction::triggered, oknoBot.get(), &OknoBot::startWszystkie);
-    //connect(ui->actionWczytaj, &QAction::triggered, oknoBot.get(), &OknoBot::startWszystkie);
+    //connect(ui->actionWczytaj, &QAction::triggered, oknoBot.get(), &OknoBot::stopWszystkie);
     connect(ui->actionWyjdz, &QAction::triggered, QApplication::instance(), &QApplication::quit);
 
     // Połączenie przycisku z lambda (funkcja anonimowa)
@@ -66,18 +67,16 @@ void GlowneOkno::wyjscie()
 
 void GlowneOkno::closeEvent(QCloseEvent *event)
 {
-    // Wyświetlamy QMessageBox z pytaniem
-    QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this,
-                                  "Zamykanie",
-                                  "Na pewno chcesz wyjść z programu?",
-                                  QMessageBox::Yes | QMessageBox::No);
+    QMessageBox::StandardButton reply = QMessageBox::question(this,
+                                                              "Zamykanie",
+                                                              "Na pewno chcesz wyjść z programu?",
+                                                              QMessageBox::Yes | QMessageBox::No);
 
     if (reply == QMessageBox::Yes) {
-        // Użytkownik zatwierdził – pozwalamy zamknąć okno
+        // Użytkownik potwierdził – zamykamy logger i akceptujemy zamknięcie okna
+        closeLogger(); // <-- zamknie plik, przywróci oryginalny handler
         event->accept();
     } else {
-        // Użytkownik wybrał "No" – ignorujemy zamknięcie
         event->ignore();
     }
 }
