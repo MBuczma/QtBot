@@ -44,3 +44,16 @@ void OknoBot::stopWszystkie()
         qDebug() << box->wysylanieStop();
     }
 }
+
+QString OknoBot::getAllDataFromGroupBox()
+{
+    QString AllData = "";
+    if (groupBoxes.empty() != true) {
+        for (auto &box : groupBoxes) {
+            qDebug() << box->getAllData();
+            AllData += box->getAllData() + "\n";
+        }
+        return AllData;
+    }
+    return QString();
+}

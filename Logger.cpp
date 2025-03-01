@@ -94,7 +94,7 @@ void customMessageHandler(QtMsgType type, const QMessageLogContext &context, con
 
 void closeLogger()
 {
-    qDebug() << "Zamykam plik";
+    qDebug() << "Zamykam plik loggera";
     // Jeśli logger nie był w ogóle zainicjalizowany, nic nie robimy
     if (!loggerInitialized) {
         return;

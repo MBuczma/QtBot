@@ -21,6 +21,7 @@ class OknoBot : public QWidget
 public:
     explicit OknoBot(QWidget *parent = nullptr);
     ~OknoBot();
+    QString getAllDataFromGroupBox();
 
 signals:
     void rozszerzOkno(short height);

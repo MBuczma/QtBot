@@ -270,10 +270,16 @@ void GroupBoxControl::aktualizujCountdown()
     spinBox_WysleZa->setValue(remainingTime);
 }
 
-QString GroupBoxControl::getTitle() const
+QString GroupBoxControl::getAllData() const
 {
+    //return "aktualizujCountdown()  ";
     if (groupBox != NULL) {
-        return groupBox->title();
+        QString data = groupBox->title() + ";";
+        data += comboBox_Klawisz->currentText() + ";";
+        data += comboBox_Hotkey->currentText() + ";";
+        data += spinBox_Sekund->text() + ";";
+        data += spinBox_Milisekund->text() + ";";
+        return data;
     }
     return QString(); // zwraca pusty QString, jeśli groupBox == nullptr
 }

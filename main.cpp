@@ -4,8 +4,7 @@
  * W funkcji ustawStyl jest ustawiany wygląd GUI poprzez setStyle i setPalette.
  */
 
-//Dorobić screenshoty.
-//Zbieranie logów. Zapisywanie i wczytywanie profili.
+//Zapisywanie i wczytywanie profili.
 
 #include "GlowneOkno.h"
 #include "Logger.h"
