@@ -8,6 +8,7 @@
 
 #include <QDebug>
 #include <QHBoxLayout>
+#include <QMessageBox>
 #include <QMouseEvent>
 #include <QSizePolicy>
 #include <QTimer>
@@ -123,8 +124,12 @@ void GroupBoxControl::setupGroupBox()
     spinBox_WysleZa->setMinimumWidth(60);
     spinBox_WysleZa->setButtonSymbols(QAbstractSpinBox::NoButtons);
     layout->addWidget(spinBox_WysleZa);
-}
 
+    buttonUsun = new QPushButton("Usuń rząd", this);
+    buttonUsun->setMinimumWidth(60);
+    layout->addWidget(buttonUsun);
+    connect(buttonUsun, &QPushButton::clicked, this, &GroupBoxControl::czyPotwierdzicUsuniecie);
+}
 void GroupBoxControl::ZlapIdOkna()
 {
     qDebug() << "\n"
@@ -321,6 +326,19 @@ void GroupBoxControl::setAllData(const QString &line)
         default:
             break;
         }
+    }
+}
+
+void GroupBoxControl::czyPotwierdzicUsuniecie()
+{
+    QMessageBox::StandardButton odpowiedz
+        = QMessageBox::question(this,
+                                "Usuń rząd",
+                                "Czy na pewno chcesz usunąć ten rząd?",
+                                QMessageBox::Yes | QMessageBox::No);
+
+    if (odpowiedz == QMessageBox::Yes) {
+        emit zadajUsuniecie(this);
     }
 }
 

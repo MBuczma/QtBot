@@ -19,13 +19,17 @@ class GroupBoxControl : public QWidget
 {
     Q_OBJECT
 
+signals:
+    void zadajUsuniecie(GroupBoxControl *kto);
+
 public:
     explicit GroupBoxControl(QWidget *parent = nullptr);
     ~GroupBoxControl();
     QString getAllData() const;
-    void setAllData(const QString &);
     bool wysylanieStart();
     bool wysylanieStop();
+    void setAllData(const QString &);
+    void czyPotwierdzicUsuniecie();
 
 private slots:
     void handleStartStop();
@@ -56,6 +60,7 @@ private:
 
     QPushButton *buttonStartStop;
     QPushButton *buttonPobierzID;
+    QPushButton *buttonUsun;
     QComboBox *comboBox_Klawisz;
     QComboBox *comboBox_Hotkey;
     QSpinBox *spinBox_Sekund;

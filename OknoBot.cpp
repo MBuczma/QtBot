@@ -26,9 +26,30 @@ void OknoBot::dodajRzad()
 
     GroupBoxControl *newGroupBox = new GroupBoxControl(this);
     ui->verticalLayout->insertWidget(ui->verticalLayout->count() - 1, newGroupBox);
+    connect(newGroupBox, &GroupBoxControl::zadajUsuniecie, this, &OknoBot::usunKonkretnegoGroupBoxa);
 
     groupBoxes.push_back(newGroupBox); // Dodajemy nowy rząd do wektora
-    stopWszystkie();
+}
+
+void OknoBot::usunKonkretnegoGroupBoxa(GroupBoxControl *kto)
+{
+    auto it = std::find(groupBoxes.begin(), groupBoxes.end(), kto);
+    if (it != groupBoxes.end()) {
+        groupBoxes.erase(it);
+        ui->verticalLayout->removeWidget(kto);
+        delete kto;
+        emit rozszerzOkno(-70);
+    }
+}
+
+void OknoBot::usunWszystkieRzedy()
+{
+    for (auto *box : groupBoxes) {
+        ui->verticalLayout->removeWidget(box);
+        delete box;
+    }
+    emit rozszerzOkno(-70 * groupBoxes.size());
+    groupBoxes.clear();
 }
 
 void OknoBot::startWszystkie()

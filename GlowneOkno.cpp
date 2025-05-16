@@ -16,7 +16,7 @@
 #include "OknoBot.h"
 #include <memory> // std::unique_ptr
 
-short GlowneOkno::width = 570;
+short GlowneOkno::width = 670;
 short GlowneOkno::height = 180;
 
 GlowneOkno::GlowneOkno(QWidget *parent)
@@ -121,7 +121,7 @@ void GlowneOkno::wczytajPlik()
     QString zawartoscPliku = in.readAll();
 
     qDebug() << zawartoscPliku;
-    start();
+    oknoBot->usunWszystkieRzedy();
     oknoBot->setAllDataToGroupBox(zawartoscPliku);
 
     plik.close();

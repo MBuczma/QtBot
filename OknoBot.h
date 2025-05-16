@@ -22,6 +22,7 @@ public:
     explicit OknoBot(QWidget *parent = nullptr);
     ~OknoBot();
     QString getAllDataFromGroupBox();
+    void usunWszystkieRzedy();
     void setAllDataToGroupBox(QString zawartoscPliku);
 
 signals:
@@ -29,6 +30,7 @@ signals:
 
 private slots:
     void dodajRzad();
+    void usunKonkretnegoGroupBoxa(GroupBoxControl *kto);
     void startWszystkie(); // Funkcję do zatrzymywania wszystkich
     void stopWszystkie(); // Funkcję do zatrzymywania wszystkich
 
