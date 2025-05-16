@@ -4,7 +4,6 @@
  * W funkcji ustawStyl jest ustawiany wygląd GUI poprzez setStyle i setPalette.
  */
 
-//Zapisywanie i wczytywanie profili.
 // hotkeye
 
 #include "GlowneOkno.h"

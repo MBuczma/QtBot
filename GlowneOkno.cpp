@@ -8,6 +8,7 @@
  */
 
 #include "GlowneOkno.h"
+#include "GlobalKeyListener.h"
 #include "ui_GlowneOkno.h"
 
 #include <QFileDialog>
@@ -43,6 +44,9 @@ GlowneOkno::GlowneOkno(QWidget *parent)
         this->setMinimumSize(width, height);
         this->setMaximumSize(width, height);
     });
+
+    auto listener = new GlobalKeyListener(this);
+    listener->start();
 }
 
 GlowneOkno::~GlowneOkno() = default; // Destruktor domyślny
