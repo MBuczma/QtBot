@@ -22,6 +22,7 @@ public:
     explicit OknoBot(QWidget *parent = nullptr);
     ~OknoBot();
     QString getAllDataFromGroupBox();
+    void setAllDataToGroupBox(QString zawartoscPliku);
 
 signals:
     void rozszerzOkno(short height);

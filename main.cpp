@@ -5,6 +5,7 @@
  */
 
 //Zapisywanie i wczytywanie profili.
+// hotkeye
 
 #include "GlowneOkno.h"
 #include "Logger.h"

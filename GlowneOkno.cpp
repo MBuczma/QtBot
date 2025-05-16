@@ -34,7 +34,7 @@ GlowneOkno::GlowneOkno(QWidget *parent)
 
     // Łączenie sygnałów z przyciskami w rozwijanym menu
     connect(ui->actionZapisz, &QAction::triggered, this, &GlowneOkno::zapiszPlik);
-    connect(ui->actionWczytaj, &QAction::triggered, this, &GlowneOkno::zapiszPlik);
+    connect(ui->actionWczytaj, &QAction::triggered, this, &GlowneOkno::wczytajPlik);
     connect(ui->actionWyjdz, &QAction::triggered, QApplication::instance(), &QApplication::quit);
 
     // Połączenie przycisku z lambda (funkcja anonimowa)
@@ -70,7 +70,7 @@ void GlowneOkno::zapiszPlik()
 {
     QString domyslnaNazwaPliku = "ProfileSave.QtBP";
     QString sciezkaPliku
-        = QFileDialog::getSaveFileName(this, // Wskaźnik na rodzica, np. QWidget lub QMainWindow
+        = QFileDialog::getSaveFileName(this,
                                        tr("Zapisz plik jako"), // Tytuł okna dialogowego
                                        QDir::homePath() + "/"
                                            + domyslnaNazwaPliku, // Domyślna ścieżka i nazwa pliku
@@ -93,6 +93,36 @@ void GlowneOkno::zapiszPlik()
     QTextStream out(&plik);
     //out << "Przykładowa zawartość pliku.\n";
     out << oknoBot->getAllDataFromGroupBox();
+
+    plik.close();
+}
+
+void GlowneOkno::wczytajPlik()
+{
+    QString sciezkaPliku
+        = QFileDialog::getOpenFileName(this, // Wskaźnik na rodzica, np. QWidget lub QMainWindow
+                                       tr("Otwórz plik"),                 // Tytuł okna dialogowego
+                                       QDir::homePath(),                  // Domyślna ścieżka
+                                       tr("Pliki QtBot profile (*.QtBP)") // Filtry typów plików
+        );
+
+    if (sciezkaPliku.isEmpty()) {
+        // Użytkownik anulował operację
+        return;
+    }
+
+    QFile plik(sciezkaPliku);
+    if (!plik.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::warning(this, tr("Błąd"), tr("Nie można otworzyć pliku do odczytu."));
+        return;
+    }
+
+    QTextStream in(&plik);
+    QString zawartoscPliku = in.readAll();
+
+    qDebug() << zawartoscPliku;
+    start();
+    oknoBot->setAllDataToGroupBox(zawartoscPliku);
 
     plik.close();
 }

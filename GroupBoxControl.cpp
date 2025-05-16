@@ -108,6 +108,7 @@ void GroupBoxControl::setupGroupBox()
 
     spinBox_Milisekund = new QSpinBox(this);
     spinBox_Milisekund->setSuffix("ms");
+    spinBox_Milisekund->setSingleStep(100);
     spinBox_Milisekund->setMaximum(999);
     spinBox_Milisekund->setMinimumWidth(60);
     layout->addWidget(spinBox_Milisekund);
@@ -283,3 +284,44 @@ QString GroupBoxControl::getAllData() const
     }
     return QString(); // zwraca pusty QString, jeśli groupBox == nullptr
 }
+
+void GroupBoxControl::setAllData(const QString &line)
+{
+    QStringList values = line.split(";", Qt::SkipEmptyParts);
+
+    for (int i = 0; i < values.size(); ++i) {
+        QString value = values[i].trimmed();
+        qDebug() << "Wartość [" << i << "] :" << value;
+
+        switch (i) {
+        case 0:
+            if (groupBox)
+                groupBox->setTitle(value);
+            break;
+        case 1:
+            if (comboBox_Klawisz)
+                comboBox_Klawisz->setCurrentText(value);
+            break;
+        case 2:
+            if (comboBox_Hotkey)
+                comboBox_Hotkey->setCurrentText(value);
+            break;
+        case 3:
+            if (spinBox_Sekund) {
+                value.remove("s", Qt::CaseInsensitive);
+                spinBox_Sekund->setValue(value.toInt());
+            }
+            break;
+        case 4:
+            if (spinBox_Milisekund) {
+                value.remove("ms", Qt::CaseInsensitive);
+                spinBox_Milisekund->setValue(value.toInt());
+            }
+            break;
+        default:
+            break;
+        }
+    }
+}
+
+//GlowneOkno::wczytajPlik() -> OknoBot::setAllDataToGroupBox(QString zawartoscPliku) -> GroupBoxControl::setAllData(QString zawartoscPliku)

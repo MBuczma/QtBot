@@ -23,6 +23,7 @@ public:
     explicit GroupBoxControl(QWidget *parent = nullptr);
     ~GroupBoxControl();
     QString getAllData() const;
+    void setAllData(const QString &);
     bool wysylanieStart();
     bool wysylanieStop();
 

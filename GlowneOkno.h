@@ -37,6 +37,7 @@ private slots:
     void informacje();
     void wyjscie();
     void zapiszPlik();
+    void wczytajPlik();
 
 private:
     std::unique_ptr<Ui::GlowneOkno> ui; // Zarządzanie wskaźnikiem Ui

@@ -57,3 +57,18 @@ QString OknoBot::getAllDataFromGroupBox()
     }
     return QString();
 }
+
+void OknoBot::setAllDataToGroupBox(QString zawartoscPliku)
+{
+    QStringList lines = zawartoscPliku.split("\n", Qt::SkipEmptyParts);
+
+    for (int i = groupBoxes.size(); i < lines.count(); ++i) {
+        dodajRzad();
+    }
+
+    for (int i = 0; i < lines.size(); ++i) {
+        if (i < int(groupBoxes.size())) {
+            groupBoxes[i]->setAllData(lines[i]);
+        }
+    }
+}
