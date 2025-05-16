@@ -15,6 +15,10 @@ OknoBot::OknoBot(QWidget *parent)
     connect(ui->pushButton_DodajRzad, &QPushButton::clicked, this, &OknoBot::dodajRzad);
     connect(ui->pushButton_StartWszystkie, &QPushButton::clicked, this, &OknoBot::startWszystkie);
     connect(ui->pushButton_StopWszystkie, &QPushButton::clicked, this, &OknoBot::stopWszystkie);
+
+    globalKeyListener = new GlobalKeyListener(this);
+    connect(globalKeyListener, &GlobalKeyListener::keyPressed, this, &OknoBot::onKeyPressed);
+    globalKeyListener->start();
 }
 
 OknoBot::~OknoBot() = default;
@@ -90,6 +94,52 @@ void OknoBot::setAllDataToGroupBox(QString zawartoscPliku)
     for (int i = 0; i < lines.size(); ++i) {
         if (i < int(groupBoxes.size())) {
             groupBoxes[i]->setAllData(lines[i]);
+        }
+    }
+}
+
+void OknoBot::onKeyPressed(int vkCode)
+{
+    qDebug() << "[Hotkey] Odebrano klawisz VK:" << vkCode;
+    qDebug() << "[Hotkey] Liczba aktywnych groupBoxes:" << groupBoxes.size();
+
+    static const QMap<QString, int> mapa = {
+        {"SPACE", VK_SPACE},
+        {"ENTER", VK_RETURN},
+        {"F1", VK_F1},
+        {"F2", VK_F2},
+        {"F3", VK_F3},
+        {"F4", VK_F4},
+        {"F5", VK_F5},
+        {"F6", VK_F6},
+        {"F7", VK_F7},
+        {"F8", VK_F8},
+        {"F9", VK_F9},
+        {"F10", VK_F10},
+        {"F11", VK_F11},
+        {"F12", VK_F12},
+        {"1", '1'},
+        {"2", '2'},
+        {"3", '3'},
+        {"4", '4'},
+        {"Numpad 1", VK_NUMPAD1},
+        {"Numpad 2", VK_NUMPAD2},
+        {"Numpad 0", VK_NUMPAD0},
+        // rozszerz w razie potrzeby
+    };
+
+    for (auto *box : groupBoxes) {
+        QString hotkey = box->pobierzHotkey().trimmed().toUpper();
+        qDebug() << "[Hotkey] VK:" << vkCode << "vs:" << hotkey;
+
+        if (mapa.contains(hotkey)) {
+            qDebug() << "  Mapa[" << hotkey << "] = " << mapa[hotkey];
+            if (mapa[hotkey] == vkCode) {
+                qDebug() << " PASUJE: wywołuję wysylanieStart()";
+                box->handleStartStop();
+            }
+        } else {
+            qDebug() << " Nie znaleziono '" << hotkey << "' w mapie.";
         }
     }
 }

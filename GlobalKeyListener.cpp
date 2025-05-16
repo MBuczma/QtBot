@@ -50,6 +50,8 @@ LRESULT CALLBACK GlobalKeyListener::keyboardProc(int nCode, WPARAM wParam, LPARA
                 QString keyText = opisVK(vkCode);
                 qDebug() << "[GlobalKeyListener] Wciśnięto VK:" << vkCode
                          << (keyText.isEmpty() ? "" : QString("(%1)").arg(keyText));
+
+                emit instance->keyPressed(vkCode);
             },
             Qt::QueuedConnection);
     }

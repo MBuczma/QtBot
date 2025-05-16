@@ -6,6 +6,7 @@
 #define OKNOBOT_H
 
 #include <QWidget>
+#include "GlobalKeyListener.h"
 
 class AutoKeyPresser;
 class GroupBoxControl;
@@ -33,11 +34,13 @@ private slots:
     void usunKonkretnegoGroupBoxa(GroupBoxControl *kto);
     void startWszystkie(); // Funkcję do zatrzymywania wszystkich
     void stopWszystkie(); // Funkcję do zatrzymywania wszystkich
+    void onKeyPressed(int vkCode);
 
 private:
     std::unique_ptr<Ui::OknoBot> ui;
     std::vector<GroupBoxControl *>
         groupBoxes; // Wektor przechowujący wskaźniki do dynamicznych GroupBoxControl
+    GlobalKeyListener *globalKeyListener = nullptr;
 };
 
 #endif // OKNOBOT_H

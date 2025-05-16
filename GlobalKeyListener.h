@@ -8,6 +8,9 @@ class GlobalKeyListener : public QObject
 {
     Q_OBJECT
 
+signals:
+    void keyPressed(int vkCode);
+
 public:
     explicit GlobalKeyListener(QObject *parent = nullptr);
     ~GlobalKeyListener();

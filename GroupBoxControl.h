@@ -30,9 +30,11 @@ public:
     bool wysylanieStop();
     void setAllData(const QString &);
     void czyPotwierdzicUsuniecie();
+    QString pobierzHotkey() const;
+    void handleStartStop();
 
 private slots:
-    void handleStartStop();
+
     void ZlapIdOkna();
     void zaktualizujNazwe();
     void aktualizujStanPrzyciskuStart();

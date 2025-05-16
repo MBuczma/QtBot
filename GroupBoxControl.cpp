@@ -292,6 +292,8 @@ QString GroupBoxControl::getAllData() const
 
 void GroupBoxControl::setAllData(const QString &line)
 {
+    //GlowneOkno::wczytajPlik() -> OknoBot::setAllDataToGroupBox(QString zawartoscPliku) -> GroupBoxControl::setAllData(QString zawartoscPliku)
+
     QStringList values = line.split(";", Qt::SkipEmptyParts);
 
     for (int i = 0; i < values.size(); ++i) {
@@ -342,4 +344,7 @@ void GroupBoxControl::czyPotwierdzicUsuniecie()
     }
 }
 
-//GlowneOkno::wczytajPlik() -> OknoBot::setAllDataToGroupBox(QString zawartoscPliku) -> GroupBoxControl::setAllData(QString zawartoscPliku)
+QString GroupBoxControl::pobierzHotkey() const
+{
+    return comboBox_Hotkey->currentText();
+}
