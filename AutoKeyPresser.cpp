@@ -41,21 +41,18 @@ QString AutoKeyPresser::GetWindowTextFromHandle(const HWND hwnd) const
     }
 }
 
-
 void AutoKeyPresser::SentKey(const HWND handle, const QString &key)
 {
     const auto &keyMap = KeyMap::getMap();
     QString keyUpper = key.trimmed().toUpper();
 
-    auto it = keyMap.find(key);
+    auto it = keyMap.find(keyUpper);
     if (it != keyMap.end()) {
-        if (keyMap.contains(keyUpper)) {
-            WPARAM keyCode = keyMap[keyUpper];
-            PostMessage(handle, WM_KEYDOWN, keyCode, 0);
-            PostMessage(handle, WM_KEYUP, keyCode, 0);
-            qDebug() << "Wysyłam klawisz:" << key << "do uchwytu:" << handle;
-        } else {
-            qDebug() << "Nieznany klawisz:" << key;
-        }
+        WPARAM keyCode = it.value();
+        PostMessage(handle, WM_KEYDOWN, keyCode, 0);
+        PostMessage(handle, WM_KEYUP, keyCode, 0);
+        qDebug() << "Wysyłam klawisz:" << key << "do uchwytu:" << handle;
+    } else {
+        qDebug() << "Nieznany klawisz:" << key << "(po przekształceniu:" << keyUpper << ")";
     }
 }
