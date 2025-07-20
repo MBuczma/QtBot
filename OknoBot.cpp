@@ -11,6 +11,8 @@
 #include "GroupBoxControl.h"
 #include "KeyMap.h"
 
+const short ROW_HEIGHT = 70;
+
 OknoBot::OknoBot(QWidget *parent)
     : QWidget(parent)
     , ui(std::make_unique<Ui::OknoBot>())
@@ -29,7 +31,7 @@ OknoBot::~OknoBot() = default;
 
 void OknoBot::dodajRzad()
 {
-    emit rozszerzOkno(70);
+    emit rozszerzOkno(ROW_HEIGHT);
     qDebug() << "Przycisk dodajRzadPrzyciskow został naciśnięty.";
 
     GroupBoxControl *newGroupBox = new GroupBoxControl(this);
@@ -46,7 +48,7 @@ void OknoBot::usunKonkretnegoGroupBoxa(GroupBoxControl *kto)
         groupBoxes.erase(it);
         ui->verticalLayout->removeWidget(kto);
         delete kto;
-        emit rozszerzOkno(-70);
+        emit rozszerzOkno(-ROW_HEIGHT);
     }
 }
 
@@ -56,7 +58,7 @@ void OknoBot::usunWszystkieRzedy()
         ui->verticalLayout->removeWidget(box);
         delete box;
     }
-    emit rozszerzOkno(-70 * groupBoxes.size());
+    emit rozszerzOkno(-ROW_HEIGHT * groupBoxes.size());
     groupBoxes.clear();
 }
 
