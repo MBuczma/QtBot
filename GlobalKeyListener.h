@@ -16,14 +16,13 @@ public:
     ~GlobalKeyListener();
 
     void start();
-    void stop();
 
 private:
     static LRESULT CALLBACK keyboardProc(int nCode, WPARAM wParam, LPARAM lParam);
     static HHOOK hook;
     static GlobalKeyListener *instance;
 
-    static QString opisVK(int vkCode); // dodane
+    static QString opisVK(int vkCode);
 };
 
 #endif // GLOBALKEYLISTENER_H

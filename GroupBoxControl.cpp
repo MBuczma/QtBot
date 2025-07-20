@@ -212,8 +212,10 @@ void GroupBoxControl::handleStartStop()
     qDebug() << "Przycisk start z OknoBot został naciśnięty.";
 
     if (isSending == false) {
+        Beep(1000, 100); // 500 Hz przez 100 ms
         wysylanieStart();
     } else {
+        Beep(500, 50); // 500 Hz przez 100 ms
         wysylanieStop();
     }
 }
