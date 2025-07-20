@@ -67,7 +67,7 @@ LRESULT CALLBACK GlobalKeyListener::keyboardProc(int nCode, WPARAM wParam, LPARA
 }
 
 // Funkcja zamieniająca kod klawisza (VK) na czytelną nazwę
-QString GlobalKeyListener::opisVK(int vk)
+QString GlobalKeyListener::opisVK(WPARAM vk)
 {
     static const QMap<int, QString> mapa = {
         // Litery

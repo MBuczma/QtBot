@@ -12,6 +12,7 @@ SOURCES += \
     AutoKeyPresser.cpp \
     GlobalKeyListener.cpp \
     GroupBoxControl.cpp \
+    KeyMap.cpp \
     Logger.cpp \
     OknoBot.cpp \
     main.cpp \
@@ -22,6 +23,7 @@ HEADERS += \
     GlobalKeyListener.h \
     GlowneOkno.h \
     GroupBoxControl.h \
+    KeyMap.h \
     Logger.h \
     OknoBot.h
 

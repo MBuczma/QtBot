@@ -5,6 +5,8 @@
  * - Start
  * - Informacje
  * - Wyjście
+ * Inicjuje OknoBot, które zawiera wszystkie wiersze (GroupBoxControl).
+ * Obsługuje zamknięcie aplikacji i zapis ustawień.
  */
 
 #include "GlowneOkno.h"

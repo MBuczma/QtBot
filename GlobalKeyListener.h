@@ -9,7 +9,7 @@ class GlobalKeyListener : public QObject
     Q_OBJECT
 
 signals:
-    void keyPressed(int vkCode);
+    void keyPressed(WPARAM vkCode);
 
 public:
     explicit GlobalKeyListener(QObject *parent = nullptr);
@@ -22,7 +22,7 @@ private:
     static HHOOK hook;
     static GlobalKeyListener *instance;
 
-    static QString opisVK(int vkCode);
+    static QString opisVK(WPARAM vkCode);
 };
 
 #endif // GLOBALKEYLISTENER_H

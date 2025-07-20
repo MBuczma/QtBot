@@ -34,7 +34,7 @@ private slots:
     void usunKonkretnegoGroupBoxa(GroupBoxControl *kto);
     void startWszystkie(); // Funkcję do zatrzymywania wszystkich
     void stopWszystkie(); // Funkcję do zatrzymywania wszystkich
-    void onKeyPressed(int vkCode);
+    void onKeyPressed(WPARAM vkCode);
 
 private:
     std::unique_ptr<Ui::OknoBot> ui;

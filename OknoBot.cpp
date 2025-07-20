@@ -1,11 +1,15 @@
 /* OknoBot.cpp */
 /*
  * Okno które przechowuje rzędy boxów z przyciskami do wysłania.
+ * Zawiera kontener dla wielu GroupBoxControl.
+ * Obsługuje dodawanie, usuwanie i sterowanie wierszami.
+ * Przechwytuje globalne klawisze i reaguje na hotkeye.
  */
 #include "OknoBot.h"
 #include "ui_OknoBot.h"
 
 #include "GroupBoxControl.h"
+#include "KeyMap.h"
 
 OknoBot::OknoBot(QWidget *parent)
     : QWidget(parent)
@@ -98,35 +102,12 @@ void OknoBot::setAllDataToGroupBox(QString zawartoscPliku)
     }
 }
 
-void OknoBot::onKeyPressed(int vkCode)
+void OknoBot::onKeyPressed(WPARAM vkCode)
 {
     qDebug() << "[Hotkey] Odebrano klawisz VK:" << vkCode;
     qDebug() << "[Hotkey] Liczba aktywnych groupBoxes:" << groupBoxes.size();
 
-    static const QMap<QString, int> mapa = {
-        {"SPACE", VK_SPACE},
-        {"ENTER", VK_RETURN},
-        {"F1", VK_F1},
-        {"F2", VK_F2},
-        {"F3", VK_F3},
-        {"F4", VK_F4},
-        {"F5", VK_F5},
-        {"F6", VK_F6},
-        {"F7", VK_F7},
-        {"F8", VK_F8},
-        {"F9", VK_F9},
-        {"F10", VK_F10},
-        {"F11", VK_F11},
-        {"F12", VK_F12},
-        {"1", '1'},
-        {"2", '2'},
-        {"3", '3'},
-        {"4", '4'},
-        {"Numpad 1", VK_NUMPAD1},
-        {"Numpad 2", VK_NUMPAD2},
-        {"Numpad 0", VK_NUMPAD0},
-        // rozszerz w razie potrzeby
-    };
+    auto mapa = KeyMap::getMap();
 
     for (auto *box : groupBoxes) {
         QString hotkey = box->pobierzHotkey().trimmed().toUpper();
