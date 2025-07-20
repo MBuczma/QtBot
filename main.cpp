@@ -20,21 +20,42 @@
 #include <QStandardPaths>
 #include <QStyleFactory>
 #include <memory> // std::unique_ptr
+#include <exception>
 
 void ustawLoggera();
 void ustawStyl(QApplication &application);
 
 int main(int argc, char *argv[])
 {
-    QApplication application(argc, argv);
+    try {
+        QApplication application(argc, argv);
 
-    ustawLoggera();
-    ustawStyl(application);
+        ustawLoggera();
+        qInfo() << "[main] Logger zainicjalizowany.";
 
-    std::unique_ptr<GlowneOkno> glowneOkno = std::make_unique<GlowneOkno>();
-    glowneOkno->show();
+        ustawStyl(application);
+        qInfo() << "[main] Styl graficzny ustawiony.";
 
-    return application.exec();
+        std::unique_ptr<GlowneOkno> glowneOkno = std::make_unique<GlowneOkno>();
+        qInfo() << "[main] Główne okno utworzone.";
+
+        glowneOkno->show();
+        qInfo() << "[main] Wyświetlono główne okno.";
+
+        int result = application.exec();
+        qInfo() << "[main] Pętla aplikacji zakończona, kod wyjścia:" << result;
+
+        closeLogger();
+        return result;
+
+    } catch (const std::exception &e) {
+        qCritical() << "[main] Wyjątek std::exception:" << e.what();
+    } catch (...) {
+        qCritical() << "[main] Nieznany wyjątek podczas uruchamiania aplikacji.";
+    }
+
+    closeLogger();
+    return -1;
 }
 
 void ustawLoggera()
@@ -42,14 +63,15 @@ void ustawLoggera()
     QCoreApplication::setApplicationName("QtBot");
     QString logDir = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation)
                      + "/Logs";
-    QDir().mkpath(logDir);
+    if (!QDir().mkpath(logDir)) {
+        qWarning() << "[ustawLoggera] Nie udało się utworzyć katalogu logów:" << logDir;
+    }
 
     QString timestamp = QDateTime::currentDateTime().toString("yyyy-MM-dd_HH-mm-ss");
     QString logFile = logDir + "/QtBot_log_" + timestamp + ".txt";
 
     initLogger(logFile);
-    qInfo() << "log_file to " << logFile;
-    qInfo() << "Uruchomiono aplikacje";
+    qInfo() << "[ustawLoggera] Logi zapisywane w:" << logFile;
 }
 
 void ustawStyl(QApplication &application)
