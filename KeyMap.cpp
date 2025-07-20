@@ -119,7 +119,7 @@ QHash<QString, WPARAM> KeyMap::getMap()
     QHash<QString, WPARAM> map;
     for (const auto &pair : getOrderedList()) {
         map.insert(pair.first.toUpper(),
-                   pair.second); // upewnij się, że klucze są jednolicie porównywalne
+                   pair.second); // upewnia się, że klucze są jednolicie porównywalne
     }
     return map;
 }

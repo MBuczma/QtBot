@@ -80,23 +80,22 @@ void GlowneOkno::zapiszPlik()
         );
 
     if (sciezkaPliku.isEmpty()) {
-        // Użytkownik anulował operację
+        qInfo() << "[GlowneOkno] Zapis pliku anulowany przez użytkownika.";
         return;
     }
 
     QFile plik(sciezkaPliku);
     if (!plik.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QMessageBox::warning(this, tr("Błąd"), tr("Nie można otworzyć pliku do zapisu."));
+        qWarning() << "[GlowneOkno] Nie można otworzyć pliku do zapisu:" << sciezkaPliku;
         return;
     }
 
     oknoBot->getAllDataFromGroupBox();
-
     QTextStream out(&plik);
-    //out << "Przykładowa zawartość pliku.\n";
     out << oknoBot->getAllDataFromGroupBox();
-
     plik.close();
+    qInfo() << "[GlowneOkno] Zapisano dane do pliku:" << sciezkaPliku;
 }
 
 void GlowneOkno::wczytajPlik()
@@ -109,20 +108,28 @@ void GlowneOkno::wczytajPlik()
         );
 
     if (sciezkaPliku.isEmpty()) {
-        // Użytkownik anulował operację
+        qInfo() << "[GlowneOkno] Wczytanie pliku anulowane przez użytkownika.";
         return;
     }
 
     QFile plik(sciezkaPliku);
     if (!plik.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QMessageBox::warning(this, tr("Błąd"), tr("Nie można otworzyć pliku do odczytu."));
+        qWarning() << "[GlowneOkno] Nie można otworzyć pliku do odczytu:" << sciezkaPliku;
         return;
     }
 
     QTextStream in(&plik);
     QString zawartoscPliku = in.readAll();
+    int liczbaLinii = zawartoscPliku.split('\n', Qt::SkipEmptyParts).size();
+    qInfo() << "[GlowneOkno] Wczytano dane z pliku:" << sciezkaPliku
+            << "Liczba linii:" << liczbaLinii;
+    qDebug().noquote() << zawartoscPliku;
 
-    qDebug() << zawartoscPliku;
+    if (ui->stackedWidget->currentWidget() != oknoBot.get()) {
+        ui->stackedWidget->setCurrentWidget(oknoBot.get());
+        qInfo() << "[GlowneOkno] Po wczytaniu profilu przełączono na widok OknoBot.";
+    }
     oknoBot->usunWszystkieRzedy();
     oknoBot->setAllDataToGroupBox(zawartoscPliku);
 
@@ -137,10 +144,11 @@ void GlowneOkno::closeEvent(QCloseEvent *event)
                                                               QMessageBox::Yes | QMessageBox::No);
 
     if (reply == QMessageBox::Yes) {
-        // Użytkownik potwierdził – zamykamy logger i akceptujemy zamknięcie okna
+        qInfo() << "[GlowneOkno] Użytkownik potwierdził zamknięcie programu.";
         closeLogger(); // <-- zamknie plik, przywróci oryginalny handler
         event->accept();
     } else {
+        qInfo() << "[GlowneOkno] Użytkownik anulował zamknięcie programu.";
         event->ignore();
     }
 }

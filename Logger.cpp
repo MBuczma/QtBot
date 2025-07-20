@@ -45,7 +45,7 @@ void initLogger(const QString &fileName)
     // Tworzymy strumień do zapisu w pliku
     logStream = std::make_unique<QTextStream>(logFile.get());
 
-    // Instalujemy nasz handler
+    // Instalujemy handler
     qInstallMessageHandler(customMessageHandler);
     loggerInitialized = true;
 }
@@ -81,8 +81,7 @@ void customMessageHandler(QtMsgType type, const QMessageLogContext &context, con
         logStream->flush();
     }
 
-    // Dodatkowo wywołujemy stary (oryginalny) handler,
-    // aby komunikat pojawił się też w terminalu tak jak zwykle.
+    // Dodatkowo wywołujemy stary (oryginalny) handler aby komunikat pojawił się też w terminalu tak jak zwykle.
     if (oldHandler) {
         oldHandler(type, context, msg);
     }
@@ -100,7 +99,7 @@ void closeLogger()
         return;
     }
 
-    // Przywracamy stary handler (żeby dalej mieć standardowe zachowanie, jeśli chcemy)
+    // Przywracamy stary handler (żeby dalej mieć standardowe zachowanie)
     qInstallMessageHandler(oldHandler);
     oldHandler = nullptr;
     loggerInitialized = false;
