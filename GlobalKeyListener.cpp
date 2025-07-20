@@ -26,6 +26,11 @@ GlobalKeyListener::~GlobalKeyListener()
 
 void GlobalKeyListener::start()
 {
+    if (hook) {
+        qDebug() << "[GlobalKeyListener] Hook już aktywny.";
+        return;
+    }
+
     if (!hook) {
         instance = this;
 
@@ -42,27 +47,13 @@ void GlobalKeyListener::start()
 // Callback wywoływany przez system Windows, gdy naciśnięto klawisz
 LRESULT CALLBACK GlobalKeyListener::keyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
-    // Sprawdzamy czy zdarzenie klawisza jest istotne i czy mamy aktywną instancję
-    if (nCode == HC_ACTION && wParam == WM_KEYDOWN && instance) {
-        // Struktura z informacjami o klawiszu
+    if (nCode == HC_ACTION && wParam == WM_KEYDOWN && instance != nullptr) {
         KBDLLHOOKSTRUCT *p = reinterpret_cast<KBDLLHOOKSTRUCT *>(lParam);
         DWORD vkCode = p->vkCode;
 
-        // Wywołujemy kod Qt w kolejce eventów (bo hook działa w innym wątku)
         QMetaObject::invokeMethod(
-            instance,
-            [vkCode]() {
-                // Opis klawisza w formie tekstu
-                QString keyText = KeyMap::getKeyText(vkCode);
-                qDebug() << "[GlobalKeyListener] Wciśnięto VK:" << vkCode
-                         << (keyText.isEmpty() ? "" : QString("(%1)").arg(keyText));
-
-                // Emisja sygnału do OknoBot
-                emit instance->keyPressed(vkCode);
-            },
-            Qt::QueuedConnection); // gwarantuje wykonanie w głównym wątku Qt
+            instance, [vkCode]() { emit instance->keyPressed(vkCode); }, Qt::QueuedConnection);
     }
 
-    // Przekazanie zdarzenia dalej do systemu
     return CallNextHookEx(hook, nCode, wParam, lParam);
 }

@@ -12,6 +12,7 @@
 #include <QMouseEvent>
 #include <QSizePolicy>
 #include <QTimer>
+#include "KeyMap.h"
 #include <memory>
 #include <windows.h>
 
@@ -48,23 +49,12 @@ void GroupBoxControl::setupGroupBox()
     connect(buttonPobierzID, &QPushButton::pressed, this, &GroupBoxControl::ZlapIdOkna);
 
     comboBox_Klawisz = new QComboBox(this);
-    comboBox_Klawisz->addItems({"",
-                                "Space",
-                                "1",
-                                "2",
-                                "F1",
-                                "F2",
-                                "F3",
-                                "F4",
-                                "F5",
-                                "F6",
-                                "F7",
-                                "F8",
-                                "F9",
-                                "F10",
-                                "F11",
-                                "F12",
-                                "Enter"});
+    comboBox_Klawisz->addItem("");
+    // Dodaj wszystkie klawisze z mapy KeyMap
+    for (const auto &pair : KeyMap::getOrderedList()) {
+        comboBox_Klawisz->addItem(pair.first);
+    }
+
     comboBox_Klawisz->setMinimumWidth(60);
     connect(comboBox_Klawisz,
             &QComboBox::currentTextChanged,
@@ -73,23 +63,10 @@ void GroupBoxControl::setupGroupBox()
     layout->addWidget(comboBox_Klawisz);
 
     comboBox_Hotkey = new QComboBox(this);
-    comboBox_Hotkey->addItems({"",
-                               "Space",
-                               "1",
-                               "2",
-                               "F1",
-                               "F2",
-                               "F3",
-                               "F4",
-                               "F5",
-                               "F6",
-                               "F7",
-                               "F8",
-                               "F9",
-                               "F10",
-                               "F11",
-                               "F12",
-                               "Enter"});
+    comboBox_Hotkey->addItems({""});
+    for (const auto &pair : KeyMap::getOrderedList()) {
+        comboBox_Hotkey->addItem(pair.first);
+    }
     comboBox_Hotkey->setMinimumWidth(60);
     connect(comboBox_Hotkey,
             &QComboBox::currentTextChanged,

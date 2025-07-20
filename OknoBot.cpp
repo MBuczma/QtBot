@@ -10,6 +10,7 @@
 
 #include "GroupBoxControl.h"
 #include "KeyMap.h"
+#include "QTimer"
 
 const short ROW_HEIGHT = 70;
 
@@ -24,7 +25,7 @@ OknoBot::OknoBot(QWidget *parent)
 
     globalKeyListener = new GlobalKeyListener(this);
     connect(globalKeyListener, &GlobalKeyListener::keyPressed, this, &OknoBot::onKeyPressed);
-    globalKeyListener->start();
+    QTimer::singleShot(0, this, [this]() { globalKeyListener->start(); });
 }
 
 OknoBot::~OknoBot() = default;
