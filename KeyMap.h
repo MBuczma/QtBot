@@ -10,6 +10,6 @@ class KeyMap
 {
 public:
     static const QList<QPair<QString, WPARAM>> &getOrderedList();
-    static QHash<QString, WPARAM> getMap();
+    static const QHash<QString, WPARAM> &getMap();
     static QString getKeyText(WPARAM vkCode);
 };

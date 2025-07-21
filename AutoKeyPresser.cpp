@@ -10,19 +10,20 @@ AutoKeyPresser::~AutoKeyPresser() {}
 
 void AutoKeyPresser::WindowHandleFromPoint(HWND &handle, HWND &parentHandle)
 {
-    qDebug() << "AutoKeyPresser::WindowHandleFromPoint() został wywołany.";
+    qDebug() << "[AutoKeyPresser] WindowHandleFromPoint() został wywołany.";
     POINT point;
     GetCursorPos(&point); // Pobranie współrzędnych kursora w odniesieniu do ekranu
     handle = WindowFromPoint(point);
     parentHandle = GetAncestor(handle, GA_ROOT);
 
     if (handle != nullptr) {
-        qDebug() << "X:" << point.x << "Y:" << point.y;
-        qDebug() << "Handle:" << handle << "- Tekst:" << GetWindowTextFromHandle(handle);
-        qDebug() << "ParentHandle:" << parentHandle
+        //qDebug() << "X:" << point.x << "Y:" << point.y;
+        qDebug() << "[AutoKeyPresser] Handle:" << handle
+                 << "- Tekst:" << GetWindowTextFromHandle(handle);
+        qDebug() << "[AutoKeyPresser] ParentHandle:" << parentHandle
                  << "- Tekst:" << GetWindowTextFromHandle(parentHandle) << "\n";
     } else {
-        qDebug() << "Nie udało się pobrać uchwytu okna.";
+        qDebug() << "[AutoKeyPresser] Nie udało się pobrać uchwytu okna.";
     }
 }
 
@@ -36,7 +37,7 @@ QString AutoKeyPresser::GetWindowTextFromHandle(const HWND hwnd) const
         // Zamieniamy tekst z wide-char (wchar_t) na QString
         return QString::fromWCharArray(windowText, length);
     } else {
-        qDebug() << "Nie udało się pobrać tekstu dla uchwytu:" << hwnd;
+        qDebug() << "[AutoKeyPresser] Nie udało się pobrać tekstu dla uchwytu:" << hwnd;
         return QString(); // Zwraca pusty QString
     }
 }
@@ -51,8 +52,9 @@ void AutoKeyPresser::SentKey(const HWND handle, const QString &key)
         WPARAM keyCode = it.value();
         PostMessage(handle, WM_KEYDOWN, keyCode, 0);
         PostMessage(handle, WM_KEYUP, keyCode, 0);
-        qDebug() << "Wysyłam klawisz:" << key << "do uchwytu:" << handle;
+        qDebug() << "[AutoKeyPresser] Wysyłam klawisz:" << key << "do uchwytu:" << handle;
     } else {
-        qDebug() << "Nieznany klawisz:" << key << "(po przekształceniu:" << keyUpper << ")";
+        qDebug() << "[AutoKeyPresser] Nieznany klawisz:" << key
+                 << "(po przekształceniu:" << keyUpper << ")";
     }
 }

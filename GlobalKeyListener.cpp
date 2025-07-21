@@ -2,7 +2,6 @@
 #include <QDebug>
 #include <QKeySequence>
 #include <QMetaObject>
-#include "KeyMap.h"
 
 // Uchwyt do hooka systemowego (Windows Hook)
 HHOOK GlobalKeyListener::hook = nullptr;

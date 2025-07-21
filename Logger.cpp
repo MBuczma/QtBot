@@ -1,4 +1,4 @@
-/* Logger.c */
+/* Logger.cpp */
 /*
  * Plik Loggera zapisującego logi do pliku
  */

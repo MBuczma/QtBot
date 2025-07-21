@@ -14,11 +14,10 @@
 
 #include <QFileDialog>
 #include <QMessageBox>
-#include "Logger.h"
 #include "OknoBot.h"
 #include <memory> // std::unique_ptr
 
-short GlowneOkno::width = 670;
+short GlowneOkno::width = 735;
 short GlowneOkno::height = 180;
 
 GlowneOkno::GlowneOkno(QWidget *parent)
@@ -51,7 +50,7 @@ GlowneOkno::~GlowneOkno() = default; // Destruktor domyślny
 
 void GlowneOkno::start()
 {
-    qDebug() << "Przycisk start został naciśnięty.";
+    qDebug() << "[GlowneOkno] Przycisk start został naciśnięty.";
     ui->stackedWidget->setCurrentWidget(oknoBot.get());
     this->setMinimumSize(width, height);
     this->setMaximumSize(width, height);
@@ -59,12 +58,12 @@ void GlowneOkno::start()
 
 void GlowneOkno::informacje()
 {
-    qDebug() << "Przycisk informacje został naciśnięty.";
+    qDebug() << "[GlowneOkno] Przycisk informacje został naciśnięty.";
 }
 
 void GlowneOkno::wyjscie()
 {
-    qDebug() << "Przycisk wyjscie został naciśnięty.";
+    qDebug() << "[GlowneOkno] Przycisk wyjscie został naciśnięty.";
     QApplication::quit();
 }
 
@@ -145,7 +144,6 @@ void GlowneOkno::closeEvent(QCloseEvent *event)
 
     if (reply == QMessageBox::Yes) {
         qInfo() << "[GlowneOkno] Użytkownik potwierdził zamknięcie programu.";
-        closeLogger(); // <-- zamknie plik, przywróci oryginalny handler
         event->accept();
     } else {
         qInfo() << "[GlowneOkno] Użytkownik anulował zamknięcie programu.";

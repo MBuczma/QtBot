@@ -1,5 +1,6 @@
 #include "KeyMap.h"
 
+//statyczna mapa wszystkich przycisków
 const QList<QPair<QString, WPARAM>> &KeyMap::getOrderedList()
 {
     static const QList<QPair<QString, WPARAM>> keyList = {// Cyfry i litery
@@ -114,16 +115,19 @@ const QList<QPair<QString, WPARAM>> &KeyMap::getOrderedList()
     return keyList;
 }
 
-QHash<QString, WPARAM> KeyMap::getMap()
+//QHash mapa z ustawionymi na duże litery znakami
+const QHash<QString, WPARAM> &KeyMap::getMap()
 {
-    QHash<QString, WPARAM> map;
-    for (const auto &pair : getOrderedList()) {
-        map.insert(pair.first.toUpper(),
-                   pair.second); // upewnia się, że klucze są jednolicie porównywalne
+    static QHash<QString, WPARAM> map;
+    if (map.isEmpty()) {
+        for (const auto &pair : getOrderedList()) {
+            map.insert(pair.first.toUpper(), pair.second);
+        }
     }
     return map;
 }
 
+//Zwraca czytelną wartość klawisza np do logów
 QString KeyMap::getKeyText(WPARAM vkCode)
 {
     for (const auto &pair : getOrderedList()) {

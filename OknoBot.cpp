@@ -33,7 +33,7 @@ OknoBot::~OknoBot() = default;
 void OknoBot::dodajRzad()
 {
     emit rozszerzOkno(ROW_HEIGHT);
-    qDebug() << "Przycisk dodajRzadPrzyciskow został naciśnięty.";
+    qDebug() << "[OknoBot] Przycisk dodajRzadPrzyciskow został naciśnięty.";
 
     GroupBoxControl *newGroupBox = new GroupBoxControl(this);
     ui->verticalLayout->insertWidget(ui->verticalLayout->count() - 1, newGroupBox);
@@ -44,6 +44,7 @@ void OknoBot::dodajRzad()
 
 void OknoBot::usunKonkretnegoGroupBoxa(GroupBoxControl *kto)
 {
+    qDebug() << "[OknoBot] Przycisk usunKonkretnegoGroupBoxa został naciśnięty.";
     auto it = std::find(groupBoxes.begin(), groupBoxes.end(), kto);
     if (it != groupBoxes.end()) {
         groupBoxes.erase(it);
@@ -55,6 +56,7 @@ void OknoBot::usunKonkretnegoGroupBoxa(GroupBoxControl *kto)
 
 void OknoBot::usunWszystkieRzedy()
 {
+    qDebug() << "[OknoBot] usunWszystkieRzedy()";
     for (auto *box : groupBoxes) {
         ui->verticalLayout->removeWidget(box);
         delete box;
@@ -66,14 +68,14 @@ void OknoBot::usunWszystkieRzedy()
 void OknoBot::startWszystkie()
 {
     for (auto &box : groupBoxes) {
-        qDebug() << box->wysylanieStart();
+        qDebug() << "[OknoBot] startWszystkie() " << box->wysylanieStart();
     }
 }
 
 void OknoBot::stopWszystkie()
 {
     for (auto &box : groupBoxes) {
-        qDebug() << box->wysylanieStop();
+        qDebug() << "[OknoBot] stopWszystkie() " << box->wysylanieStop();
     }
 }
 
@@ -82,7 +84,7 @@ QString OknoBot::getAllDataFromGroupBox()
     QString AllData = "";
     if (groupBoxes.empty() != true) {
         for (auto &box : groupBoxes) {
-            qDebug() << box->getAllData();
+            qDebug() << "[OknoBot] getAllDataFromGroupBox() " << box->getAllData();
             AllData += box->getAllData() + "\n";
         }
         return AllData;
@@ -92,6 +94,7 @@ QString OknoBot::getAllDataFromGroupBox()
 
 void OknoBot::setAllDataToGroupBox(QString zawartoscPliku)
 {
+    qDebug() << "[OknoBot] setAllDataToGroupBox() " << zawartoscPliku;
     QStringList lines = zawartoscPliku.split("\n", Qt::SkipEmptyParts);
 
     for (int i = groupBoxes.size(); i < lines.count(); ++i) {
@@ -107,23 +110,27 @@ void OknoBot::setAllDataToGroupBox(QString zawartoscPliku)
 
 void OknoBot::onKeyPressed(WPARAM vkCode)
 {
-    qDebug() << "[Hotkey] Odebrano klawisz VK:" << vkCode;
-    qDebug() << "[Hotkey] Liczba aktywnych groupBoxes:" << groupBoxes.size();
+    //qDebug() << "[OknoBot][Hotkey] Odebrano klawisz VK:" << vkCode << " WParam: " << KeyMap::getKeyText(vkCode);
+    //qDebug() << "[OknoBot][Hotkey] Liczba aktywnych groupBoxes:" << groupBoxes.size();
 
     auto mapa = KeyMap::getMap();
 
     for (auto *box : groupBoxes) {
         QString hotkey = box->pobierzHotkey().trimmed().toUpper();
-        qDebug() << "[Hotkey] VK:" << vkCode << "vs:" << hotkey;
+        if (box->pobierzHotkey() == "") {
+            qDebug() << "[OknoBot] groupBoxes ma pusty hotkey";
+            continue;
+        }
+        qDebug() << "[OknoBot][Hotkey] VK:" << vkCode << "vs:" << hotkey;
 
         if (mapa.contains(hotkey)) {
-            qDebug() << "  Mapa[" << hotkey << "] = " << mapa[hotkey];
+            qDebug() << "[OknoBot]  Mapa[" << hotkey << "] = " << mapa[hotkey];
             if (mapa[hotkey] == vkCode) {
-                qDebug() << " PASUJE: wywołuję wysylanieStart()";
+                qDebug() << "[OknoBot] PASUJE: wywołuję wysylanieStart()";
                 box->handleStartStop();
             }
         } else {
-            qDebug() << " Nie znaleziono '" << hotkey << "' w mapie.";
+            qDebug() << "[OknoBot] Nie znaleziono '" << hotkey << "' w mapie.";
         }
     }
 }

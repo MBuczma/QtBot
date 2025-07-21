@@ -64,6 +64,7 @@ void GroupBoxControl::setupGroupBox()
 
     comboBox_Hotkey = new QComboBox(this);
     comboBox_Hotkey->addItems({""});
+    // Dodaj wszystkie klawisze z mapy KeyMap
     for (const auto &pair : KeyMap::getOrderedList()) {
         comboBox_Hotkey->addItem(pair.first);
     }
@@ -109,8 +110,7 @@ void GroupBoxControl::setupGroupBox()
 }
 void GroupBoxControl::ZlapIdOkna()
 {
-    qDebug() << "\n"
-             << "Metoda GroupBoxControl::ZlapIdOkna() została wywołana.";
+    qDebug() << "[GroupBoxControl] ZlapIdOkna() zostało wywołane.";
     isButtonPressed = true;
     grabMouse();
     setCursor(Qt::CrossCursor);
@@ -119,7 +119,7 @@ void GroupBoxControl::ZlapIdOkna()
 void GroupBoxControl::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton && isButtonPressed == true) {
-        qDebug() << "GroupBoxControl::mouseReleaseEvent. W IFie";
+        //qDebug() << "[GroupBoxControl] mouseReleaseEvent() W IFie";
         isButtonPressed = false;
         autoKeyPresser->WindowHandleFromPoint(handle, parentHandle);
         releaseMouse();
@@ -144,7 +144,7 @@ void GroupBoxControl::zaktualizujNazwe()
         }
         //qDebug() << "Tytuł groupBox został zaktualizowany.";
     } else {
-        qDebug() << "Błąd: wskaźnik groupBox jest nullptr!";
+        qDebug() << "[GroupBoxControl] Błąd: wskaźnik groupBox jest nullptr!";
     }
 }
 
@@ -175,7 +175,7 @@ void GroupBoxControl::aktualizujStanPrzyciskuStart()
     if (klawisz.isEmpty() || handle == nullptr
         || (spinBox_Sekund->value() == 0 && spinBox_Milisekund->value() == 0)) {
         buttonStartStop->setEnabled(false);
-        qDebug() << "klawisz.isEmpty() || !handle = " << klawisz << " " << handle;
+        qDebug() << "[GroupBoxControl] klawisz.isEmpty() || !handle = " << klawisz << " " << handle;
 
     } else {
         // Ustaw zielony kolor i aktywuj przycisk
@@ -186,7 +186,7 @@ void GroupBoxControl::aktualizujStanPrzyciskuStart()
 
 void GroupBoxControl::handleStartStop()
 {
-    qDebug() << "Przycisk start z OknoBot został naciśnięty.";
+    qDebug() << "[GroupBoxControl] Przycisk start z OknoBot został naciśnięty.";
 
     if (isSending == false) {
         Beep(1000, 100); // 500 Hz przez 100 ms
@@ -206,7 +206,7 @@ bool GroupBoxControl::wysylanieStop()
         countdownTimer->stop();
         return true;
     } else {
-        qDebug() << "Zatrzymanie się nie powiodło";
+        qDebug() << "[GroupBoxControl] Zatrzymanie się nie powiodło";
         return false;
     }
 }
@@ -229,10 +229,10 @@ bool GroupBoxControl::wysylanieStart()
             countdownTimer->start(100);
             return true;
         } else {
-            qDebug() << "Czas musi być większy od 0 i klawisz musi być wybrany.";
+            qDebug() << "[GroupBoxControl] Czas musi być większy od 0 i klawisz musi być wybrany.";
         }
     } else {
-        qDebug() << "Juz wysyła";
+        qDebug() << "[GroupBoxControl] Juz wysyła";
     }
     return false;
 }
@@ -277,7 +277,7 @@ void GroupBoxControl::setAllData(const QString &line)
 
     for (int i = 0; i < values.size(); ++i) {
         QString value = values[i].trimmed();
-        qDebug() << "Wartość [" << i << "] :" << value;
+        qDebug() << "[GroupBoxControl] setAllData(). Wartość [" << i << "] :" << value;
 
         switch (i) {
         case 0:
