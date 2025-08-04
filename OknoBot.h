@@ -8,7 +8,6 @@
 #include <QWidget>
 #include "GlobalKeyListener.h"
 
-class AutoKeyPresser;
 class GroupBoxControl;
 
 namespace Ui {

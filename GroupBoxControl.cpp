@@ -14,7 +14,6 @@
 #include <QTimer>
 #include "KeyMap.h"
 #include <memory>
-#include <windows.h>
 
 GroupBoxControl::GroupBoxControl(QWidget *parent) //konstrukor
     : QWidget(parent)
@@ -142,7 +141,6 @@ void GroupBoxControl::zaktualizujNazwe()
         } else {
             groupBox->setTitle(parentWindowText + " " + windowText);
         }
-        //qDebug() << "Tytuł groupBox został zaktualizowany.";
     } else {
         qDebug() << "[GroupBoxControl] Błąd: wskaźnik groupBox jest nullptr!";
     }
@@ -175,18 +173,21 @@ void GroupBoxControl::aktualizujStanPrzyciskuStart()
     if (klawisz.isEmpty() || handle == nullptr
         || (spinBox_Sekund->value() == 0 && spinBox_Milisekund->value() == 0)) {
         buttonStartStop->setEnabled(false);
-        qDebug() << "[GroupBoxControl] klawisz.isEmpty() || !handle = " << klawisz << " " << handle;
+        qDebug()
+            << "[GroupBoxControl][aktualizujStanPrzyciskuStart] klawisz.isEmpty() || !handle = "
+            << klawisz << " " << handle;
 
     } else {
-        // Ustaw zielony kolor i aktywuj przycisk
-        qDebug() << "Ustaw zielony kolor i aktywuj przycisk = " << klawisz << " " << handle;
+        qDebug() << "[GroupBoxControl][aktualizujStanPrzyciskuStart] Ustaw zielony kolor i aktywuj "
+                    "przycisk = "
+                 << klawisz << " " << handle;
         buttonStartStop->setEnabled(true);
     }
 }
 
 void GroupBoxControl::handleStartStop()
 {
-    qDebug() << "[GroupBoxControl] Przycisk start z OknoBot został naciśnięty.";
+    qDebug() << "[GroupBoxControl] handleStartStop()";
 
     if (isSending == false) {
         Beep(1000, 100); // 500 Hz przez 100 ms
@@ -200,13 +201,14 @@ void GroupBoxControl::handleStartStop()
 bool GroupBoxControl::wysylanieStop()
 {
     if (isSending == true) {
+        qDebug() << "[GroupBoxControl] wysylanieStop()";
         isSending = false;
         aktualizujStanPrzyciskuStart();
         keyTimer->stop();
         countdownTimer->stop();
         return true;
     } else {
-        qDebug() << "[GroupBoxControl] Zatrzymanie się nie powiodło";
+        qDebug() << "[GroupBoxControl][wysylanieStop] Zatrzymanie się nie powiodło";
         return false;
     }
 }
@@ -229,10 +231,11 @@ bool GroupBoxControl::wysylanieStart()
             countdownTimer->start(100);
             return true;
         } else {
-            qDebug() << "[GroupBoxControl] Czas musi być większy od 0 i klawisz musi być wybrany.";
+            qDebug() << "[GroupBoxControl][wysylanieStart] Czas musi być większy od 0 i klawisz "
+                        "musi być wybrany.";
         }
     } else {
-        qDebug() << "[GroupBoxControl] Juz wysyła";
+        qDebug() << "[GroupBoxControl][wysylanieStart] Juz wysyła";
     }
     return false;
 }
@@ -241,7 +244,7 @@ void GroupBoxControl::wyslijKlawisz()
 {
     QString key = comboBox_Klawisz->currentText();
     if (key.isEmpty() == false && handle != nullptr) {
-        autoKeyPresser->SentKey(handle, key);
+        autoKeyPresser->SendKey(handle, key, groupBox->title());
     }
 }
 

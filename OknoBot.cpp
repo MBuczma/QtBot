@@ -81,15 +81,12 @@ void OknoBot::stopWszystkie()
 
 QString OknoBot::getAllDataFromGroupBox()
 {
-    QString AllData = "";
-    if (groupBoxes.empty() != true) {
-        for (auto &box : groupBoxes) {
-            qDebug() << "[OknoBot] getAllDataFromGroupBox() " << box->getAllData();
-            AllData += box->getAllData() + "\n";
-        }
-        return AllData;
+    QString AllData;
+    for (auto &box : groupBoxes) {
+        qDebug() << "[OknoBot] getAllDataFromGroupBox() " << box->getAllData();
+        AllData += box->getAllData() + "\n";
     }
-    return QString();
+    return AllData;
 }
 
 void OknoBot::setAllDataToGroupBox(QString zawartoscPliku)
@@ -116,21 +113,19 @@ void OknoBot::onKeyPressed(WPARAM vkCode)
     auto mapa = KeyMap::getMap();
 
     for (auto *box : groupBoxes) {
-        QString hotkey = box->pobierzHotkey().trimmed().toUpper();
-        if (box->pobierzHotkey() == "") {
-            qDebug() << "[OknoBot] groupBoxes ma pusty hotkey";
+        QString hotkey = box->pobierzHotkey().toUpper();
+        if (hotkey == "") {
             continue;
         }
-        qDebug() << "[OknoBot][Hotkey] VK:" << vkCode << "vs:" << hotkey;
 
         if (mapa.contains(hotkey)) {
-            qDebug() << "[OknoBot]  Mapa[" << hotkey << "] = " << mapa[hotkey];
             if (mapa[hotkey] == vkCode) {
-                qDebug() << "[OknoBot] PASUJE: wywołuję wysylanieStart()";
+                qDebug() << "[OknoBot][onKeyPressed] wciśnięty klawisz: " << mapa[hotkey]
+                         << "PASUJE do hotkey'a: " << hotkey << ". Wywołuję handleStartStop()";
                 box->handleStartStop();
             }
         } else {
-            qDebug() << "[OknoBot] Nie znaleziono '" << hotkey << "' w mapie.";
+            qDebug() << "[OknoBot][onKeyPressed] Nie znaleziono '" << hotkey << "' w mapie.";
         }
     }
 }

@@ -1,6 +1,9 @@
-/* Logger.h */
-/*
- * Plik nagłówkowy Loggera zapisującego logi do pliku
+/**
+ * @file Logger.h
+ * @brief Deklaracja funkcji loggera zapisującego logi do pliku.
+ *
+ * Logger przechwytuje komunikaty Qt (`qDebug`, `qInfo`, `qWarning`, `qCritical`) 
+ * i zapisuje je do pliku tekstowego z timestampem. Może być używany w całej aplikacji.
  */
 #ifndef LOGGER_H
 #define LOGGER_H

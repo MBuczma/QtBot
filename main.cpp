@@ -1,9 +1,10 @@
-/* main.cpp */
-/*
- * Główny plik w którym jest tworzony obiekt QApplication o nazwie application.
- * Tworzy aplikację Qt i uruchamia główne okno (GlowneOkno).
- * W funkcji ustawStyl jest ustawiany wygląd GUI poprzez setStyle i setPalette.
- * Inicjalizuje logger.
+/**
+ * @file main.cpp
+ * @brief Główny plik programu QtBot.
+ *
+ * Tworzy obiekt QApplication, inicjalizuje logger oraz uruchamia główne okno aplikacji (GlowneOkno).
+ * W funkcji `ustawStyl` ustawiany jest wygląd GUI poprzez `setStyle` i `setPalette`.
+ * Program loguje kluczowe etapy uruchamiania i zamykania aplikacji.
  */
 
 //Opisy dla użytkownika
@@ -19,12 +20,20 @@
 #include <QPalette>
 #include <QStandardPaths>
 #include <QStyleFactory>
-#include <memory> // std::unique_ptr
-#include <exception>
 
 void ustawLoggera();
 void ustawStyl(QApplication &application);
 
+/**
+ * @brief Punkt wejścia aplikacji QtBot.
+ *
+ * Tworzy instancję aplikacji, inicjalizuje logger, ustawia styl oraz uruchamia główne okno.
+ * Obsługuje wyjątki i zapisuje szczegóły do logów.
+ *
+ * @param[in] argc Liczba argumentów wiersza poleceń.
+ * @param[in] argv Tablica argumentów wiersza poleceń.
+ * @return Kod wyjścia programu (0 w przypadku poprawnego zakończenia, -1 w razie błędu).
+ */
 int main(int argc, char *argv[])
 {
     try {
@@ -36,10 +45,10 @@ int main(int argc, char *argv[])
         ustawStyl(application);
         qInfo() << "[main] Styl graficzny ustawiony.";
 
-        std::unique_ptr<GlowneOkno> glowneOkno = std::make_unique<GlowneOkno>();
+        GlowneOkno glowneOkno;
         qInfo() << "[main] Główne okno utworzone.";
 
-        glowneOkno->show();
+        glowneOkno.show();
         qInfo() << "[main] Wyświetlono główne okno.";
 
         int result = application.exec();
@@ -48,8 +57,8 @@ int main(int argc, char *argv[])
         closeLogger();
         return result;
 
-    } catch (const std::exception &e) {
-        qCritical() << "[main] Wyjątek std::exception:" << e.what();
+    } catch (const std::exception &exception) {
+        qCritical() << "[main] Wyjątek std::exception:" << exception.what();
     } catch (...) {
         qCritical() << "[main] Nieznany wyjątek podczas uruchamiania aplikacji.";
     }
@@ -58,6 +67,12 @@ int main(int argc, char *argv[])
     return -1;
 }
 
+/**
+ * @brief Inicjalizuje logger aplikacji.
+ *
+ * Tworzy katalog logów w folderze AppData oraz plik logu z aktualnym timestampem.
+ * Logger przechwytuje komunikaty `qDebug`, `qWarning`, `qInfo`, `qCritical`.
+ */
 void ustawLoggera()
 {
     QCoreApplication::setApplicationName("QtBot");
@@ -74,6 +89,13 @@ void ustawLoggera()
     qInfo() << "[ustawLoggera] Logi zapisywane w:" << logFile;
 }
 
+/**
+ * @brief Ustawia styl graficzny aplikacji.
+ *
+ * Zastosowany jest styl "Fusion" oraz modyfikowane są kolory dla elementów interfejsu (hover dla przycisków i list rozwijanych).
+ *
+ * @param[in,out] application Obiekt QApplication, którego wygląd będzie modyfikowany.
+ */
 void ustawStyl(QApplication &application)
 {
     QApplication::setStyle(QStyleFactory::create("Fusion"));

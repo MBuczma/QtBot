@@ -1,4 +1,11 @@
-/* AutoKeyPresser.h */
+/**
+ * @file AutoKeyPresser.h
+ * @brief Deklaracja klasy AutoKeyPresser.
+ *
+ * Klasa odpowiedzialna za obsługę automatycznego wysyłania klawiszy
+ * do wybranego okna systemowego. Umożliwia również pobranie uchwytu okna
+ * spod kursora i odczytanie jego tytułu.
+ */
 #pragma once
 
 #include <QString>
@@ -17,7 +24,5 @@ public:
     QString GetWindowTextFromHandle(const HWND hwnd) const;
 
     // Wysyła klawisz do podanego okna
-    void SentKey(const HWND handle, const QString &key);
-
-private:
+    void SendKey(const HWND handle, const QString &key, const QString &name);
 };

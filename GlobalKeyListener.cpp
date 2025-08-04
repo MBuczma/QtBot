@@ -30,16 +30,12 @@ void GlobalKeyListener::start()
         return;
     }
 
+    instance = this;
+    hook = SetWindowsHookEx(WH_KEYBOARD_LL, keyboardProc, nullptr, 0);
     if (!hook) {
-        instance = this;
-
-        // Ustawienie globalnego hooka klawiatury (typu low-level)
-        hook = SetWindowsHookEx(WH_KEYBOARD_LL, keyboardProc, nullptr, 0);
-        if (!hook) {
-            qWarning() << "[GlobalKeyListener] Nie udało się ustawić hooka!";
-        } else {
-            qDebug() << "[GlobalKeyListener] Hook aktywowany.";
-        }
+        qWarning() << "[GlobalKeyListener] Nie udało się ustawić hooka!";
+    } else {
+        qDebug() << "[GlobalKeyListener] Hook aktywowany.";
     }
 }
 

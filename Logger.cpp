@@ -1,6 +1,11 @@
-/* Logger.cpp */
-/*
- * Plik Loggera zapisującego logi do pliku
+/**
+ * @file Logger.cpp
+ * @brief Implementacja loggera zapisującego logi do pliku.
+ *
+ * Plik zawiera implementację funkcji odpowiedzialnych za:
+ * - Inicjalizację loggera i otwarcie pliku
+ * - Przechwytywanie wiadomości Qt i zapis do pliku
+ * - Zamykanie loggera i przywracanie domyślnego handlera
  */
 #include "Logger.h"
 
@@ -8,22 +13,16 @@
 #include <QDebug>
 #include <QFile>
 #include <QTextStream>
-#include <memory>
 
-//Przechowujemy oryginalny handler, aby wywoływać go po naszym logowaniu.
+/// Oryginalny handler Qt przechowywany w celu wywoływania go po logowaniu własnym
 static QtMessageHandler oldHandler = nullptr;
+/// Wskaźnik na otwarty plik logu
 static std::unique_ptr<QFile> logFile;
+/// Strumień do zapisu danych do pliku
 static std::unique_ptr<QTextStream> logStream;
-static bool loggerInitialized = false;
 
 void initLogger(const QString &fileName)
 {
-    if (loggerInitialized) {
-        // Sprawdzamy czy logger był już zainicjalizowany
-        qWarning() << "Logger jest już zainicjalizowany!";
-        return;
-    }
-
     // Zapamiętujemy oryginalny handler, aby móc wywoływać go dalej
     oldHandler = qInstallMessageHandler(nullptr);
 
@@ -31,7 +30,7 @@ void initLogger(const QString &fileName)
     logFile = std::make_unique<QFile>(fileName);
     if (!logFile->open(QIODevice::Append | QIODevice::Text)) {
         // Nie udało się otworzyć
-        qWarning() << "Nie można otworzyć pliku logu:" << fileName;
+        qWarning() << "[Logger][initLogger]Nie można otworzyć pliku logu:" << fileName;
 
         // Cofamy się do poprzedniego handlera
         qInstallMessageHandler(oldHandler);
@@ -47,7 +46,6 @@ void initLogger(const QString &fileName)
 
     // Instalujemy handler
     qInstallMessageHandler(customMessageHandler);
-    loggerInitialized = true;
 }
 
 void customMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
@@ -78,7 +76,6 @@ void customMessageHandler(QtMsgType type, const QMessageLogContext &context, con
         logMessage += msg;
 
         (*logStream) << logMessage << Qt::endl;
-        logStream->flush();
     }
 
     // Dodatkowo wywołujemy stary (oryginalny) handler aby komunikat pojawił się też w terminalu tak jak zwykle.
@@ -87,32 +84,27 @@ void customMessageHandler(QtMsgType type, const QMessageLogContext &context, con
     }
 
     if (type == QtFatalMsg) {
+        if (logStream) {
+            logStream->flush();
+        }
         abort();
     }
 }
 
 void closeLogger()
 {
-    qDebug() << "Zamykam plik loggera";
-    // Jeśli logger nie był w ogóle zainicjalizowany, nic nie robimy
-    if (!loggerInitialized) {
-        return;
-    }
+    qDebug() << "[Logger][closeLogger] Zamykam plik loggera";
 
     // Przywracamy stary handler (żeby dalej mieć standardowe zachowanie)
     qInstallMessageHandler(oldHandler);
     oldHandler = nullptr;
-    loggerInitialized = false;
 
     // Zamykanie i reset wskaźników
     if (logStream) {
-        logStream->flush(); // Dla pewności
         logStream.reset();  // Usuwa QTextStream
     }
-    if (logFile) {
-        if (logFile->isOpen()) {
-            logFile->close();
-        }
-        logFile.reset(); // Usuwa QFile
+    if (logFile && logFile->isOpen()) {
+        logFile->close();
     }
+    logFile.reset();
 }

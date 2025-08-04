@@ -15,7 +15,6 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include "OknoBot.h"
-#include <memory> // std::unique_ptr
 
 short GlowneOkno::width = 735;
 short GlowneOkno::height = 180;
@@ -50,7 +49,7 @@ GlowneOkno::~GlowneOkno() = default; // Destruktor domyślny
 
 void GlowneOkno::start()
 {
-    qDebug() << "[GlowneOkno] Przycisk start został naciśnięty.";
+    qDebug() << "[GlowneOkno] Przycisk start() został naciśnięty.";
     ui->stackedWidget->setCurrentWidget(oknoBot.get());
     this->setMinimumSize(width, height);
     this->setMaximumSize(width, height);
@@ -58,15 +57,18 @@ void GlowneOkno::start()
 
 void GlowneOkno::informacje()
 {
-    qDebug() << "[GlowneOkno] Przycisk informacje został naciśnięty.";
+    qDebug() << "[GlowneOkno] Przycisk informacje() został naciśnięty.";
 }
 
 void GlowneOkno::wyjscie()
 {
-    qDebug() << "[GlowneOkno] Przycisk wyjscie został naciśnięty.";
+    qDebug() << "[GlowneOkno] Przycisk wyjscie() został naciśnięty.";
     QApplication::quit();
 }
 
+/*
+* Sekcja przycisków z Menu belki
+*/
 void GlowneOkno::zapiszPlik()
 {
     QString domyslnaNazwaPliku = "ProfileSave.QtBP";
@@ -79,22 +81,22 @@ void GlowneOkno::zapiszPlik()
         );
 
     if (sciezkaPliku.isEmpty()) {
-        qInfo() << "[GlowneOkno] Zapis pliku anulowany przez użytkownika.";
+        qInfo() << "[GlowneOkno][zapiszPlik] Zapis pliku anulowany przez użytkownika.";
         return;
     }
 
     QFile plik(sciezkaPliku);
     if (!plik.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QMessageBox::warning(this, tr("Błąd"), tr("Nie można otworzyć pliku do zapisu."));
-        qWarning() << "[GlowneOkno] Nie można otworzyć pliku do zapisu:" << sciezkaPliku;
+        qWarning() << "[GlowneOkno][zapiszPlik] Nie można otworzyć pliku do zapisu:"
+                   << sciezkaPliku;
         return;
     }
 
-    oknoBot->getAllDataFromGroupBox();
     QTextStream out(&plik);
     out << oknoBot->getAllDataFromGroupBox();
     plik.close();
-    qInfo() << "[GlowneOkno] Zapisano dane do pliku:" << sciezkaPliku;
+    qInfo() << "[GlowneOkno][zapiszPlik] Zapisano dane do pliku:" << sciezkaPliku;
 }
 
 void GlowneOkno::wczytajPlik()
@@ -107,27 +109,28 @@ void GlowneOkno::wczytajPlik()
         );
 
     if (sciezkaPliku.isEmpty()) {
-        qInfo() << "[GlowneOkno] Wczytanie pliku anulowane przez użytkownika.";
+        qInfo() << "[GlowneOkno][wczytajPlik] Wczytanie pliku anulowane przez użytkownika.";
         return;
     }
 
     QFile plik(sciezkaPliku);
     if (!plik.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QMessageBox::warning(this, tr("Błąd"), tr("Nie można otworzyć pliku do odczytu."));
-        qWarning() << "[GlowneOkno] Nie można otworzyć pliku do odczytu:" << sciezkaPliku;
+        qWarning() << "[GlowneOkno][wczytajPlik] Nie można otworzyć pliku do odczytu:"
+                   << sciezkaPliku;
         return;
     }
 
     QTextStream in(&plik);
     QString zawartoscPliku = in.readAll();
     int liczbaLinii = zawartoscPliku.split('\n', Qt::SkipEmptyParts).size();
-    qInfo() << "[GlowneOkno] Wczytano dane z pliku:" << sciezkaPliku
+    qInfo() << "[GlowneOkno][wczytajPlik] Wczytano dane z pliku:" << sciezkaPliku
             << "Liczba linii:" << liczbaLinii;
     qDebug().noquote() << zawartoscPliku;
 
     if (ui->stackedWidget->currentWidget() != oknoBot.get()) {
         ui->stackedWidget->setCurrentWidget(oknoBot.get());
-        qInfo() << "[GlowneOkno] Po wczytaniu profilu przełączono na widok OknoBot.";
+        qInfo() << "[GlowneOkno][wczytajPlik] Po wczytaniu profilu przełączono na widok OknoBot.";
     }
     oknoBot->usunWszystkieRzedy();
     oknoBot->setAllDataToGroupBox(zawartoscPliku);
@@ -143,10 +146,10 @@ void GlowneOkno::closeEvent(QCloseEvent *event)
                                                               QMessageBox::Yes | QMessageBox::No);
 
     if (reply == QMessageBox::Yes) {
-        qInfo() << "[GlowneOkno] Użytkownik potwierdził zamknięcie programu.";
+        qInfo() << "[GlowneOkno][closeEvent] Użytkownik potwierdził zamknięcie programu.";
         event->accept();
     } else {
-        qInfo() << "[GlowneOkno] Użytkownik anulował zamknięcie programu.";
+        qInfo() << "[GlowneOkno][closeEvent] Użytkownik anulował zamknięcie programu.";
         event->ignore();
     }
 }

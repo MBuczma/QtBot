@@ -1,9 +1,16 @@
-/* AutoKeyPresser.cpp */
+/**
+ * @file AutoKeyPresser.cpp
+ * @brief Implementacja klasy AutoKeyPresser.
+ *
+ * Zawiera funkcje do:
+ * - Pobierania uchwytu okna spod kursora
+ * - Odczytywania tytułu okna
+ * - Wysyłania pojedynczych klawiszy do okna
+ */
 #include "AutoKeyPresser.h"
 
 #include <QDebug>
 #include <KeyMap.h>
-#include <windows.h>
 
 AutoKeyPresser::AutoKeyPresser() {}
 AutoKeyPresser::~AutoKeyPresser() {}
@@ -23,7 +30,7 @@ void AutoKeyPresser::WindowHandleFromPoint(HWND &handle, HWND &parentHandle)
         qDebug() << "[AutoKeyPresser] ParentHandle:" << parentHandle
                  << "- Tekst:" << GetWindowTextFromHandle(parentHandle) << "\n";
     } else {
-        qDebug() << "[AutoKeyPresser] Nie udało się pobrać uchwytu okna.";
+        qDebug() << "[AutoKeyPresser][WindowHandleFromPoint] Nie udało się pobrać uchwytu okna.";
     }
 }
 
@@ -37,22 +44,24 @@ QString AutoKeyPresser::GetWindowTextFromHandle(const HWND hwnd) const
         // Zamieniamy tekst z wide-char (wchar_t) na QString
         return QString::fromWCharArray(windowText, length);
     } else {
-        qDebug() << "[AutoKeyPresser] Nie udało się pobrać tekstu dla uchwytu:" << hwnd;
+        qDebug()
+            << "[AutoKeyPresser][GetWindowTextFromHandle] Nie udało się pobrać tekstu dla uchwytu:"
+            << hwnd;
         return QString(); // Zwraca pusty QString
     }
 }
 
-void AutoKeyPresser::SentKey(const HWND handle, const QString &key)
+void AutoKeyPresser::SendKey(const HWND handle, const QString &key, const QString &name)
 {
     const auto &keyMap = KeyMap::getMap();
-    QString keyUpper = key.trimmed().toUpper();
+    QString keyUpper = key.toUpper();
 
     auto it = keyMap.find(keyUpper);
     if (it != keyMap.end()) {
         WPARAM keyCode = it.value();
         PostMessage(handle, WM_KEYDOWN, keyCode, 0);
         PostMessage(handle, WM_KEYUP, keyCode, 0);
-        qDebug() << "[AutoKeyPresser] Wysyłam klawisz:" << key << "do uchwytu:" << handle;
+        qDebug() << "[AutoKeyPresser] Wysyłam klawisz:" << key << "do uchwytu:" << name;
     } else {
         qDebug() << "[AutoKeyPresser] Nieznany klawisz:" << key
                  << "(po przekształceniu:" << keyUpper << ")";
