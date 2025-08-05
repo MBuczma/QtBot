@@ -118,7 +118,6 @@ void GroupBoxControl::ZlapIdOkna()
 void GroupBoxControl::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton && isButtonPressed == true) {
-        //qDebug() << "[GroupBoxControl] mouseReleaseEvent() W IFie";
         isButtonPressed = false;
         autoKeyPresser->WindowHandleFromPoint(handle, parentHandle);
         releaseMouse();
@@ -285,7 +284,7 @@ void GroupBoxControl::setAllData(const QString &line)
         switch (i) {
         case 0:
             if (groupBox)
-                groupBox->setTitle(value);
+                groupBox->setTitle("Musisz zaktualizować ID! " + value);
             break;
         case 1:
             if (comboBox_Klawisz)

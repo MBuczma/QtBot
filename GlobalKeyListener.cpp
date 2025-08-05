@@ -35,7 +35,7 @@ void GlobalKeyListener::start()
     if (!hook) {
         qWarning() << "[GlobalKeyListener] Nie udało się ustawić hooka!";
     } else {
-        qDebug() << "[GlobalKeyListener] Hook aktywowany.";
+        qDebug() << "[GlobalKeyListener] Hook aktywowany." << Qt::endl;
     }
 }
 

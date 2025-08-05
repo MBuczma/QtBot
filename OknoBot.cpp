@@ -26,6 +26,20 @@ OknoBot::OknoBot(QWidget *parent)
     globalKeyListener = new GlobalKeyListener(this);
     connect(globalKeyListener, &GlobalKeyListener::keyPressed, this, &OknoBot::onKeyPressed);
     QTimer::singleShot(0, this, [this]() { globalKeyListener->start(); });
+
+    ui->comboBox_StartALL->addItems({""});
+    // Dodaj wszystkie klawisze z mapy KeyMap
+    for (const auto &pair : KeyMap::getOrderedList()) {
+        ui->comboBox_StartALL->addItem(pair.first);
+    }
+    ui->comboBox_StartALL->setMinimumWidth(90);
+
+    ui->comboBox_StopALL->addItems({""});
+    // Dodaj wszystkie klawisze z mapy KeyMap
+    for (const auto &pair : KeyMap::getOrderedList()) {
+        ui->comboBox_StopALL->addItem(pair.first);
+    }
+    ui->comboBox_StopALL->setMinimumWidth(90);
 }
 
 OknoBot::~OknoBot() = default;
@@ -111,6 +125,26 @@ void OknoBot::onKeyPressed(WPARAM vkCode)
     //qDebug() << "[OknoBot][Hotkey] Liczba aktywnych groupBoxes:" << groupBoxes.size();
 
     auto mapa = KeyMap::getMap();
+
+    QString hotkey = ui->comboBox_StopALL->currentText().toUpper();
+    if (mapa.contains(hotkey)) {
+        if (mapa[hotkey] == vkCode) {
+            qDebug() << "[OknoBot][onKeyPressed] wciśnięty klawisz: " << mapa[hotkey]
+                     << "PASUJE do hotkey'a: " << hotkey << ". Wywołuję handleStartStop()";
+            stopWszystkie();
+            return;
+        }
+    }
+
+    hotkey = ui->comboBox_StartALL->currentText().toUpper();
+    if (mapa.contains(hotkey)) {
+        if (mapa[hotkey] == vkCode) {
+            qDebug() << "[OknoBot][onKeyPressed] wciśnięty klawisz: " << mapa[hotkey]
+                     << "PASUJE do hotkey'a: " << hotkey << ". Wywołuję handleStartStop()";
+            startWszystkie();
+            return;
+        }
+    }
 
     for (auto *box : groupBoxes) {
         QString hotkey = box->pobierzHotkey().toUpper();

@@ -16,7 +16,7 @@
 #include <QMessageBox>
 #include "OknoBot.h"
 
-short GlowneOkno::width = 735;
+short GlowneOkno::width = 830;
 short GlowneOkno::height = 180;
 
 GlowneOkno::GlowneOkno(QWidget *parent)
