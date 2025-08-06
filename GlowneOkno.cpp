@@ -32,6 +32,10 @@ GlowneOkno::GlowneOkno(QWidget *parent)
     connect(ui->PrzyciskInfo, &QPushButton::clicked, this, &GlowneOkno::informacje);
     connect(ui->PrzyciskWyjscie, &QPushButton::clicked, this, &GlowneOkno::wyjscie);
 
+    connect(ui->PrzyciskWroc, &QPushButton::clicked, this, [this]() {
+        ui->stackedWidget->setCurrentWidget(ui->page_Start);
+    });
+
     // Łączenie sygnałów z przyciskami w rozwijanym menu
     connect(ui->actionZapisz, &QAction::triggered, this, &GlowneOkno::zapiszPlik);
     connect(ui->actionWczytaj, &QAction::triggered, this, &GlowneOkno::wczytajPlik);
@@ -58,6 +62,7 @@ void GlowneOkno::start()
 void GlowneOkno::informacje()
 {
     qDebug() << "[GlowneOkno] Przycisk informacje() został naciśnięty.";
+    ui->stackedWidget->setCurrentWidget(ui->page_info);
 }
 
 void GlowneOkno::wyjscie()

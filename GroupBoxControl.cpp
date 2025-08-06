@@ -107,6 +107,7 @@ void GroupBoxControl::setupGroupBox()
     layout->addWidget(buttonUsun);
     connect(buttonUsun, &QPushButton::clicked, this, &GroupBoxControl::czyPotwierdzicUsuniecie);
 }
+
 void GroupBoxControl::ZlapIdOkna()
 {
     qDebug() << "[GroupBoxControl] ZlapIdOkna() zostało wywołane.";
