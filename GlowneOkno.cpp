@@ -151,7 +151,8 @@ void GlowneOkno::closeEvent(QCloseEvent *event)
                                                               QMessageBox::Yes | QMessageBox::No);
 
     if (reply == QMessageBox::Yes) {
-        qInfo() << "[GlowneOkno][closeEvent] Użytkownik potwierdził zamknięcie programu.";
+        qInfo() << Qt::endl
+                << "[GlowneOkno][closeEvent] Użytkownik potwierdził zamknięcie programu.";
         event->accept();
     } else {
         qInfo() << "[GlowneOkno][closeEvent] Użytkownik anulował zamknięcie programu.";

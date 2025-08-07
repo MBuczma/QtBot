@@ -100,6 +100,7 @@ void GroupBoxControl::setupGroupBox()
     spinBox_WysleZa->setMaximum(999999);
     spinBox_WysleZa->setMinimumWidth(60);
     spinBox_WysleZa->setButtonSymbols(QAbstractSpinBox::NoButtons);
+    spinBox_WysleZa->setAttribute(Qt::WA_TransparentForMouseEvents);
     layout->addWidget(spinBox_WysleZa);
 
     buttonUsun = new QPushButton("Usuń rząd", this);
@@ -173,14 +174,12 @@ void GroupBoxControl::aktualizujStanPrzyciskuStart()
     if (klawisz.isEmpty() || handle == nullptr
         || (spinBox_Sekund->value() == 0 && spinBox_Milisekund->value() == 0)) {
         buttonStartStop->setEnabled(false);
-        qDebug()
-            << "[GroupBoxControl][aktualizujStanPrzyciskuStart] klawisz.isEmpty() || !handle = "
-            << klawisz << " " << handle;
-
     } else {
         qDebug() << "[GroupBoxControl][aktualizujStanPrzyciskuStart] Ustaw zielony kolor i aktywuj "
-                    "przycisk = "
-                 << klawisz << " " << handle;
+                    "przycisk ="
+                 << klawisz << " uchwyt:" << windowText << "-" << parentWindowText
+                 << "sekund:" << spinBox_Sekund->value()
+                 << "Milisekund:" << spinBox_Milisekund->value();
         buttonStartStop->setEnabled(true);
     }
 }
@@ -190,10 +189,8 @@ void GroupBoxControl::handleStartStop()
     qDebug() << "[GroupBoxControl] handleStartStop()";
 
     if (isSending == false) {
-        Beep(1000, 100); // 500 Hz przez 100 ms
         wysylanieStart();
     } else {
-        Beep(500, 50); // 500 Hz przez 100 ms
         wysylanieStop();
     }
 }
@@ -201,8 +198,12 @@ void GroupBoxControl::handleStartStop()
 bool GroupBoxControl::wysylanieStop()
 {
     if (isSending == true) {
-        qDebug() << "[GroupBoxControl] wysylanieStop()";
+        qDebug() << "[GroupBoxControl] wysylanieStop() przycisk ="
+                 << comboBox_Klawisz->currentText() << " uchwyt:" << windowText << "-"
+                 << parentWindowText << "sekund:" << spinBox_Sekund->value()
+                 << "Milisekund:" << spinBox_Milisekund->value();
         isSending = false;
+        Beep(500, 50); // 500 Hz przez 50 ms
         aktualizujStanPrzyciskuStart();
         keyTimer->stop();
         countdownTimer->stop();
@@ -221,8 +222,14 @@ bool GroupBoxControl::wysylanieStart()
     if (isSending == false) {
         if ((czasSekund != 0 || czasMilisekund != 0) && wybranyKlawisz.isEmpty() == false
             && handle != nullptr) {
+            qDebug() << "[GroupBoxControl] wysylanieStart() przycisk =" << wybranyKlawisz
+                     << " uchwyt:" << windowText << "-" << parentWindowText
+                     << "sekund:" << spinBox_Sekund->value()
+                     << "Milisekund:" << spinBox_Milisekund->value();
             isSending = true;
             aktualizujStanPrzyciskuStart();
+            wyslijKlawisz();
+            Beep(1000, 100); // 1000 Hz przez 100 ms
 
             int interval = czasSekund * 1000 + czasMilisekund;
             remainingTime = interval;
@@ -230,9 +237,6 @@ bool GroupBoxControl::wysylanieStart()
             keyTimer->start(interval);
             countdownTimer->start(100);
             return true;
-        } else {
-            qDebug() << "[GroupBoxControl][wysylanieStart] Czas musi być większy od 0 i klawisz "
-                        "musi być wybrany.";
         }
     } else {
         qDebug() << "[GroupBoxControl][wysylanieStart] Juz wysyła";
@@ -260,7 +264,6 @@ void GroupBoxControl::aktualizujCountdown()
 
 QString GroupBoxControl::getAllData() const
 {
-    //return "aktualizujCountdown()  ";
     if (groupBox != NULL) {
         QString data = groupBox->title() + ";";
         data += comboBox_Klawisz->currentText() + ";";
@@ -276,41 +279,46 @@ void GroupBoxControl::setAllData(const QString &line)
 {
     //GlowneOkno::wczytajPlik() -> OknoBot::setAllDataToGroupBox(QString zawartoscPliku) -> GroupBoxControl::setAllData(QString zawartoscPliku)
 
-    QStringList values = line.split(";", Qt::SkipEmptyParts);
+    QStringList values = line.split(";");
 
     for (int i = 0; i < values.size(); ++i) {
         QString value = values[i].trimmed();
-        qDebug() << "[GroupBoxControl] setAllData(). Wartość [" << i << "] :" << value;
 
         switch (i) {
         case 0:
             if (groupBox)
                 groupBox->setTitle("Musisz zaktualizować ID! " + value);
+            qDebug() << "[GroupBoxControl] setAllData(). groupBox" << value;
             break;
         case 1:
             if (comboBox_Klawisz)
                 comboBox_Klawisz->setCurrentText(value);
+            qDebug() << "[GroupBoxControl] setAllData(). comboBox_Klawisz" << value;
             break;
         case 2:
             if (comboBox_Hotkey)
                 comboBox_Hotkey->setCurrentText(value);
+            qDebug() << "[GroupBoxControl] setAllData(). comboBox_Hotkey" << value;
             break;
         case 3:
             if (spinBox_Sekund) {
                 value.remove("s", Qt::CaseInsensitive);
                 spinBox_Sekund->setValue(value.toInt());
             }
+            qDebug() << "[GroupBoxControl] setAllData(). spinBox_Sekund" << value;
             break;
         case 4:
             if (spinBox_Milisekund) {
                 value.remove("ms", Qt::CaseInsensitive);
                 spinBox_Milisekund->setValue(value.toInt());
             }
+            qDebug() << "[GroupBoxControl] setAllData(). spinBox_Milisekund" << value;
             break;
         default:
             break;
         }
     }
+    qDebug() << "";
 }
 
 void GroupBoxControl::czyPotwierdzicUsuniecie()

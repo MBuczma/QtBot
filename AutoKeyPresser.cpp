@@ -17,7 +17,6 @@ AutoKeyPresser::~AutoKeyPresser() {}
 
 void AutoKeyPresser::WindowHandleFromPoint(HWND &handle, HWND &parentHandle)
 {
-    qDebug() << "[AutoKeyPresser] WindowHandleFromPoint() został wywołany.";
     POINT point;
     GetCursorPos(&point); // Pobranie współrzędnych kursora w odniesieniu do ekranu
     handle = WindowFromPoint(point);
@@ -25,10 +24,10 @@ void AutoKeyPresser::WindowHandleFromPoint(HWND &handle, HWND &parentHandle)
 
     if (handle != nullptr) {
         //qDebug() << "X:" << point.x << "Y:" << point.y;
-        qDebug() << "[AutoKeyPresser] Handle:" << handle
-                 << "- Tekst:" << GetWindowTextFromHandle(handle);
-        qDebug() << "[AutoKeyPresser] ParentHandle:" << parentHandle
-                 << "- Tekst:" << GetWindowTextFromHandle(parentHandle) << "\n";
+        qDebug() << "[AutoKeyPresser][WindowHandleFromPoint] Handle:" << handle
+                 << "- Tekst:" << GetWindowTextFromHandle(handle)
+                 << " ParentHandle:" << parentHandle
+                 << "- Tekst:" << GetWindowTextFromHandle(parentHandle) << Qt::endl;
     } else {
         qDebug() << "[AutoKeyPresser][WindowHandleFromPoint] Nie udało się pobrać uchwytu okna.";
     }
@@ -61,9 +60,9 @@ void AutoKeyPresser::SendKey(const HWND handle, const QString &key, const QStrin
         WPARAM keyCode = it.value();
         PostMessage(handle, WM_KEYDOWN, keyCode, 0);
         PostMessage(handle, WM_KEYUP, keyCode, 0);
-        qDebug() << "[AutoKeyPresser] Wysyłam klawisz:" << key << "do uchwytu:" << name;
+        qDebug() << "[AutoKeyPresser][SendKey] Wysyłam klawisz:" << key << "do uchwytu:" << name;
     } else {
-        qDebug() << "[AutoKeyPresser] Nieznany klawisz:" << key
+        qDebug() << "[AutoKeyPresser][SendKey] Nieznany klawisz:" << key
                  << "(po przekształceniu:" << keyUpper << ")";
     }
 }

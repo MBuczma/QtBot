@@ -82,14 +82,16 @@ void OknoBot::usunWszystkieRzedy()
 void OknoBot::startWszystkie()
 {
     for (auto &box : groupBoxes) {
-        qDebug() << "[OknoBot] startWszystkie() " << box->wysylanieStart();
+        qDebug() << "[OknoBot] startWszystkie() ";
+        box->wysylanieStart();
     }
 }
 
 void OknoBot::stopWszystkie()
 {
     for (auto &box : groupBoxes) {
-        qDebug() << "[OknoBot] stopWszystkie() " << box->wysylanieStop();
+        qDebug() << "[OknoBot] stopWszystkie() ";
+        box->wysylanieStop();
     }
 }
 
@@ -130,7 +132,7 @@ void OknoBot::onKeyPressed(WPARAM vkCode)
     if (mapa.contains(hotkey)) {
         if (mapa[hotkey] == vkCode) {
             qDebug() << "[OknoBot][onKeyPressed] wciśnięty klawisz: " << mapa[hotkey]
-                     << "PASUJE do hotkey'a: " << hotkey << ". Wywołuję handleStartStop()";
+                     << "PASUJE do hotkey'a: " << hotkey << ". Wywołuję stopWszystkie()";
             stopWszystkie();
             return;
         }
@@ -140,7 +142,7 @@ void OknoBot::onKeyPressed(WPARAM vkCode)
     if (mapa.contains(hotkey)) {
         if (mapa[hotkey] == vkCode) {
             qDebug() << "[OknoBot][onKeyPressed] wciśnięty klawisz: " << mapa[hotkey]
-                     << "PASUJE do hotkey'a: " << hotkey << ". Wywołuję handleStartStop()";
+                     << "PASUJE do hotkey'a: " << hotkey << ". Wywołuję startWszystkie()";
             startWszystkie();
             return;
         }

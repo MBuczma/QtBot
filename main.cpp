@@ -42,6 +42,8 @@ int main(int argc, char *argv[])
         ustawLoggera();
         qInfo() << "[main] Logger zainicjalizowany.";
 
+        qInfo() << "[main] Wersja programu: Beta 1.0.0";
+
         ustawStyl(application);
         qInfo() << "[main] Styl graficzny ustawiony.";
 
