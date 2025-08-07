@@ -98,6 +98,10 @@ void OknoBot::stopWszystkie()
 QString OknoBot::getAllDataFromGroupBox()
 {
     QString AllData;
+    QString startHotkey = ui->comboBox_StartALL->currentText();
+    QString stopHotkey = ui->comboBox_StopALL->currentText();
+    AllData = startHotkey + ";" + stopHotkey + "\n";
+
     for (auto &box : groupBoxes) {
         qDebug() << "[OknoBot] getAllDataFromGroupBox() " << box->getAllData();
         AllData += box->getAllData() + "\n";
@@ -108,9 +112,13 @@ QString OknoBot::getAllDataFromGroupBox()
 void OknoBot::setAllDataToGroupBox(QString zawartoscPliku)
 {
     qDebug() << "[OknoBot] setAllDataToGroupBox() " << zawartoscPliku;
-    QStringList lines = zawartoscPliku.split("\n", Qt::SkipEmptyParts);
+    QStringList lines = zawartoscPliku.split("\n");
+    QStringList hotkeys = lines[0].split(";");
+    lines.removeFirst();
+    ui->comboBox_StartALL->setCurrentText(hotkeys[0].trimmed());
+    ui->comboBox_StopALL->setCurrentText(hotkeys[1].trimmed());
 
-    for (int i = groupBoxes.size(); i < lines.count(); ++i) {
+    for (int i = groupBoxes.size(); i < lines.count() - 1; ++i) {
         dodajRzad();
     }
 
