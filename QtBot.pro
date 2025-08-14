@@ -35,3 +35,10 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RC_ICONS = QTBot_robot_icon.ico
+RC_FILE += versioninfo.rc
+
+RESOURCES += \
+  Icon.qrc
+  QTBot_robot_icon.ico

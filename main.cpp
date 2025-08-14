@@ -17,6 +17,7 @@
 #include <QApplication>
 #include <QDateTime>
 #include <QDir>
+#include <QIcon>
 #include <QPalette>
 #include <QStandardPaths>
 #include <QStyleFactory>
@@ -38,6 +39,7 @@ int main(int argc, char *argv[])
 {
     try {
         QApplication application(argc, argv);
+        application.setWindowIcon(QIcon(":/QTBot_robot_icon.ico"));
 
         ustawLoggera();
         qInfo() << "[main] Logger zainicjalizowany.";

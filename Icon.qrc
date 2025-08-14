@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>QTBot.ico</file>
+        <file>QTBot.rc</file>
+        <file>QTBot_robot_icon.ico</file>
+    </qresource>
+</RCC>
