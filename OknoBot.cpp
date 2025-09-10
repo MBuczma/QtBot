@@ -13,6 +13,8 @@
 #include "QTimer"
 
 const short ROW_HEIGHT = 70;
+static constexpr WPARAM VK_MOUSE_X1_SYN = 0x1001;
+static constexpr WPARAM VK_MOUSE_X2_SYN = 0x1002;
 
 OknoBot::OknoBot(QWidget *parent)
     : QWidget(parent)
@@ -40,6 +42,19 @@ OknoBot::OknoBot(QWidget *parent)
         ui->comboBox_StopALL->addItem(pair.first);
     }
     ui->comboBox_StopALL->setMinimumWidth(90);
+
+    // Mysz – mapujemy XBUTTON -> syntetyczny „vk” i ponownie używamy onKeyPressed
+    globalMouseListener = std::make_unique<GlobalMouseListener>(this);
+    connect(globalMouseListener.get(),
+            &GlobalMouseListener::xButton,
+            this,
+            [this](int btn, bool down) {
+                if (!down)
+                    return; // tylko DOWN
+                const WPARAM code = (btn == 1) ? VK_MOUSE_X1_SYN : VK_MOUSE_X2_SYN;
+                this->onKeyPressed(code);
+            });
+    QTimer::singleShot(0, this, [this] { globalMouseListener->start(); });
 }
 
 OknoBot::~OknoBot() = default;

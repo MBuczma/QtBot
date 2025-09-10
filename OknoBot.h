@@ -7,8 +7,10 @@
 
 #include <QWidget>
 #include "GlobalKeyListener.h"
+#include "GlobalMouseListener.h"
 
 class GroupBoxControl;
+class GlobalMouseListener;
 
 namespace Ui {
 class OknoBot;
@@ -40,6 +42,7 @@ private:
     std::vector<GroupBoxControl *>
         groupBoxes; // Wektor przechowujący wskaźniki do dynamicznych GroupBoxControl
     GlobalKeyListener *globalKeyListener = nullptr;
+    std::unique_ptr<GlobalMouseListener> globalMouseListener;
 };
 
 #endif // OKNOBOT_H
