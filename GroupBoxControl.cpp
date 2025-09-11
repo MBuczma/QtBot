@@ -14,6 +14,7 @@
 #include <QTimer>
 #include "KeyMap.h"
 #include <memory>
+#include <thread>
 
 GroupBoxControl::GroupBoxControl(QWidget *parent) //konstrukor
     : QWidget(parent)
@@ -203,7 +204,7 @@ bool GroupBoxControl::wysylanieStop()
                  << parentWindowText << "sekund:" << spinBox_Sekund->value()
                  << "Milisekund:" << spinBox_Milisekund->value();
         isSending = false;
-        Beep(500, 50); // 500 Hz przez 50 ms
+        std::thread([] { Beep(500, 50); }).detach(); // 500 Hz przez 50 ms
         aktualizujStanPrzyciskuStart();
         keyTimer->stop();
         countdownTimer->stop();
@@ -229,7 +230,7 @@ bool GroupBoxControl::wysylanieStart()
             isSending = true;
             aktualizujStanPrzyciskuStart();
             wyslijKlawisz();
-            Beep(1000, 100); // 1000 Hz przez 100 ms
+            std::thread([] { Beep(1000, 100); }).detach(); // 1000 Hz przez 100 ms
 
             int interval = czasSekund * 1000 + czasMilisekund;
             remainingTime = interval;
