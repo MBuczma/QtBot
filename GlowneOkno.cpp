@@ -40,6 +40,10 @@ GlowneOkno::GlowneOkno(QWidget *parent)
     connect(ui->actionZapisz, &QAction::triggered, this, &GlowneOkno::zapiszPlik);
     connect(ui->actionWczytaj, &QAction::triggered, this, &GlowneOkno::wczytajPlik);
     connect(ui->actionWyjdz, &QAction::triggered, QApplication::instance(), &QApplication::quit);
+    connect(ui->actionPobierzIdWszystkie,
+            &QAction::triggered,
+            oknoBot.get(),
+            &OknoBot::pobierzIdWszystkie);
 
     // Połączenie przycisku z lambda (funkcja anonimowa)
     connect(oknoBot.get(), &OknoBot::rozszerzOkno, this, [this](short incrementHeight) {

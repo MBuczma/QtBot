@@ -221,6 +221,7 @@ QMenuBar::item:selected {
     <addaction name="actionZapisz"/>
     <addaction name="actionWczytaj"/>
     <addaction name="actionWyjdz"/>
+    <addaction name="actionPobierzIdWszystkie"/>
    </widget>
    <addaction name="menuOpcje"/>
   </widget>
@@ -242,6 +243,11 @@ QMenuBar::item:selected {
   <action name="actionWyjdz">
    <property name="text">
     <string>Wyjdź</string>
+   </property>
+  </action>
+  <action name="actionPobierzIdWszystkie">
+   <property name="text">
+    <string>PobierzIdWszystkie</string>
    </property>
   </action>
  </widget>

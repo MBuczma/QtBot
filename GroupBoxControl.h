@@ -32,6 +32,7 @@ public:
     void czyPotwierdzicUsuniecie();
     QString pobierzHotkey() const;
     void handleStartStop();
+    void ustawHandle(HWND handle, HWND parentHandle);
 
 private slots:
 

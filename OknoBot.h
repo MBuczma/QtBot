@@ -27,6 +27,9 @@ public:
     void usunWszystkieRzedy();
     void setAllDataToGroupBox(QString zawartoscPliku);
 
+public slots:
+    void pobierzIdWszystkie();
+
 signals:
     void rozszerzOkno(short height);
 
@@ -43,6 +46,12 @@ private:
         groupBoxes; // Wektor przechowujący wskaźniki do dynamicznych GroupBoxControl
     GlobalKeyListener *globalKeyListener = nullptr;
     std::unique_ptr<GlobalMouseListener> globalMouseListener;
+    bool isButtonPressedGlobal = false;
+    HWND handleGlobal = NULL;
+    HWND parentHandleGlobal = NULL;
+
+protected:
+    void mouseReleaseEvent(QMouseEvent *event) override;
 };
 
 #endif // OKNOBOT_H

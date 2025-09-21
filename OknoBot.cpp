@@ -8,6 +8,8 @@
 #include "OknoBot.h"
 #include "ui_OknoBot.h"
 
+#include <QMouseEvent>
+#include "AutoKeyPresser.h"
 #include "GroupBoxControl.h"
 #include "KeyMap.h"
 #include "QTimer"
@@ -187,4 +189,39 @@ void OknoBot::onKeyPressed(WPARAM vkCode)
             qDebug() << "[OknoBot][onKeyPressed] Nie znaleziono '" << hotkey << "' w mapie.";
         }
     }
+}
+
+void OknoBot::pobierzIdWszystkie()
+{
+    qDebug() << "[OknoBot] pobierzIdWszystkie() start";
+    isButtonPressedGlobal = true;
+    grabMouse();
+    setCursor(Qt::CrossCursor);
+}
+
+void OknoBot::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton && isButtonPressedGlobal) {
+        isButtonPressedGlobal = false;
+
+        // pobierz uchwyt spod kursora
+        AutoKeyPresser presser;
+        presser.WindowHandleFromPoint(handleGlobal, parentHandleGlobal);
+
+        releaseMouse();
+        unsetCursor();
+
+        if (handleGlobal != nullptr) {
+            qDebug() << "[OknoBot] Złapano uchwyt globalny:" << handleGlobal;
+
+            // rozesłanie do wszystkich rzędów
+            for (auto *box : groupBoxes) {
+                if (box) {
+                    box->ustawHandle(handleGlobal, parentHandleGlobal);
+                }
+            }
+        }
+    }
+
+    QWidget::mouseReleaseEvent(event);
 }

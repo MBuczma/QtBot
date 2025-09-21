@@ -339,3 +339,11 @@ QString GroupBoxControl::pobierzHotkey() const
 {
     return comboBox_Hotkey->currentText();
 }
+
+void GroupBoxControl::ustawHandle(HWND h, HWND p)
+{
+    handle = h;
+    parentHandle = p;
+    zaktualizujNazwe();
+    aktualizujStanPrzyciskuStart();
+}
