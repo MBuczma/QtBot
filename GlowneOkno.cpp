@@ -13,7 +13,9 @@
 #include "ui_GlowneOkno.h"
 
 #include <QFileDialog>
+#include <QFileInfo>
 #include <QMessageBox>
+#include <QSettings>
 #include "OknoBot.h"
 
 short GlowneOkno::width = 830;
@@ -80,71 +82,70 @@ void GlowneOkno::wyjscie()
 */
 void GlowneOkno::zapiszPlik()
 {
-    QString domyslnaNazwaPliku = "ProfileSave.QtBP";
-    QString sciezkaPliku
-        = QFileDialog::getSaveFileName(this,
-                                       tr("Zapisz plik jako"), // Tytuł okna dialogowego
-                                       QDir::homePath() + "/"
-                                           + domyslnaNazwaPliku, // Domyślna ścieżka i nazwa pliku
-                                       tr("Pliki QtBot profile (*.QtBP)") // Filtry typów plików
-        );
+    QSettings settings("MBuczma", "QtBot");
+    const QString lastDir = settings.value("io/lastDir", QDir::homePath()).toString();
 
+    const QString domyslnaNazwaPliku = "ProfileSave.QtBP";
+    QString sciezkaPliku = QFileDialog::getSaveFileName(this,
+                                                        tr("Zapisz plik jako"),
+                                                        lastDir + "/" + domyslnaNazwaPliku,
+                                                        tr("Pliki QtBot profile (*.QtBP)"));
     if (sciezkaPliku.isEmpty()) {
-        qInfo() << "[GlowneOkno][zapiszPlik] Zapis pliku anulowany przez użytkownika.";
+        qInfo() << "[GlowneOkno][zapiszPlik] Zapis anulowany.";
         return;
     }
+    // dopisz rozszerzenie jeśli brak
+    if (!sciezkaPliku.endsWith(".QtBP", Qt::CaseInsensitive))
+        sciezkaPliku += ".QtBP";
 
     QFile plik(sciezkaPliku);
     if (!plik.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QMessageBox::warning(this, tr("Błąd"), tr("Nie można otworzyć pliku do zapisu."));
-        qWarning() << "[GlowneOkno][zapiszPlik] Nie można otworzyć pliku do zapisu:"
-                   << sciezkaPliku;
+        qWarning() << "[GlowneOkno][zapiszPlik] Nie można otworzyć:" << sciezkaPliku;
         return;
     }
 
     QTextStream out(&plik);
     out << oknoBot->getAllDataFromGroupBox();
     plik.close();
-    qInfo() << "[GlowneOkno][zapiszPlik] Zapisano dane do pliku:" << sciezkaPliku;
+
+    settings.setValue("io/lastDir", QFileInfo(sciezkaPliku).absolutePath());
+    qInfo() << "[GlowneOkno][zapiszPlik] Zapisano:" << sciezkaPliku;
 }
 
 void GlowneOkno::wczytajPlik()
 {
-    QString sciezkaPliku
-        = QFileDialog::getOpenFileName(this, // Wskaźnik na rodzica, np. QWidget lub QMainWindow
-                                       tr("Otwórz plik"),                 // Tytuł okna dialogowego
-                                       QDir::homePath(),                  // Domyślna ścieżka
-                                       tr("Pliki QtBot profile (*.QtBP)") // Filtry typów plików
-        );
+    QSettings settings("MBuczma", "QtBot");
+    const QString lastDir = settings.value("io/lastDir", QDir::homePath()).toString();
 
+    QString sciezkaPliku = QFileDialog::getOpenFileName(this,
+                                                        tr("Otwórz plik"),
+                                                        lastDir,
+                                                        tr("Pliki QtBot profile (*.QtBP)"));
     if (sciezkaPliku.isEmpty()) {
-        qInfo() << "[GlowneOkno][wczytajPlik] Wczytanie pliku anulowane przez użytkownika.";
+        qInfo() << "[GlowneOkno][wczytajPlik] Wczytanie anulowane.";
         return;
     }
 
     QFile plik(sciezkaPliku);
     if (!plik.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QMessageBox::warning(this, tr("Błąd"), tr("Nie można otworzyć pliku do odczytu."));
-        qWarning() << "[GlowneOkno][wczytajPlik] Nie można otworzyć pliku do odczytu:"
-                   << sciezkaPliku;
+        qWarning() << "[GlowneOkno][wczytajPlik] Nie można otworzyć:" << sciezkaPliku;
         return;
     }
 
     QTextStream in(&plik);
-    QString zawartoscPliku = in.readAll();
-    int liczbaLinii = zawartoscPliku.split('\n', Qt::SkipEmptyParts).size();
-    qInfo() << "[GlowneOkno][wczytajPlik] Wczytano dane z pliku:" << sciezkaPliku
-            << "Liczba linii:" << liczbaLinii;
-    qDebug().noquote() << zawartoscPliku;
+    const QString zawartoscPliku = in.readAll();
+    plik.close();
 
-    if (ui->stackedWidget->currentWidget() != oknoBot.get()) {
+    if (ui->stackedWidget->currentWidget() != oknoBot.get())
         ui->stackedWidget->setCurrentWidget(oknoBot.get());
-        qInfo() << "[GlowneOkno][wczytajPlik] Po wczytaniu profilu przełączono na widok OknoBot.";
-    }
+
     oknoBot->usunWszystkieRzedy();
     oknoBot->setAllDataToGroupBox(zawartoscPliku);
 
-    plik.close();
+    settings.setValue("io/lastDir", QFileInfo(sciezkaPliku).absolutePath());
+    qInfo() << "[GlowneOkno][wczytajPlik] Wczytano:" << sciezkaPliku;
 }
 
 void GlowneOkno::closeEvent(QCloseEvent *event)
